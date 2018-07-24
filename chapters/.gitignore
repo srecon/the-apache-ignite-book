@@ -1,4 +1,6 @@
 **.iml
-**.jpr
-**.jws
+**.ipr
+**.iws
 **/target
+chapters/chapters.iws
+chapters/chapters.ipr
