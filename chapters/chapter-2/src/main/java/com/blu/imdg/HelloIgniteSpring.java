@@ -7,9 +7,7 @@ import org.apache.ignite.Ignition;
 import org.apache.ignite.configuration.CacheConfiguration;
 import org.apache.ignite.configuration.IgniteConfiguration;
 
-/**
- * Created by shamim on 19/10/16.
- */
+
 public class HelloIgniteSpring {
     public static void main(String[] args) {
         // Start Ignite cluster
