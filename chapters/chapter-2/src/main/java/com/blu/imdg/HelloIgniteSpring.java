@@ -4,10 +4,7 @@ import com.blu.dto.Person;
 import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteCache;
 import org.apache.ignite.Ignition;
-import org.apache.ignite.configuration.CacheConfiguration;
-import org.apache.ignite.configuration.IgniteConfiguration;
 
-
 public class HelloIgniteSpring {
     public static void main(String[] args) {
         // Start Ignite cluster
