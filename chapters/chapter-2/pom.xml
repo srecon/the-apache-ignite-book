@@ -89,6 +89,18 @@
                             <goal>one-jar</goal>
                         </goals>
                     </execution>
+                    <execution>
+                        <id>build-streamer</id>
+                        <configuration>
+                            <mainClass>com.blu.imdg.HelloThinClient</mainClass>
+                            <attachToBuild>true</attachToBuild>
+                            <classifier>onejar</classifier>
+                            <filename>HelloThinClient-runnable.jar</filename>
+                        </configuration>
+                        <goals>
+                            <goal>one-jar</goal>
+                        </goals>
+                    </execution>
                 </executions>
             </plugin>
         </plugins>
