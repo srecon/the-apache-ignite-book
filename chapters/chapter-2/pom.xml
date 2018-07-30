@@ -90,7 +90,7 @@
                         </goals>
                     </execution>
                     <execution>
-                        <id>build-streamer</id>
+                        <id>build-HelloThinClient</id>
                         <configuration>
                             <mainClass>com.blu.imdg.HelloThinClient</mainClass>
                             <attachToBuild>true</attachToBuild>
