@@ -19,7 +19,9 @@
 
     <modules>
         <module>chapter-2</module>
-    </modules>
+        <module>chapter-5/hibernate</module>
+        <module>chapter-7</module>
+  </modules>
     <dependencyManagement>
         <dependencies>
             <dependency>
