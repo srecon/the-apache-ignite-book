@@ -96,6 +96,9 @@
                       <goals>
                           <goal>java</goal>
                       </goals>
+                      <configuration>
+                        <mainClass>com.blu.imdg.App</mainClass>
+                      </configuration>
                   </execution>
               </executions>
           </plugin>

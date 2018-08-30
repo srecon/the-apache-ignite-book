@@ -2,7 +2,7 @@
   <groupId>ignite.book</groupId>
   <artifactId>ignite.spark.load.module</artifactId>
   <modelVersion>4.0.0</modelVersion>
-  <name>Load data nodule</name>
+  <name>Load data module</name>
   <packaging>jar</packaging>
   <version>1.0</version>
   <parent>

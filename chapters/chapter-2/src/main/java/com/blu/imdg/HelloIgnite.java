@@ -23,7 +23,8 @@ public class HelloIgnite {
         spi.setIpFinder(tcMp);
         // create new ignite configuration
         IgniteConfiguration cfg = new IgniteConfiguration();
-        cfg.setClientMode(true);
+        cfg.setIgniteInstanceName("springDataNode");
+        cfg.setClientMode(false);
         // set the discovery§ spi to ignite configuration
         cfg.setDiscoverySpi(spi);
         // Start ignite
