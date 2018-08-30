@@ -1,0 +1,61 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-4.1.xsd ">
+    <!-- Enable annotation-driven caching. -->
+    <!--<cache:annotation-driven/>-->
+
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${jdbc.driver}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+    <!-- Hibernate session factory-->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+
+        <property name="dataSource" ref="dataSource"/>
+
+        <property name="packagesToScan">
+            <list>
+                <value>com.blu.imdg.dto</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.cache.use_second_level_cache">true</prop>
+                <!-- Generate L2 cache statistics. -->
+                <prop key="hibernate.generate_statistics">true</prop>
+
+                <!-- Specify ignite as L2 cache provider. -->
+                <prop key="hibernate.cache.region.factory_class">org.apache.ignite.cache.hibernate.HibernateRegionFactory</prop>
+
+                <!-- Specify the name of the grid, that will be used for second level caching. -->
+                <prop key="org.apache.ignite.hibernate.ignite_instance_name">hibernate-grid</prop>
+                <!-- Set default L2 cache access type. -->
+                <prop key="org.apache.ignite.hibernate.default_access_type">READ_WRITE</prop>
+
+                <!-- Enable query cache. prefix hibernate is necessary here.-->
+                <prop key="hibernate.cache.use_query_cache">true</prop>
+                <prop key="show_sql">true</prop>
+                <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
+
+            </props>
+        </property>
+    </bean>
+
+    <bean id="empDAO" class="com.blu.imdg.EmpDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <!-- Service-->
+    <bean id="serviceBean" class="com.blu.imdg.ws.WebService">
+        <property name="empDao" ref="empDAO"/>
+    </bean>
+</beans>
