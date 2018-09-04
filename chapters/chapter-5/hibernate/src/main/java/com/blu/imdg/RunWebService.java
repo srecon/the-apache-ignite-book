@@ -9,12 +9,14 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.xml.ws.Endpoint;
 
+
 /**
  * Created by shamim on 24/06/16.
  */
 public class RunWebService {
     public static void main(String[] args) {
-        Ignite ignite = Ignition.start("ignite-client-config.xml");
+        //Ignite ignite = Ignition.start("ignite-client-config.xml");
+        Ignite ignite = Ignition.start("ignite-l2-config.xml");
         ApplicationContext ctx = new ClassPathXmlApplicationContext("spring-core.xml");
 
         WebService service = (WebService) ctx.getBean("serviceBean");
