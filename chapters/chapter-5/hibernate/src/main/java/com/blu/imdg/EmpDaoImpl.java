@@ -16,7 +16,7 @@ import java.util.List;
 
 
 /**
- * Created by shamim on 24/06/16.
+ * Created by shamim
  */
 public class EmpDaoImpl implements EmpDao {
     private SessionFactory sessionFactory;
@@ -34,6 +34,15 @@ public class EmpDaoImpl implements EmpDao {
             return employees;
         }
         return Collections.emptyList();
+    }
+
+    public Employee getEmployeeById(int empno) {
+        Session session = sessionFactory.openSession();
+        Employee emp = session.get(Employee.class, empno);
+
+        session.close();
+
+        return emp;
     }
 
     public void create(Integer empno, String ename, String job, Integer mgr) {

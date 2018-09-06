@@ -46,6 +46,8 @@
                 <prop key="hibernate.cache.use_query_cache">true</prop>
                 <prop key="show_sql">true</prop>
                 <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
+                <!-- If true, forces Hibernate to store data in the second-level cache in a more human-friendly format, but does have a performance impact-->
+                <!--<prop key="hibernate.cache.use_structured_entries">true</prop>-->
 
             </props>
         </property>

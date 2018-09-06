@@ -11,7 +11,7 @@ import javax.xml.ws.Endpoint;
 
 
 /**
- * Created by shamim on 24/06/16.
+ * Created by shamim
  */
 public class RunWebService {
     public static void main(String[] args) {

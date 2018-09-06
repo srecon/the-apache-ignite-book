@@ -9,7 +9,7 @@ import java.util.Date;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 /**
- * Created by shamim on 23/06/16.
+ * Created by shamim
  */
 @Entity
 @Cacheable
@@ -100,5 +100,19 @@ public class Employee implements Serializable{
 
     public void setComm(Integer comm) {
         this.comm = comm;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "empno=" + empno +
+                ", ename='" + ename + '\'' +
+                ", job='" + job + '\'' +
+                ", mgr=" + mgr +
+                ", date=" + date +
+                ", sal=" + sal +
+                ", deptno=" + deptno +
+                ", comm=" + comm +
+                '}';
     }
 }
