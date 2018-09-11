@@ -19,9 +19,10 @@
 
     <modules>
         <module>chapter-2</module>
-        <module>chapter-5/springboot-hibernate</module>
+        <!--<module>chapter-5/springboot-hibernate</module>-->
         <module>chapter-5/hibernate</module>
         <module>chapter-5/memoization</module>
+        <module>chapter-5/mybatis</module>
         <module>chapter-7</module>
         <module>chapter-9/IgniteSparkApp</module>
   </modules>
