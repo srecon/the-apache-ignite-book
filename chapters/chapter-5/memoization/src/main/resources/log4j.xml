@@ -9,7 +9,16 @@
                    value="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n" />
         </layout>
     </appender>
-
+    <!-- Log SQL statements -->
+    <logger name="org.hibernate.SQL" additivity="false">
+        <level value="debug"/>
+        <appender-ref ref="console" />
+    </logger>
+    <!-- Log cache -->
+    <logger name="org.hibernate.cache" additivity="false">
+        <level value="debug"/>
+        <appender-ref ref="console" />
+    </logger>
     <root>
         <level value="INFO" />
         <appender-ref ref="console" />
