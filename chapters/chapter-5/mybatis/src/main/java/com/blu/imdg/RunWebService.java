@@ -10,8 +10,6 @@ import javax.xml.ws.Endpoint;
 
 public class RunWebService {
     public static void main(String[] args) {
-        //Ignite ignite = Ignition.start("ignite-l2-config.xml");
-
         ApplicationContext ctx = new ClassPathXmlApplicationContext("spring-core.xml");
         WebServices services = (WebServices) ctx.getBean("servicesBean");
 

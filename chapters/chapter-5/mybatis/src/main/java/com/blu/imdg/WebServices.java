@@ -7,9 +7,6 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 
-/**
- * Created by shamim on 14/02/16.
- */
 @WebService(name = "BusinessRulesServices",
         serviceName="BusinessRulesServices",
         targetNamespace = "http://com.blu.rules/services")
