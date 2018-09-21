@@ -12,7 +12,7 @@ public final class LineCount {
         }
 
         String logFile = args[0];
-        SparkSession spark = SparkSession.builder().appName("Simple Application").getOrCreate();
+        SparkSession spark = SparkSession.builder().appName("Line count Application").getOrCreate();
         Dataset<String> logData = spark.read().textFile(logFile).cache();
 
         long numAs = logData.filter(s -> s.contains("a")).count();
