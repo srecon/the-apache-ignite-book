@@ -7,7 +7,7 @@ public final class LineCount {
 
     public static void main(String[] args) throws Exception {
         if (args.length < 1) {
-            System.err.println("Usage: JavaWordCount <file>");
+            System.err.println("Usage: LineCount <file>");
             System.exit(1);
         }
 
