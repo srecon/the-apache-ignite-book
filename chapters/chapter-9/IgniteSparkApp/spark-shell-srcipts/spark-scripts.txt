@@ -1,0 +1,21 @@
+./bin/spark-shell --packages org.apache.ignite:ignite-spark:2.6.0 --master spark://shamim.local:7077 --repositories http://repo.maven.apache.org/maven2/org/apache/ignite
+
+
+import org.apache.ignite.spark._
+import org.apache.ignite.configuration._
+
+val lines = sc.textFile("README.md")
+
+val words = lines.flatMap(_.split("\\s+"))
+
+val wc = words.map(w => (w, 1)).reduceByKey(_ + _)
+
+val sharedRDD3 = ic.fromCache[String, Int]("wordcount2")
+
+sharedRDD3.savePairs(wc)
+
+sharedRDD3.collect()
+
+sharedRDD3.filter(_._2 > 10).count()
+sharedRDD3.filter(_._2 > 10).collect()
+sharedRDD3.filter(_._1 == "Spark").collect()

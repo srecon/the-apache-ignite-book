@@ -24,16 +24,6 @@
       <artifactId>scala-library</artifactId>
       <version>2.11.8</version>
     </dependency>
-    <!--<dependency>
-      <groupId>org.apache.ignite</groupId>
-      <artifactId>ignite-core</artifactId>
-      <version>2.6.0</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.ignite</groupId>
-      <artifactId>ignite-spark</artifactId>
-      <version>2.6.0</version>
-    </dependency>-->
   </dependencies>
   
   <repositories>
@@ -76,17 +66,45 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>2.3.1</version>
-        <configuration>
-          <archive>
-            <manifest>
-              <addClasspath>true</addClasspath>
-              <classpathLayoutType>repository</classpathLayoutType>
-              <classpathPrefix>${settings.localRepository}</classpathPrefix>
-              <mainClass>com.blu.imdg.RDDProducer</mainClass>
-            </manifest>
-          </archive>
-        </configuration>
+        <version>2.4</version>
+        <executions>
+          <!-- create producer jar -->
+          <execution>
+            <id>RDDProducer</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+            <configuration>
+              <classifier>RDDProducer</classifier>
+              <archive>
+                <manifest>
+                  <addClasspath>true</addClasspath>
+                  <classpathLayoutType>repository</classpathLayoutType>
+                  <classpathPrefix>${settings.localRepository}</classpathPrefix>
+                  <mainClass>com.blu.imdg.RDDProducer</mainClass>
+                </manifest>
+              </archive>
+            </configuration>
+          </execution>
+          <!-- create RDDConsumer jar -->
+          <execution>
+            <id>RDDConsumer</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+            <configuration>
+              <classifier>RDDConsumer</classifier>
+              <archive>
+                <manifest>
+                  <addClasspath>true</addClasspath>
+                  <classpathLayoutType>repository</classpathLayoutType>
+                  <classpathPrefix>${settings.localRepository}</classpathPrefix>
+                  <mainClass>com.blu.imdg.RDDConsumer</mainClass>
+                </manifest>
+              </archive>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
