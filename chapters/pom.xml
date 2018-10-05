@@ -28,6 +28,7 @@
         <module>chapter-9/IgniteSparkApp</module>
         <module>chapter-8/kafka</module>
         <module>chapter-8/camel</module>
+        <module>chapter-8/flume</module>
   </modules>
     <dependencyManagement>
         <dependencies>
