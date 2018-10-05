@@ -29,6 +29,7 @@
         <module>chapter-8/kafka</module>
         <module>chapter-8/camel</module>
         <module>chapter-8/flume</module>
+        <module>chapter-8/storm</module>
   </modules>
     <dependencyManagement>
         <dependencies>
