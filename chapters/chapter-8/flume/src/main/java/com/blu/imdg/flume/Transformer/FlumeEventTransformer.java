@@ -8,11 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * User: bsha
- * Date: 10.08.2016
- * Time: 23:24
- */
+
 public class FlumeEventTransformer implements EventTransformer <Event, String, Integer> {
     @Nullable
     @Override

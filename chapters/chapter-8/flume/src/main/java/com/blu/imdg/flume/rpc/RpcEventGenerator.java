@@ -6,9 +6,7 @@ import org.apache.flume.api.RpcClient;
 import org.apache.flume.api.RpcClientFactory;
 import org.apache.flume.event.EventBuilder;
 
-/**
- * Created by shamim on 11/08/16.
- */
+
 public class RpcEventGenerator {
     private org.apache.flume.api.RpcClient rpcClient;
     private String hostName;

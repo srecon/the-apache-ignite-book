@@ -4,9 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-/**
- * Created by shamim on 11/08/16.
- */
+
 public class RunClient {
     private static final String HOST_NAME="flume.agent.host";
     private static final String PORT="flume.agent.port";
