@@ -1,0 +1,164 @@
+Listing 8.1:
+
+tar -xzf zookeeper-3.4.12.tar.gz
+
+Listing 8.2:
+
+# The number of milliseconds of each tick
+tickTime=2000
+# The number of ticks that the initial
+# synchronization phase can take
+initLimit=10
+# The number of ticks that can pass between
+# sending a request and getting an acknowledgement
+syncLimit=5
+# the directory where the snapshot is stored.
+# for example, /tmp directory
+dataDir=ABSULATE_PATH_TO_DATA_DIRECTORY/data
+# the port at which the clients will connect
+clientPort=2181
+
+Listing 8.3:
+
+$ZOOKEEPER_HOME/bin/zkServer.sh start
+
+Listing 8.4:
+
+tar -xzf kafka_2.11-2.0.0.tgz
+
+Listing 8.5:
+
+bin/kafka-server-start.sh config/server.properties
+
+Listing 8.6:
+
+$KAFKA_HOME/bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test
+
+Listing 8.7:
+
+$KAFKA_HOME/bin/kafka-console-producer.sh --broker-list localhost:9092 --topic test
+
+k1,v1
+k2,v2
+
+Listing 8.8:
+
+$KAFKA_HOME/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic test --from-beginning
+
+Listing 8.9:
+
+ignite-kafka-2.6.0.jar
+kafka_2.11-0.10.0.1.jar
+connect-api-0.10.0.1.jar
+
+Listing 8.10:
+
+spring-context-4.3.16.RELEASE.jar
+ignite-spring-2.6.0.jar
+spring-core-4.3.16.RELEASE.jar
+spring-aop-4.3.16.RELEASE.jar
+commons-logging-1.1.1.jar
+spring-expression-4.3.16.RELEASE.jar
+spring-beans-4.3.16.RELEASE.jar
+spring-jdbc-4.3.16.RELEASE.jar
+
+Listing 8.11:
+
+bootstrap.servers=localhost:9092
+
+key.converter=org.apache.kafka.connect.storage.StringConverter
+value.converter=org.apache.kafka.connect.storage.StringConverter
+key.converter.schemas.enable=false
+value.converter.schemas.enable=false
+
+internal.key.converter=org.apache.kafka.connect.storage.StringConverter
+internal.value.converter=org.apache.kafka.connect.storage.StringConverter
+internal.key.converter.schemas.enable=false
+internal.value.converter.schemas.enable=false
+
+offset.storage.file.filename=/tmp/connect.offsets
+offset.flush.interval.ms=10000
+
+Listing 8.12:
+
+# connector
+name=my-ignite-connector
+connector.class=org.apache.ignite.stream.kafka.connect.IgniteSinkConnector
+tasks.max=2
+topics=test
+
+# cache
+cacheName=myCache
+cacheAllowOverwrite=true
+igniteCfg=$IGNITE_HOME/2.6.0/examples/config/example-cache.xml
+
+Listing 8.13:
+
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean id="ignite.cfg" class="org.apache.ignite.configuration.IgniteConfiguration">
+        <property name="cacheConfiguration">
+            <list>
+                <bean class="org.apache.ignite.configuration.CacheConfiguration">
+                    <property name="name" value="myCache"/>
+                    <property name="atomicityMode" value="ATOMIC"/>
+                    <property name="backups" value="1"/>
+                </bean>
+            </list>
+        </property>
+
+        <property name="discoverySpi">
+            <bean class="org.apache.ignite.spi.discovery.tcp.TcpDiscoverySpi">
+                <property name="ipFinder">
+                    <bean class="org.apache.ignite.spi.discovery.tcp.ipfinder.multicast.TcpDiscoveryMulticastIpFinder">
+                        <property name="addresses">
+                            <list>
+                                <value>127.0.0.1:47500..47509</value>
+                            </list>
+                        </property>
+                    </bean>
+                </property>
+            </bean>
+        </property>
+    </bean>
+</beans>
+
+Listing 8.14:
+
+bin/connect-standalone.sh myconfig/connect-standalone.properties myconfig/ignite-connector.properties
+
+Listing 8.15:
+
+bin/kafka-console-producer.sh --broker-list localhost:9092 --topic test --property parse.key=true --property key.separator=,
+
+k1,v1
+k2,v2
+k3,v3
+
+Listing 8.16:
+
+Shamim, Apache Ignite deep dive: SQL engine.
+Denim martin, ZooKeeper internal engines.
+Eric kleppmen, a journey to a NOSql database.
+
+Listing 8.17:
+
+tail -f -n +1 ./seed.txt | bin/kafka-console-producer.sh --broker-list localhost:9092 --topic test --property parse.key=true --property key.separator=,
+
+Listing 8.18:
+
+public class MySuperExtractor implements StreamSingleTupleExtractor<SinkRecord, String, String> {
+
+  @Override public Map.Entry<String, String> extract(SinkRecord msg) {
+      String[] parts = ((String)msg.value()).split("_");
+      return new AbstractMap.SimpleEntry<String, String>(parts[1], parts[2]+":"+parts[3]);
+  }
+}
+
+Listing 8.19:
+
+singleTupleExtractorCls=com.blu.kafka.MySuperExtractor

@@ -26,6 +26,7 @@
         <module>chapter-5/web-session-clustering</module>
         <module>chapter-7</module>
         <module>chapter-9/IgniteSparkApp</module>
+        <module>chapter-8/kafka</module>
   </modules>
     <dependencyManagement>
         <dependencies>
@@ -93,6 +94,5 @@
                 <version>${logback.version}</version>
             </dependency>
         </dependencies>
-
     </dependencyManagement>
 </project>
