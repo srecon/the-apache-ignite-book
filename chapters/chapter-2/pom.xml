@@ -102,6 +102,18 @@
                             <goal>one-jar</goal>
                         </goals>
                     </execution>
+                    <execution>
+                        <id>build-isolatedCluster-client</id>
+                        <configuration>
+                            <mainClass>com.blu.imdg.IsolatedCluster</mainClass>
+                            <attachToBuild>true</attachToBuild>
+                            <classifier>onejar</classifier>
+                            <filename>IsolatedCLient-runnable.jar</filename>
+                        </configuration>
+                        <goals>
+                            <goal>one-jar</goal>
+                        </goals>
+                    </execution>
                 </executions>
             </plugin>
         </plugins>
