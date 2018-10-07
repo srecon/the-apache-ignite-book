@@ -22,13 +22,18 @@ import java.util.Properties;
 
 
 public class CamelStreamerDirectIngestion {
+
     private static final String FILE_PROPERTIES= "camel.properties";
+
     public static void main(String[] args) {
         System.out.println("Camel Streamer Direct ingestion!");
+
         Ignition.setClientMode(true);
         Ignite ignite = Ignition.start("example-ignite.xml");
+
         if (!ExamplesUtils.hasServerNodes(ignite))
             return;
+
         if(getFileLocation() == null || getFileLocation().isEmpty()){
             System.out.println("Properties file is empty or null!");
             return;
