@@ -19,9 +19,10 @@ public class IgniteDataFrame {
         String config_path = args[0];
 
         IgniteSparkSession igniteSession = IgniteSparkSession.builder()
-                .appName("Spark Ignite catalog example")
+                .appName("Spark Ignite dataframe example")
                 .master("local")
                 .config("spark.executor.instances", "2")
+                //.config("spark.master","spark://shamim.local:7077")
                 //Only additional option to refer to Ignite cluster.
                 .igniteConfig(config_path+"/"+IGNITE_CONFIG_XML)
                 .getOrCreate();
@@ -38,6 +39,6 @@ public class IgniteDataFrame {
             System.out.println("Row="+v);
         });
 
-        igniteSession.stop();
+        //igniteSession.stop();
     }
 }
