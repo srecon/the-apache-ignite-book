@@ -1,0 +1,7 @@
+insert into dept (deptno, dname, loc) values (10, 'ACCOUNTING', 'NEW YORK');
+insert into dept (deptno, dname, loc) values(20, 'RESEARCH', 'DALLAS');
+insert into dept (deptno, dname, loc) values(30, 'SALES', 'CHICAGO');
+
+insert into emp (empno, ename, job, mgr, hiredate, sal, comm, deptno) values(7839, 'KING', 'PRESIDENT', null, to_date('17-11-1981','dd-mm-yyyy'), 5000, null, 10);
+insert into emp (empno, ename, job, mgr, hiredate, sal, comm, deptno) values( 7698, 'BLAKE', 'MANAGER', 7839, to_date('1-5-1981','dd-mm-yyyy'), 2850, null, 30);
+insert into emp (empno, ename, job, mgr, hiredate, sal, comm, deptno) values(7782, 'CLARK', 'MANAGER', 7839, to_date('9-6-1981','dd-mm-yyyy'), 2450, null, 10);
