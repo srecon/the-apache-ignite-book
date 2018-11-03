@@ -20,6 +20,7 @@
         <module>expiry</module>
         <module>spring-data</module>
         <!--<module>ignite-hibernate-ogm</module>-->
+        <module>jdbc-thin</module>
   </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
