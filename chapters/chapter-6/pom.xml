@@ -21,9 +21,11 @@
         <module>spring-data</module>
         <!--<module>ignite-hibernate-ogm</module>-->
         <module>jdbc-thin</module>
-  </modules>
+        <module>jdbc-client-driver</module>
+    </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
     <dependencies/>
 </project>
