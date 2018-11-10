@@ -26,7 +26,7 @@ public class JDBCClientDriverExample {
             ");";
 
     public static void main(String[] args) throws ClassNotFoundException{
-        System.out.println("JDBC thin client example!!");
+        System.out.println("JDBС client driver example!!");
         // Register JDBC driver.
         Class.forName("org.apache.ignite.IgniteJdbcDriver");
         // Default cache name does not work. Must be explicitly set the physical cache name
