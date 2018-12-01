@@ -15,7 +15,6 @@
     <url>http://maven.apache.org</url>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <!--<ignite.version>2.0.0</ignite.version>-->
         <slf4jVersion>1.6.1</slf4jVersion>
         <logback.version>1.0.1</logback.version>
     </properties>
@@ -37,11 +36,6 @@
             <groupId>org.apache.ignite</groupId>
             <artifactId>ignite-indexing</artifactId>
         </dependency>
-        <!--<dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>1.4.195</version>
-        </dependency>-->
     </dependencies>
     <build>
         <plugins>
