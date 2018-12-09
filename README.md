@@ -4,7 +4,7 @@ All code samples, scripts and more in-depth examples for **The Apache Ignite Boo
 
 [![alt text](/mini-cover.png "book cover")](http://leanpub.com/ignitebook)
 
-## Contents:
+## This Github repository contains the following examples:
 - Ignite example in Java
 - Ignite example in Spring
 - Ignite thinclient example
