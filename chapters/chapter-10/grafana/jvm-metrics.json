@@ -1,0 +1,58 @@
+{
+  "servers" : [ {
+    "port" : "55555",
+    "host" : "localhost",
+    "alias": "Ignite",
+    "queries" : [ {
+      "outputWriters" : [
+        {
+          "@class" : "com.googlecode.jmxtrans.model.output.InfluxDbWriterFactory",
+          "url" : "http://localhost:8086/",
+          "database" : "ignitesdb",
+          "username" : "admin",
+          "password" : "qwer4321"
+        } ],
+      "obj" : "java.lang:type=Memory",
+      "attr" : [ "HeapMemoryUsage", "NonHeapMemoryUsage" ],
+      "resultAlias" : "jvmMemory"
+    },
+      {
+        "outputWriters" : [ {
+          "@class" : "com.googlecode.jmxtrans.model.output.InfluxDbWriterFactory",
+          "url" : "http://localhost:8086/",
+          "database" : "ignitesdb",
+          "username" : "admin",
+          "password" : "qwer4321"
+        } ],
+        "obj" : "java.lang:type=Threading",
+        "resultAlias": "threads",
+        "attr" : [ "DaemonThreadCount", "PeakThreadCount", "ThreadCount", "TotalStartedThreadCount" ]
+      },
+      {
+        "outputWriters" : [ {
+          "@class" : "com.googlecode.jmxtrans.model.output.InfluxDbWriterFactory",
+          "url" : "http://localhost:8086/",
+          "database" : "ignitesdb",
+          "username" : "admin",
+          "password" : "qwer4321"
+        } ],
+        "obj" : "org.apache:clsLdr=18b4aac2,group=Kernal,name=IgniteKernal",
+        "attr" : [ "UpTime", "StartTimestamp" ],
+        "resultAlias" : "IgniteKernal"
+      },
+      {
+        "outputWriters" : [ {
+          "@class" : "com.googlecode.jmxtrans.model.output.InfluxDbWriterFactory",
+          "url" : "http://localhost:8086/",
+          "database" : "ignitesdb",
+          "username" : "admin",
+          "password" : "qwer4321"
+        } ],
+        "obj" : "org.apache:clsLdr=18b4aac2,group=Kernal,name=ClusterMetricsMXBeanImpl",
+        "attr" : [ "TopologyVersion", "TotalServerNodes" ],
+        "resultAlias" : "ClusterMetrix"
+      }
+    ],
+    "numQueryThreads" : 2
+  } ]
+}
