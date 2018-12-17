@@ -31,6 +31,7 @@
         <module>chapter-8/camel</module>
         <module>chapter-8/flume</module>
         <module>chapter-8/storm</module>
+        <!--<module>chapter-10/ignite-tool</module>-->
   </modules>
     <dependencyManagement>
         <dependencies>
