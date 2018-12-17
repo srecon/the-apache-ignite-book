@@ -11,9 +11,11 @@
             <property name="com.arjuna.ats.jta.jtaTMImplementation" value="com.arjuna.ats.internal.jta.transaction.arjunacore.TransactionManagerImple"/>
             <property name="com.arjuna.ats.jta.jtaUTImplementation" value="com.arjuna.ats.internal.jta.transaction.arjunacore.UserTransactionImple"/>
 
-            <property name="hibernate.ogm.datastore.provider" value="IGNITE_EXPERIMENTAL"/>
-            <property name="hibernate.ogm.ignite.configuration_class_name" value="com.blu.imdg.exampleOgm.ConfigurationMaker"/>
+            <property name="hibernate.ogm.datastore.provider" value="org.hibernate.ogm.datastore.ignite.impl.IgniteDatastoreProvider"/>
+            <!--<property name="hibernate.ogm.ignite.configuration_class_name" value="com.blu.imdg.exampleOgm.ConfigurationMaker"/>-->
+            <property name="hibernate.ogm.ignite.configuration_resource_name" value="ignite-config.xml"/>
+            <property name="hibernate.ogm.ignite.instance_name" value="ignite-ogm"/>
+
         </properties>
     </persistence-unit>
 </persistence>
-

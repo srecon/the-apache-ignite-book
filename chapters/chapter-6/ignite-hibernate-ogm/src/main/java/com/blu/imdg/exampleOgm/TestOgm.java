@@ -27,8 +27,9 @@ public class TestOgm {
         collie.setName("breed-collie");
         em.persist(collie);
 
+
         Dog dina = new Dog();
-        dina.setName("dina");
+        dina.setName("dina1");
         dina.setBreed(collie);
         //persis dina
         em.persist(dina);

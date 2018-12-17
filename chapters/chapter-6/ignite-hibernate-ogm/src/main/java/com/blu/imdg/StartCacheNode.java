@@ -11,7 +11,7 @@ import java.io.IOException;
 //mvn exec:java -Dexec.mainClass=com.blu.imdg.StartCacheNode
 public class StartCacheNode {
     public static void main(String[] args) {
-        try (Ignite ignite = Ignition.start("org/book/examples/cache-node-config.xml")) {
+        try (Ignite ignite = Ignition.start("default-config-server.xml")) {
             System.out.println("Presse ENTER to exit!");
             System.in.read();
         } catch (IOException e) {

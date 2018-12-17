@@ -9,9 +9,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Index;
+import java.io.Serializable;
 
 @Entity(name = "BREED")
-public class Breed {
+public class Breed implements Serializable{
 
     @Id
     @GeneratedValue(generator = "uuid")

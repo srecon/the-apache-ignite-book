@@ -1,12 +1,13 @@
 package com.blu.imdg.exampleOgm;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Created by mikl on 19.11.16.
  */
 @Entity
-public class Dog {
+public class Dog implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "dog")
     @TableGenerator(

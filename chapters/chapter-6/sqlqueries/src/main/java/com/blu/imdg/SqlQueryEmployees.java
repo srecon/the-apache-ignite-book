@@ -60,8 +60,8 @@ public class SqlQueryEmployees {
         employeeCacheCfg.setIndexedTypes(EmployeeKey.class, Employee.class);
 
         try (
-            IgniteCache<Integer, Department> deptCache = ignite.createCache(deptCacheCfg);
-            IgniteCache<EmployeeKey, Employee> employeeCache = ignite.createCache(employeeCacheCfg)
+            IgniteCache<Integer, Department> deptCache = ignite.getOrCreateCache(deptCacheCfg);
+            IgniteCache<EmployeeKey, Employee> employeeCache = ignite.getOrCreateCache(employeeCacheCfg)
         ) {
             // Populate cache.
             initialize();
@@ -77,7 +77,7 @@ public class SqlQueryEmployees {
 
             // Example for SQL-based fields queries that return only required
             // fields instead of whole key-value pairs.
-            sqlFieldsQuery();
+            //sqlFieldsQuery();
 
             // Example for SQL-based fields queries that uses joins.
             sqlFieldsQueryWithJoin();
@@ -163,6 +163,7 @@ public class SqlQueryEmployees {
         // Create query which selects salaries based on range.
         SqlQuery<EmployeeKey, Employee> qry = new SqlQuery<>(Employee.class, "sal > ? and sal <= ?");
 
+
         // Execute queries for salary ranges.
         logDecorated("==Employee with salaries between 0 and 1000==", cache.query(qry.setArgs(0, 1000)).getAll());
 
@@ -208,7 +209,8 @@ public class SqlQueryEmployees {
         IgniteCache<?, ?> cache = Ignition.ignite().cache(EMPLOYEE_CACHE_NAME);
 
         // Create query to get names of all employees.
-        SqlFieldsQuery qry = new SqlFieldsQuery("select ename from Employee");
+        SqlFieldsQuery qry = new SqlFieldsQuery("select ename from EMP");
+        qry.setSchema("PUBLIC");
 
         // Execute query to get collection of rows. In this particular
         // case each row will have one element with full name of an employees.

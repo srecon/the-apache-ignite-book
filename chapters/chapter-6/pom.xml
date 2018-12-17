@@ -7,25 +7,25 @@
         <version>1.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-    <groupId>com.blu.imdg</groupId>
+
     <artifactId>chapter-6</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>chapter-6</name>
     <packaging>pom</packaging>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
     <modules>
         <module>persistence-store</module>
         <module>sqlqueries</module>
         <module>textquery</module>
         <module>transactions</module>
-        <module>expiry</module>
         <module>spring-data</module>
         <!--<module>ignite-hibernate-ogm</module>-->
         <module>jdbc-thin</module>
         <module>jdbc-client-driver</module>
     </modules>
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
     <dependencies/>
 </project>
