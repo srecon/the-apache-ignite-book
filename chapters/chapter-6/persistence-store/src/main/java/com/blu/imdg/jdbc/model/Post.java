@@ -4,9 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
-/**
- * Created by developer on 9/26/16.
- */
+
 public class Post implements Serializable {
     private static final long serialVersionUID = 0L;
 

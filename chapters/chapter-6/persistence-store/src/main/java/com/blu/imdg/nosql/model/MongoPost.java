@@ -5,9 +5,7 @@ import java.util.Objects;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-/**
- * Created by developer on 9/26/16.
- */
+
 @Document
 public class MongoPost {
     @Id
