@@ -102,7 +102,7 @@ public class CacheStoreSample {
         }
     }
 
-    private static void nosqlStore() {
+    private static void nosqlStore() throws Exception{
         //let's make a dynamic cache on the fly which is distributed across all running nodes.
         //the same configuration you would probably set in configuration xml format
         IgniteConfiguration cfg = new IgniteConfiguration();
@@ -146,7 +146,8 @@ public class CacheStoreSample {
             }
 
             log("PersistenceStore example finished.");
-            ignite.destroyCache("mongoDynamicCache");
+            //ignite.destroyCache("mongoDynamicCache");
+            Thread.sleep(Integer.MAX_VALUE);
         }
     }
 
