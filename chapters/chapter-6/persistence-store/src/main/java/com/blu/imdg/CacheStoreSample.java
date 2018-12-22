@@ -125,28 +125,16 @@ public class CacheStoreSample {
             int count = 10;
             try (IgniteCache<String, MongoPost> igniteCache = ignite.getOrCreateCache(configuration)) {
                 try (Transaction tx = ignite.transactions().txStart(PESSIMISTIC, REPEATABLE_READ)) {
-                    //let us clear
 
                     for (int i = 1; i <= count; i++)
                         igniteCache.put("_" + i, new MongoPost("_" + i, "title-" + i, "description-" + i, LocalDate.now().plus(i, ChronoUnit.DAYS), "author-" + i));
-
-                    for (int i = 1; i < count; i += 2) {
-                        igniteCache.clear("_" + i);
-                        log("Clear every odd key: " + i);
-                    }
-
-                    for (long i = 1; i <= count; i++)
-                        log("Local peek at [key=_" + i + ", val=" + igniteCache.localPeek("_" + i) + ']');
-
-                    for (long i = 1; i <= count; i++)
-                        log("Got [key=_" + i + ", val=" + igniteCache.get("_" + i) + ']');
 
                     tx.commit();
                 }
             }
 
             log("PersistenceStore example finished.");
-            //ignite.destroyCache("mongoDynamicCache");
+
             Thread.sleep(Integer.MAX_VALUE);
         }
     }
