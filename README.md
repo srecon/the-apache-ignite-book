@@ -1,8 +1,8 @@
 # The Apache Ignite Book
 
-This is the code repository (code samples, scripts and more in-depth examples) for [The Apache Ignite Book](https://leanpub.com/ignitebook).
+<a href="http://leanpub.com/ignitebook"><img src="https://github.com/srecon/the-apache-ignite-book/blob/master/mini-2cover.png" alt="he Apache Ignite Book" height="256px" align="right"></a>
 
-[![alt text](/mini-2cover.png "book cover")](http://leanpub.com/ignitebook)
+This is the code repository (code samples, scripts and more in-depth examples) for [The Apache Ignite Book](https://leanpub.com/ignitebook).
 
 ## build and install
 
