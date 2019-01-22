@@ -1,6 +1,6 @@
 # The Apache Ignite Book
 
-All code samples, scripts and more in-depth examples for **The Apache Ignite Book**.
+This is the code repository (code samples, scripts and more in-depth examples) for [The Apache Ignite Book](https://leanpub.com/ignitebook).
 
 [![alt text](/mini-cover.png "book cover")](http://leanpub.com/ignitebook)
 
