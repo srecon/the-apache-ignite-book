@@ -2,7 +2,7 @@
 
 This is the code repository (code samples, scripts and more in-depth examples) for [The Apache Ignite Book](https://leanpub.com/ignitebook).
 
-[![alt text](/mini-2-cover.png "book cover")](http://leanpub.com/ignitebook)
+[![alt text](/mini-2cover.png "book cover")](http://leanpub.com/ignitebook)
 
 ## build and install
 
