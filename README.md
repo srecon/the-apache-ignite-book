@@ -66,8 +66,6 @@ We recommend a workstation with the following configurations for working with th
 ## Conventions
 
 The code will look like the following:
-
-{title="Listing 1.1", lang=JAVA}
 ```
 public class MySuperExtractor implements StreamSingleTupleExtractor<SinkRecord, String, String> {
 
@@ -78,7 +76,6 @@ public class MySuperExtractor implements StreamSingleTupleExtractor<SinkRecord, 
 }
 ```
 Any command-line input or output is written as follows:
-
 ```
 [2018-12-30 15:39:04,479] INFO Kafka version : 2.0.0 (org.apache.kafka.common.utils.AppInfoParser)
 [2018-12-30 15:39:04,479] INFO Kafka commitId : 3402a8361b734732 (org.apache.kafka.common.utils.AppInfoParser)
