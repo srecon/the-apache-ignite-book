@@ -63,7 +63,27 @@ We recommend a workstation with the following configurations for working with th
 | 5 | IDE          | Eclipse, IntelliJ Idea, NetBeans or JDeveloper               |
 | 6 | Apache Maven | Version 3.3.1 or above                                       |
 
+## Conventions
 
+The code will look like the following:
+
+{title="Listing 1.1", lang=JAVA}
+```
+public class MySuperExtractor implements StreamSingleTupleExtractor<SinkRecord, String, String> {
+
+  @Override public Map.Entry<String, String> extract(SinkRecord msg) {
+      String[] parts = ((String)msg.value()).split("_");
+      return new AbstractMap.SimpleEntry<String, String>(parts[1], parts[2]+":"+parts[3]);
+  }
+}
+```
+Any command-line input or output is written as follows:
+
+```
+[2018-12-30 15:39:04,479] INFO Kafka version : 2.0.0 (org.apache.kafka.common.utils.AppInfoParser)
+[2018-12-30 15:39:04,479] INFO Kafka commitId : 3402a8361b734732 (org.apache.kafka.common.utils.AppInfoParser)
+[2018-12-30 15:39:04,480] INFO [KafkaServer id=0] started (kafka.server.KafkaServer)
+```
 ## This Github repository contains the following examples:
 - Ignite example in Java
 - Ignite example in Spring
