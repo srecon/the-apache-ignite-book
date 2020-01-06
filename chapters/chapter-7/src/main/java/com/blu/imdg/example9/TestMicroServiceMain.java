@@ -17,9 +17,10 @@ import java.math.BigDecimal;
  *
  * теперь нельзя убедиться что future отработало
  */
+//mvn exec:java -Dexec.mainClass=com.blu.imdg.example9.TestMicroServiceMain
 public class TestMicroServiceMain {
 
-    public static void main(String[] args) throws AccountNotFoundException, LogServiceException {
+    public static void main(String[] args) throws AccountNotFoundException, LogServiceException, InterruptedException {
         try (Ignite ignite = Ignition.start(CommonConstants.CLIENT_CONFIG)) {
 
             IgniteCache<AccountCacheKey, AccountCacheData> cache = BankDataGenerator.createBankCache(ignite);
@@ -30,6 +31,7 @@ public class TestMicroServiceMain {
 //            services.future().get();
 
             services.deployNodeSingleton(BankService.NAME, new BankServiceImpl());
+            Thread.sleep(5000);
 //            services.future().get();
 
             BankService bankService = services.serviceProxy(BankService.NAME, BankService.class, /*not-sticky*/false);

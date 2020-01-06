@@ -33,7 +33,7 @@ public class TestAsyncMicroServiceMain {
             IgniteServices services = ignite.services().withAsync();
 
             services.deployNodeSingleton(AsyncBankService.NAME, new AsyncBankServiceImpl("tcp://localhost:5560"));
-            services.future().get();
+//            services.future().get();
 
             AsyncBankService bankService = services.serviceProxy(AsyncBankService.NAME, AsyncBankService.class, /*not-sticky*/false);
 

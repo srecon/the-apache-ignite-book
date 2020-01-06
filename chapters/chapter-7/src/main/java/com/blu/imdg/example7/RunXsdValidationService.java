@@ -11,6 +11,7 @@ import java.io.IOException;
 /**
  *
  */
+//mvn exec:java -Dexec.mainClass=com.blu.imdg.example7.RunXsdValidationService
 public class RunXsdValidationService {
 //    private static final String VALIDATING_SERVICE = "validatingService";
     private static final String VALIDATING_SERVICE = "validatingService-cluster-singleton";

@@ -9,6 +9,7 @@ import java.io.IOException;
 /**
  *
  */
+//mvn exec:java -Dexec.mainClass=com.blu.imdg.example7.DeployClusterSingleton
 public class DeployClusterSingleton {
     private static final String VALIDATING_SERVICE = "validatingService-cluster-singleton";
 

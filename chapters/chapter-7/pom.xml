@@ -27,9 +27,15 @@
       </dependency>
       <dependency>
           <groupId>org.apache.ignite</groupId>
+          <artifactId>ignite-log4j</artifactId>
+          <version>${ignite.version}</version>
+      </dependency>
+      <dependency>
+          <groupId>org.apache.ignite</groupId>
           <artifactId>ignite-schedule</artifactId>
           <version>1.0.0</version>
       </dependency>
+
 
       <dependency>
           <groupId>commons-io</groupId>
@@ -67,7 +73,7 @@
       <dependency>
           <groupId>com.h2database</groupId>
           <artifactId>h2</artifactId>
-          <version>1.4.195</version>
+          <version>1.4.197</version>
       </dependency>
       <dependency>
           <groupId>org.glassfish.jersey.inject</groupId>
