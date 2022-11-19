@@ -1,47 +1,57 @@
 <project>
 
-  <parent>
-    <groupId>com.blu.imdg</groupId>
-    <artifactId>chapters</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <relativePath>../../pom.xml</relativePath>
-  </parent>
+    <parent>
+        <groupId>com.blu.imdg</groupId>
+        <artifactId>chapters</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
 
-  <groupId>ignite.book</groupId>
-  <artifactId>ignite.spark</artifactId>
-  <modelVersion>4.0.0</modelVersion>
-  <name>Ignite Spark</name>
-  <packaging>pom</packaging>
-  <version>1.0</version>
+    <groupId>ignite.book</groupId>
+    <artifactId>ignite.spark</artifactId>
+    <modelVersion>4.0.0</modelVersion>
+    <name>Ignite Spark</name>
+    <packaging>pom</packaging>
+    <version>1.0</version>
 
-  <properties>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
-    <spark-sql_2.11.version>2.3.1</spark-sql_2.11.version>
-    <!--<ignite-spark.version>2.6.0</ignite-spark.version>-->
-  </properties>
-
-
-  <modules>
-    <module>load-data-module</module>
-    <module>query-module</module>
-    <!--<module>ignite-spark-scala</module>-->
-    <module>linecount</module>
-  </modules>
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <spark-sql_2.11.version>2.3.1</spark-sql_2.11.version>
+        <!--<ignite-spark.version>2.6.0</ignite-spark.version>-->
+    </properties>
 
 
-  <dependencies>
-    <dependency>
-      <groupId>org.apache.spark</groupId>
-      <artifactId>spark-sql_2.11</artifactId>
-      <version>${spark-sql_2.11.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.ignite</groupId>
-      <artifactId>ignite-spark</artifactId>
-      <version>${ignite.version}</version>
-    </dependency>
-  </dependencies>
+    <modules>
+        <module>load-data-module</module>
+        <module>query-module</module>
+        <!--<module>ignite-spark-scala</module>-->
+        <module>linecount</module>
+    </modules>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-sql_2.11</artifactId>
+            <version>${spark-sql_2.11.version}</version>
+        </dependency>
+        <!--<dependency>
+          <groupId>org.apache.ignite</groupId>
+          <artifactId>ignite-spark</artifactId>
+          <version>${ignite.version}</version>
+        </dependency>-->
+        <dependency>
+            <groupId>org.apache.ignite</groupId>
+            <artifactId>ignite-log4j</artifactId>
+            <version>2.13.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.ignite</groupId>
+            <artifactId>ignite-spark</artifactId>
+            <version>2.13.0</version>
+        </dependency>
+    </dependencies>
 
 
 </project>

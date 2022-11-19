@@ -9,9 +9,9 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>chapter-6</artifactId>
+    <artifactId>chapter-5</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>chapter-6</name>
+    <name>chapter-5</name>
     <packaging>pom</packaging>
 
     <properties>
@@ -19,14 +19,11 @@
     </properties>
 
     <modules>
-        <module>persistence-store</module>
-        <module>sqlqueries</module>
-        <module>textquery</module>
-        <module>transactions</module>
-        <!--<module>spring-data</module>-->
-        <!--<module>ignite-hibernate-ogm</module>-->
-        <module>jdbc-thin</module>
-        <module>jdbc-client-driver</module>
+        <module>hibernate</module>
+        <module>mybatis</module>
+        <module>memoization</module>
+        <module>web-session-clustering</module>
+        <module>springboot-hibernate</module>
     </modules>
     <dependencies/>
 </project>

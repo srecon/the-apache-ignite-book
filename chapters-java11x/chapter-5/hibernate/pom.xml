@@ -36,15 +36,20 @@
       <version>4.3.18.RELEASE</version>
     </dependency>
     <!-- Hibernate libs-->
-    <dependency>
+    <!--<dependency>
       <groupId>org.apache.ignite</groupId>
       <artifactId>ignite-hibernate_5.1</artifactId>
       <version>${ignite.version}</version>
-    </dependency>
+    </dependency>-->
     <dependency>
       <groupId>org.apache.ignite</groupId>
-      <artifactId>ignite-log4j</artifactId>
+      <artifactId>ignite-hibernate-core</artifactId>
+      <version>2.13.0</version>
     </dependency>
+    <!--<dependency>
+      <groupId>org.apache.ignite</groupId>
+      <artifactId>ignite-log4j</artifactId>
+    </dependency>-->
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-entitymanager</artifactId>
@@ -55,6 +60,12 @@
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
       <version>42.2.4</version>
+    </dependency>
+    <dependency>
+      <groupId>com.sun.xml.ws</groupId>
+      <artifactId>jaxws-ri</artifactId>
+      <version>2.3.3</version>
+      <type>pom</type>
     </dependency>
 
   </dependencies>
