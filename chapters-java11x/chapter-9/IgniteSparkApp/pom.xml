@@ -25,7 +25,7 @@
   <modules>
     <module>load-data-module</module>
     <module>query-module</module>
-    <module>ignite-spark-scala</module>
+    <!--<module>ignite-spark-scala</module>-->
     <module>linecount</module>
   </modules>
 
