@@ -1,0 +1,832 @@
+From 9a617dacfe9ea21abf6b8d9873f8dfd19645d183 Mon Sep 17 00:00:00 2001
+From: Victor <vikad111@gmail.com>
+Date: Wed, 31 Oct 2018 00:11:19 +0300
+Subject: [PATCH 01/12] switch to OGM 5.4.0-SNAPSHOT and Ignite 2.6.0
+
+---
+ distribution/pom.xml                               |  2 +-
+ documentation/javadoc/pom.xml                      |  6 +-----
+ documentation/manual/pom.xml                       |  2 +-
+ documentation/pom.xml                              |  2 +-
+ ignite/pom.xml                                     |  2 +-
+ .../ogm/datastore/ignite/IgniteDialect.java        |  2 +-
+ .../impl/IgniteEmbeddedAssociationSnapshot.java    |  2 +-
+ .../ignite/query/impl/IgniteSqlQueryParser.java    | 13 +++++++++++--
+ ignite/src/test/resources/skipTests                |  4 ++++
+ integrationtest/pom.xml                            | 14 +++++++-------
+ modules/pom.xml                                    |  2 +-
+ pom.xml                                            |  4 ++--
+ 12 files changed, 32 insertions(+), 23 deletions(-)
+
+diff --git a/distribution/pom.xml b/distribution/pom.xml
+index f04a70c31..2f127974f 100644
+--- a/distribution/pom.xml
++++ b/distribution/pom.xml
+@@ -10,7 +10,7 @@
+     <parent>
+         <groupId>org.hibernate.ogm</groupId>
+         <artifactId>hibernate-ogm-ignite-parent</artifactId>
+-        <version>5.3.0-SNAPSHOT</version>
++        <version>5.4.0-SNAPSHOT</version>
+         <relativePath>../pom.xml</relativePath>
+     </parent>
+ 
+diff --git a/documentation/javadoc/pom.xml b/documentation/javadoc/pom.xml
+index e7e199820..d1875c7e4 100644
+--- a/documentation/javadoc/pom.xml
++++ b/documentation/javadoc/pom.xml
+@@ -11,7 +11,7 @@
+     <parent>
+         <groupId>org.hibernate.ogm</groupId>
+         <artifactId>hibernate-ogm-ignite-documentation</artifactId>
+-        <version>5.3.0-SNAPSHOT</version>
++        <version>5.4.0-SNAPSHOT</version>
+         <relativePath>../pom.xml</relativePath>
+     </parent>
+ 
+@@ -29,10 +29,6 @@
+     <dependencies>
+         <!-- We need the dependencies having annotations we're using
+             to workaround a javadoc tool bug -->
+-        <dependency>
+-            <groupId>org.hibernate</groupId>
+-            <artifactId>hibernate-entitymanager</artifactId>
+-        </dependency>
+         <dependency>
+             <groupId>org.hibernate</groupId>
+             <artifactId>hibernate-search-orm</artifactId>
+diff --git a/documentation/manual/pom.xml b/documentation/manual/pom.xml
+index e539f467f..c3452517c 100644
+--- a/documentation/manual/pom.xml
++++ b/documentation/manual/pom.xml
+@@ -12,7 +12,7 @@
+     <parent>
+         <groupId>org.hibernate.ogm</groupId>
+         <artifactId>hibernate-ogm-ignite-parent</artifactId>
+-        <version>5.3.0-SNAPSHOT</version>
++        <version>5.4.0-SNAPSHOT</version>
+         <relativePath>../../pom.xml</relativePath>
+     </parent>
+ 
+diff --git a/documentation/pom.xml b/documentation/pom.xml
+index 8a97e24c8..819dbb374 100644
+--- a/documentation/pom.xml
++++ b/documentation/pom.xml
+@@ -12,7 +12,7 @@
+     <parent>
+         <groupId>org.hibernate.ogm</groupId>
+         <artifactId>hibernate-ogm-ignite-parent</artifactId>
+-        <version>5.3.0-SNAPSHOT</version>
++        <version>5.4.0-SNAPSHOT</version>
+         <relativePath>../pom.xml</relativePath>
+     </parent>
+ 
+diff --git a/ignite/pom.xml b/ignite/pom.xml
+index 9f7a8782a..79f1c7b73 100644
+--- a/ignite/pom.xml
++++ b/ignite/pom.xml
+@@ -12,7 +12,7 @@
+     <parent>
+         <groupId>org.hibernate.ogm</groupId>
+         <artifactId>hibernate-ogm-ignite-parent</artifactId>
+-        <version>5.3.0-SNAPSHOT</version>
++        <version>5.4.0-SNAPSHOT</version>
+         <relativePath>../pom.xml</relativePath>
+     </parent>
+ 
+diff --git a/ignite/src/main/java/org/hibernate/ogm/datastore/ignite/IgniteDialect.java b/ignite/src/main/java/org/hibernate/ogm/datastore/ignite/IgniteDialect.java
+index 924929284..c40cf8e78 100644
+--- a/ignite/src/main/java/org/hibernate/ogm/datastore/ignite/IgniteDialect.java
++++ b/ignite/src/main/java/org/hibernate/ogm/datastore/ignite/IgniteDialect.java
+@@ -533,7 +533,7 @@ public void removeAssociation(AssociationKey key, AssociationContext association
+ 			}
+ 		}
+ 		else if ( key.getMetadata().getAssociationKind() == AssociationKind.EMBEDDED_COLLECTION ) {
+-			Object id = ( (IgniteTupleSnapshot) associationContext.getEntityTuplePointer().getTuple().getSnapshot() ).getCacheKey();
++			Object id = provider.createParentKeyObject( key );
+ 			BinaryObject binaryObject = associationCache.get( id );
+ 			Contracts.assertNotNull( binaryObject, "binaryObject" );
+ 			BinaryObjectBuilder binaryObjectBuilder = provider.createBinaryObjectBuilder( binaryObject );
+diff --git a/ignite/src/main/java/org/hibernate/ogm/datastore/ignite/impl/IgniteEmbeddedAssociationSnapshot.java b/ignite/src/main/java/org/hibernate/ogm/datastore/ignite/impl/IgniteEmbeddedAssociationSnapshot.java
+index e32d21cbc..f076e1cce 100644
+--- a/ignite/src/main/java/org/hibernate/ogm/datastore/ignite/impl/IgniteEmbeddedAssociationSnapshot.java
++++ b/ignite/src/main/java/org/hibernate/ogm/datastore/ignite/impl/IgniteEmbeddedAssociationSnapshot.java
+@@ -33,7 +33,7 @@
+ 	public IgniteEmbeddedAssociationSnapshot(AssociationKey associationKey, Tuple tuple) {
+ 		this.associationMetadata = associationKey.getMetadata();
+ 		this.tuple = tuple;
+-		BinaryObject obj = ( (IgniteTupleSnapshot) tuple.getSnapshot() ).getCacheValue();
++		BinaryObject obj = tuple != null ? ( (IgniteTupleSnapshot) tuple.getSnapshot() ).getCacheValue() : null;
+ 		Object objects[] = obj != null ? (Object[]) obj.field( StringHelper.realColumnName( associationMetadata.getCollectionRole() ) ) : null;
+ 		rows = new HashMap<>();
+ 		if ( objects != null ) {
+diff --git a/ignite/src/main/java/org/hibernate/ogm/datastore/ignite/query/impl/IgniteSqlQueryParser.java b/ignite/src/main/java/org/hibernate/ogm/datastore/ignite/query/impl/IgniteSqlQueryParser.java
+index 4ef30a467..5d2cbde5d 100644
+--- a/ignite/src/main/java/org/hibernate/ogm/datastore/ignite/query/impl/IgniteSqlQueryParser.java
++++ b/ignite/src/main/java/org/hibernate/ogm/datastore/ignite/query/impl/IgniteSqlQueryParser.java
+@@ -13,6 +13,8 @@
+ 
+ import org.hibernate.QueryException;
+ import org.hibernate.engine.query.spi.ParameterParser;
++import org.hibernate.ogm.datastore.ignite.logging.impl.Log;
++import org.hibernate.ogm.datastore.ignite.logging.impl.LoggerFactory;
+ import org.hibernate.persister.collection.SQLLoadableCollection;
+ import org.hibernate.persister.entity.SQLLoadable;
+ 
+@@ -23,6 +25,8 @@
+  */
+ public class IgniteSqlQueryParser {
+ 
++	private static final Log log = LoggerFactory.getLogger();
++
+ 	private static final String HIBERNATE_PLACEHOLDER_PREFIX = "h-";
+ 	private static final String DOMAIN_PLACEHOLDER = "h-domain";
+ 	private static final String CATALOG_PLACEHOLDER = "h-catalog";
+@@ -346,8 +350,8 @@ public void namedParameter(String name, int position) {
+ 		}
+ 
+ 		@Override
+-		public void jpaPositionalParameter(String name, int position) {
+-			namedParameter( name, position );
++		public void jpaPositionalParameter(int identifier, int position) {
++			throw new UnsupportedOperationException( "jpaPositionalParameter() is not implemented" );
+ 		}
+ 
+ 		@Override
+@@ -371,6 +375,11 @@ else if ( o instanceof Integer ) {
+ 				( (List) o ).add( loc );
+ 			}
+ 		}
++
++		@Override
++		public void complete() {
++			throw new UnsupportedOperationException( "complete() is not implemented" );
++		}
+ 	}
+ 
+ }
+diff --git a/ignite/src/test/resources/skipTests b/ignite/src/test/resources/skipTests
+index fd3edfd34..3796d76d1 100644
+--- a/ignite/src/test/resources/skipTests
++++ b/ignite/src/test/resources/skipTests
+@@ -39,4 +39,8 @@ org.hibernate.ogm.backendtck.associations.collection.unidirectional.CollectionUn
+ org.hibernate.ogm.backendtck.associations.manytoone.ManyToOneTest#testUnidirectionalManyToOne
+ org.hibernate.ogm.backendtck.jpa.JPAResourceLocalTest#testBootstrapAndCRUD
+ 
++// ogm 5.4
++org.hibernate.ogm.backendtck.queries.AggregateOperationQueryTest
++org.hibernate.ogm.backendtck.storedprocedures.NamedParametersStoredProcedureCallTest
++org.hibernate.ogm.backendtck.storedprocedures.PositionalParametersStoredProcedureCallTest
+ 
+diff --git a/integrationtest/pom.xml b/integrationtest/pom.xml
+index e2175db03..54d4bea6c 100644
+--- a/integrationtest/pom.xml
++++ b/integrationtest/pom.xml
+@@ -3,7 +3,7 @@
+     <parent>
+         <groupId>org.hibernate.ogm</groupId>
+         <artifactId>hibernate-ogm-ignite-parent</artifactId>
+-        <version>5.3.0-SNAPSHOT</version>
++        <version>5.4.0-SNAPSHOT</version>
+     </parent>
+ 
+     <artifactId>hibernate-ogm-ignite-integrationtest</artifactId>
+@@ -29,7 +29,7 @@
+             <dependency>
+                 <groupId>org.jboss.arquillian</groupId>
+                 <artifactId>arquillian-bom</artifactId>
+-                <version>${arquillianVersion}</version>
++                <version>${version.org.jboss.arquillian}</version>
+                 <type>pom</type>
+                 <scope>import</scope>
+             </dependency>
+@@ -172,7 +172,7 @@
+         <dependency>
+             <groupId>org.wildfly.arquillian</groupId>
+             <artifactId>wildfly-arquillian-container-managed</artifactId>
+-            <version>${wildflyArquillianVersion}</version>
++            <version>${version.org.wildfly.arquillian}</version>
+             <scope>test</scope>
+             <exclusions>
+                 <!-- Pulled in transitively; Neither available on 
+@@ -207,18 +207,18 @@
+         <dependency>
+             <groupId>org.jboss.spec.javax.ejb</groupId>
+             <artifactId>jboss-ejb-api_3.2_spec</artifactId>
+-            <version>1.0.0.Final</version>
++            <version>${version.org.jboss.spec.javax.ejb.jboss-ejb-api_3.2_spec}</version>
+             <scope>provided</scope>
+         </dependency>
+         <dependency>
+-            <groupId>org.hibernate.javax.persistence</groupId>
+-            <artifactId>hibernate-jpa-2.1-api</artifactId>
++            <groupId>javax.persistence</groupId>
++            <artifactId>javax.persistence-api</artifactId>
+             <scope>provided</scope>
+         </dependency>
+         <dependency>
+             <groupId>javax.enterprise</groupId>
+             <artifactId>cdi-api</artifactId>
+-            <version>1.2</version>
++            <version>${version.javax.enterprise}</version>
+             <scope>provided</scope>
+         </dependency>
+         <dependency>
+diff --git a/modules/pom.xml b/modules/pom.xml
+index 5e62ce9f8..b6ebaf358 100644
+--- a/modules/pom.xml
++++ b/modules/pom.xml
+@@ -9,7 +9,7 @@
+     <parent>
+         <groupId>org.hibernate.ogm</groupId>
+         <artifactId>hibernate-ogm-ignite-parent</artifactId>
+-        <version>5.3.0-SNAPSHOT</version>
++        <version>5.4.0-SNAPSHOT</version>
+         <relativePath>../pom.xml</relativePath>
+     </parent>
+ 
+diff --git a/pom.xml b/pom.xml
+index 870a010f5..d56e233cf 100644
+--- a/pom.xml
++++ b/pom.xml
+@@ -11,7 +11,7 @@
+     <parent>
+         <groupId>org.hibernate.ogm</groupId>
+         <artifactId>hibernate-ogm-parent</artifactId>
+-        <version>5.3.0-SNAPSHOT</version>
++        <version>5.4.0-SNAPSHOT</version>
+     </parent>
+ 
+     <artifactId>hibernate-ogm-ignite-parent</artifactId>
+@@ -22,7 +22,7 @@
+ 
+     <properties>
+         <!-- Ignite -->
+-        <igniteVersion>2.4.0</igniteVersion>
++        <igniteVersion>2.6.0</igniteVersion>
+         <h2Version>1.4.195</h2Version>
+         <cacheApiVersion>1.0.0</cacheApiVersion>
+     </properties>
+
+From cea19c4aeb96cc76ad4ca65ccd45d47d81875b6e Mon Sep 17 00:00:00 2001
+From: Victor <vikad111@gmail.com>
+Date: Wed, 31 Oct 2018 07:49:41 +0300
+Subject: [PATCH 02/12] test
+
+---
+ pom.xml | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/pom.xml b/pom.xml
+index d56e233cf..f09865f33 100644
+--- a/pom.xml
++++ b/pom.xml
+@@ -31,6 +31,7 @@
+         <module>ignite</module>
+     </modules>
+ 
++	
+     <!-- Only for management of test-scoped dependencies; All other dependencies (which are exposed to users) are
+          managed in the BOM -->
+     <dependencyManagement>
+
+From 38b99dbe452f4aeb3753e4a3e4ac2c7554f0c658 Mon Sep 17 00:00:00 2001
+From: Victor <vikad111@gmail.com>
+Date: Wed, 31 Oct 2018 08:09:54 +0300
+Subject: [PATCH 03/12] travis
+
+---
+ .travis.yml | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/.travis.yml b/.travis.yml
+index b5e613cc1..0d342fcf6 100644
+--- a/.travis.yml
++++ b/.travis.yml
+@@ -19,8 +19,9 @@ install:
+   - ./mvnw -v
+   - travis_wait ./mvnw install -B -q -s settings-example.xml -am -pl bom,core -DskipITs -DskipDistro -DskipDocs -DskipTests
+   - cd ..
++  - pwd
+   # The Maven install provided by Travis is outdated, use Maven wrapper to get the latest version
+-  - mvn -N -q io.takari:maven:wrapper
++  - mvn -N io.takari:maven:wrapper
+   # first run to download all the Maven dependencies without logging
+   - travis_wait ./mvnw install -B -q -s settings-example.xml -Ptest -DskipTests=true -Dmaven.javadoc.skip=true -DskipDistro=true 
+   # we run checkstyle first to fail fast if there is a styling error
+
+From 9fc290bc6e4c89b1c3f1201c82a88746994d17f0 Mon Sep 17 00:00:00 2001
+From: Victor <vikad111@gmail.com>
+Date: Wed, 31 Oct 2018 08:20:53 +0300
+Subject: [PATCH 04/12] travis
+
+---
+ .travis.yml | 17 ++++++++---------
+ pom.xml     |  3 ++-
+ 2 files changed, 10 insertions(+), 10 deletions(-)
+
+diff --git a/.travis.yml b/.travis.yml
+index 0d342fcf6..440a96e0b 100644
+--- a/.travis.yml
++++ b/.travis.yml
+@@ -11,15 +11,14 @@ cache:
+ env:
+   global:
+ install:
+-  # install latest Hibernate OGM snapshot
+-  - git clone https://github.com/hibernate/hibernate-ogm.git
+-  - cd hibernate-ogm
+-  # The Maven install provided by Travis is outdated, use Maven wrapper to get the latest version
+-  - mvn -N -q io.takari:maven:wrapper
+-  - ./mvnw -v
+-  - travis_wait ./mvnw install -B -q -s settings-example.xml -am -pl bom,core -DskipITs -DskipDistro -DskipDocs -DskipTests
+-  - cd ..
+-  - pwd
++#  # install latest Hibernate OGM snapshot
++#  - git clone https://github.com/hibernate/hibernate-ogm.git
++#  - cd hibernate-ogm
++#  # The Maven install provided by Travis is outdated, use Maven wrapper to get the latest version
++#  - mvn -N -q io.takari:maven:wrapper
++#  - ./mvnw -v
++#  - travis_wait ./mvnw install -B -q -s settings-example.xml -am -pl bom,core -DskipITs -DskipDistro -DskipDocs -DskipTests
++#  - cd ..
+   # The Maven install provided by Travis is outdated, use Maven wrapper to get the latest version
+   - mvn -N io.takari:maven:wrapper
+   # first run to download all the Maven dependencies without logging
+diff --git a/pom.xml b/pom.xml
+index f09865f33..bc9444efa 100644
+--- a/pom.xml
++++ b/pom.xml
+@@ -11,10 +11,11 @@
+     <parent>
+         <groupId>org.hibernate.ogm</groupId>
+         <artifactId>hibernate-ogm-parent</artifactId>
+-        <version>5.4.0-SNAPSHOT</version>
++        <version>5.4.0.Final</version>
+     </parent>
+ 
+     <artifactId>hibernate-ogm-ignite-parent</artifactId>
++	<version>5.4.0-SNAPSHOT</version>
+     <packaging>pom</packaging>
+ 
+     <name>Hibernate OGM Contrib Aggregator</name>
+
+From 8065feebdd4119d10f01762a54c24ba327db5823 Mon Sep 17 00:00:00 2001
+From: Victor <vikad111@gmail.com>
+Date: Wed, 31 Oct 2018 08:35:50 +0300
+Subject: [PATCH 05/12] travis
+
+---
+ .travis.yml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/.travis.yml b/.travis.yml
+index 440a96e0b..cd366d64e 100644
+--- a/.travis.yml
++++ b/.travis.yml
+@@ -20,9 +20,9 @@ install:
+ #  - travis_wait ./mvnw install -B -q -s settings-example.xml -am -pl bom,core -DskipITs -DskipDistro -DskipDocs -DskipTests
+ #  - cd ..
+   # The Maven install provided by Travis is outdated, use Maven wrapper to get the latest version
+-  - mvn -N io.takari:maven:wrapper
++  - mvn -N -q io.takari:maven:wrapper
+   # first run to download all the Maven dependencies without logging
+-  - travis_wait ./mvnw install -B -q -s settings-example.xml -Ptest -DskipTests=true -Dmaven.javadoc.skip=true -DskipDistro=true 
++  - travis_wait ./mvnw install -B -q -s settings-example.xml -Ptest -DskipTests -DskipDocs -DskipITs -DskipDistro 
+   # we run checkstyle first to fail fast if there is a styling error
+   - ./mvnw -s settings-example.xml -DskipDistro=true checkstyle:check
+ matrix:
+
+From 4af8197a07b42ba4f0b857dd5316039a1af90c82 Mon Sep 17 00:00:00 2001
+From: Victor <vikad111@gmail.com>
+Date: Wed, 31 Oct 2018 09:26:32 +0300
+Subject: [PATCH 06/12] fixed mvn install
+
+---
+ documentation/manual/pom.xml                  |  2 +-
+ .../datastore/ignite/util/StringHelper.java   |  2 +
+ integrationtest/pom.xml                       | 49 +------------------
+ integrationtest/server-provisioning.xml       |  2 +-
+ 4 files changed, 6 insertions(+), 49 deletions(-)
+
+diff --git a/documentation/manual/pom.xml b/documentation/manual/pom.xml
+index c3452517c..31b11ec08 100644
+--- a/documentation/manual/pom.xml
++++ b/documentation/manual/pom.xml
+@@ -55,7 +55,7 @@
+                                 <artifactItem>
+                                     <groupId>org.hibernate.infra</groupId>
+                                     <artifactId>hibernate-asciidoctor-theme</artifactId>
+-                                    <version>${hibernate-asciidoctor-theme.version}</version>
++                                    <version>${version.org.hibernate.infra.hibernate-asciidoctor-theme}</version>
+                                     <type>zip</type>
+                                     <overWrite>true</overWrite>
+                                     <outputDirectory>${project.build.directory}/</outputDirectory>
+diff --git a/ignite/src/main/java/org/hibernate/ogm/datastore/ignite/util/StringHelper.java b/ignite/src/main/java/org/hibernate/ogm/datastore/ignite/util/StringHelper.java
+index 672dcf16a..7bd393853 100644
+--- a/ignite/src/main/java/org/hibernate/ogm/datastore/ignite/util/StringHelper.java
++++ b/ignite/src/main/java/org/hibernate/ogm/datastore/ignite/util/StringHelper.java
+@@ -61,6 +61,8 @@ public static void escapeString(StringBuilder builder, String input, char escape
+ 	/**
+ 	 * Normalizes an identifier to make it SQL-safe,
+ 	 * e. g. "&lt;gen_0&gt;" -&gt; "_gen_0_"
++	 * @param identifier - identifier
++	 * @return normalized identifier
+ 	 */
+ 	public static String sqlNormalize(String identifier) {
+ 		StringBuilder sb = new StringBuilder( identifier );
+diff --git a/integrationtest/pom.xml b/integrationtest/pom.xml
+index 54d4bea6c..7002e639d 100644
+--- a/integrationtest/pom.xml
++++ b/integrationtest/pom.xml
+@@ -16,9 +16,8 @@
+ 
+         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+ 
+-        <!-- Skipping enforcer plug-in as AS/Arquillian cause several dependency
+-            convergence issues -->
+-        <enforcer.skip>true</enforcer.skip>
++        <!-- Skipping enforcer dependency convergence check as AS/Arquillian cause several dependency convergence issues -->
++        <enforcer.dependencyconvergence.skip>true</enforcer.dependencyconvergence.skip>
+ 
+         <maven.javadoc.skip>true</maven.javadoc.skip>
+     </properties>
+@@ -113,50 +112,6 @@
+                     </execution>
+                 </executions>
+             </plugin>
+-            <plugin>
+-                <artifactId>maven-dependency-plugin</artifactId>
+-                <executions>
+-                    <execution>
+-                        <id>unpack</id>
+-                        <phase>pre-integration-test</phase>
+-                        <goals>
+-                            <goal>unpack</goal>
+-                        </goals>
+-                        <configuration>
+-                            <artifactItems>
+-                                <artifactItem>
+-                                    <groupId>org.hibernate</groupId>
+-                                    <artifactId>hibernate-orm-modules</artifactId>
+-                                    <version>${hibernateVersion}</version>
+-                                    <classifier>${hibernateWildflyClassifier}</classifier>
+-                                    <type>zip</type>
+-                                    <overWrite>true</overWrite>
+-                                    <outputDirectory>${jboss.home}/modules</outputDirectory>
+-                                </artifactItem>
+-                                <artifactItem>
+-                                    <groupId>${project.groupId}</groupId>
+-                                    <artifactId>hibernate-ogm-modules</artifactId>
+-                                    <classifier>${hibernateWildflyClassifier}</classifier>
+-                                    <version>${project.version}</version>
+-                                    <type>zip</type>
+-                                    <overWrite>true</overWrite>
+-                                    <outputDirectory>${jboss.home}/modules</outputDirectory>
+-                                </artifactItem>
+-                                <!-- modules for Apache Ignite dialect -->
+-                                <artifactItem>
+-                                    <groupId>${project.groupId}</groupId>
+-                                    <artifactId>hibernate-ogm-ignite-modules</artifactId>
+-                                    <classifier>${hibernateWildflyClassifier}</classifier>
+-                                    <version>${project.version}</version>
+-                                    <type>zip</type>
+-                                    <overWrite>true</overWrite>
+-                                    <outputDirectory>${jboss.home}/modules</outputDirectory>
+-                                </artifactItem>
+-                            </artifactItems>
+-                        </configuration>
+-                    </execution>
+-                </executions>
+-            </plugin>
+         </plugins>
+     </build>
+ 
+diff --git a/integrationtest/server-provisioning.xml b/integrationtest/server-provisioning.xml
+index d2f220d27..4334e0c16 100644
+--- a/integrationtest/server-provisioning.xml
++++ b/integrationtest/server-provisioning.xml
+@@ -9,7 +9,7 @@
+ 		<feature-pack
+ 			groupId="org.hibernate"
+ 			artifactId="hibernate-search-jbossmodules-orm"
+-			version="${hibernateSearchVersion}" />
++			version="${version.org.hibernate.search}" />
+ 
+ 	</feature-packs>
+ </server-provisioning>
+
+From e3ff29418e9e591e7913ebc365c10b40565350cd Mon Sep 17 00:00:00 2001
+From: Victor <vikad111@gmail.com>
+Date: Wed, 31 Oct 2018 12:05:09 +0300
+Subject: [PATCH 07/12] another fix of mvn install
+
+---
+ integrationtest/src/test/resources/module-versions.properties | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/integrationtest/src/test/resources/module-versions.properties b/integrationtest/src/test/resources/module-versions.properties
+index 5d49f242a..bd1ab3f55 100644
+--- a/integrationtest/src/test/resources/module-versions.properties
++++ b/integrationtest/src/test/resources/module-versions.properties
+@@ -1,5 +1,5 @@
+ #This is to let Maven properties be injected in the file, making it easier to run tests in the IDE as well
+ #hibernate-ogm.module.slot = ${hibernate.ogm.module.slot} #This one requires specific handling, see org.hibernate.ogm.test.integration.testcase.util.ModulesHelper.getModuleSlotString()
+-hibernate-search.module.slot = ${hibernate-search.module.slot}
++hibernate-search.module.slot = ${version.org.hibernate.search}
+ dependency.version.HibernateOgm = ${project.version}
+ igniteVersion = ${igniteVersion}
+\ No newline at end of file
+
+From a88820ae0eafb989e60fe8852d9289f7052b37df Mon Sep 17 00:00:00 2001
+From: Victor <vikad111@gmail.com>
+Date: Thu, 1 Nov 2018 07:51:56 +0300
+Subject: [PATCH 08/12] another fix of mvn install
+
+---
+ integrationtest/server-provisioning.xml                  | 2 +-
+ integrationtest/src/test/resources/arquillian.xml        | 9 ++++++++-
+ .../src/test/resources/module-versions.properties        | 3 ++-
+ 3 files changed, 11 insertions(+), 3 deletions(-)
+
+diff --git a/integrationtest/server-provisioning.xml b/integrationtest/server-provisioning.xml
+index 4334e0c16..e255d7271 100644
+--- a/integrationtest/server-provisioning.xml
++++ b/integrationtest/server-provisioning.xml
+@@ -1,4 +1,4 @@
+-<server-provisioning xmlns="urn:wildfly:server-provisioning:1.1">
++<server-provisioning xmlns="urn:wildfly:server-provisioning:1.1" extract-schemas="true" copy-module-artifacts="true">
+ 	<feature-packs>
+ 
+ 		<feature-pack
+diff --git a/integrationtest/src/test/resources/arquillian.xml b/integrationtest/src/test/resources/arquillian.xml
+index be6b22352..97cc5b85e 100644
+--- a/integrationtest/src/test/resources/arquillian.xml
++++ b/integrationtest/src/test/resources/arquillian.xml
+@@ -19,7 +19,14 @@
+         </protocol>
+         <configuration>
+             <property name="jbossHome">${jboss.home}</property>
+-            <property name="javaVmArguments">-XX:MaxPermSize=512m -Djava.net.preferIPv4Stack=true -XX:+IgnoreUnrecognizedVMOptions</property>
++            <property name="javaVmArguments">
++            	-XX:MaxPermSize=512m 
++            	-Djava.net.preferIPv4Stack=true 
++            	-XX:+IgnoreUnrecognizedVMOptions 
++            </property>
++<!-- 
++            	-Dremote.maven.repo=http://repository.jboss.org/nexus/content/groups/public/
++-->
+             <!-- To debug the Arquillian managed application server: -->
+             <!-- <property name="javaVmArguments">-Xrunjdwp:transport=dt_socket,address=5005,server=y,suspend=y -Xmx512m -XX:MaxPermSize=128m</property> -->
+         </configuration>
+diff --git a/integrationtest/src/test/resources/module-versions.properties b/integrationtest/src/test/resources/module-versions.properties
+index bd1ab3f55..a9926b366 100644
+--- a/integrationtest/src/test/resources/module-versions.properties
++++ b/integrationtest/src/test/resources/module-versions.properties
+@@ -1,5 +1,6 @@
+ #This is to let Maven properties be injected in the file, making it easier to run tests in the IDE as well
+ #hibernate-ogm.module.slot = ${hibernate.ogm.module.slot} #This one requires specific handling, see org.hibernate.ogm.test.integration.testcase.util.ModulesHelper.getModuleSlotString()
+ hibernate-search.module.slot = ${version.org.hibernate.search}
+-dependency.version.HibernateOgm = ${project.version}
++#dependency.version.HibernateOgm = ${project.version}
++dependency.version.HibernateOgm = 5.4.0.Final
+ igniteVersion = ${igniteVersion}
+\ No newline at end of file
+
+From 5b38ae42eb729d28b5413b2945bc9acb329df2bc Mon Sep 17 00:00:00 2001
+From: Victor <vikad111@gmail.com>
+Date: Thu, 1 Nov 2018 08:46:51 +0300
+Subject: [PATCH 09/12] wildfly modules
+
+---
+ modules/pom.xml                                | 5 ++---
+ modules/src/main/modules/ignite/module.xml     | 4 ++--
+ modules/src/main/modules/ogm/ignite/module.xml | 4 ++--
+ 3 files changed, 6 insertions(+), 7 deletions(-)
+
+diff --git a/modules/pom.xml b/modules/pom.xml
+index b6ebaf358..b74d5e076 100644
+--- a/modules/pom.xml
++++ b/modules/pom.xml
+@@ -22,13 +22,12 @@
+     <properties>
+         <module.xml.basedir>${basedir}/src/main/modules</module.xml.basedir>
+         <module.xml.aliases.basedir>${basedir}/src/main/aliases</module.xml.aliases.basedir>
+-	    <hibernate.ogm.module.slot>${parsedVersion.majorVersion}.${parsedVersion.minorVersion}</hibernate.ogm.module.slot>
+-        <hibernate.ogm.ignite.module.slot>${hibernate.ogm.module.slot}</hibernate.ogm.ignite.module.slot>
+-        <hibernate.hql.module.slot>${hibernateHqlParserVersion}</hibernate.hql.module.slot>
++        <hibernate.ogm.ignite.module.slot>${module-slot.org.hibernate.ogm.short-id}</hibernate.ogm.ignite.module.slot>
+         <org.apache.ignite.module.slot>${igniteVersion}</org.apache.ignite.module.slot>
+         <javax.cache.module.slot>${cacheApiVersion}</javax.cache.module.slot>
+         <com.h2database.h2.module.slot>${h2Version}</com.h2database.h2.module.slot>
+         <maven.javadoc.skip>true</maven.javadoc.skip>
++        <hibernateWildflyClassifier>wildfly-13-dist</hibernateWildflyClassifier>
+     </properties>
+ 
+     <dependencies>
+diff --git a/modules/src/main/modules/ignite/module.xml b/modules/src/main/modules/ignite/module.xml
+index 37ef38680..64977f894 100644
+--- a/modules/src/main/modules/ignite/module.xml
++++ b/modules/src/main/modules/ignite/module.xml
+@@ -12,8 +12,8 @@
+         <resource-root path="ignite-jta-${org.apache.ignite.module.slot}.jar" />
+     </resources>
+     <dependencies>
+-        <module name="org.hibernate.ogm" slot="${hibernate.ogm.module.slot}" />
+-        <module name="org.hibernate.hql" slot="${hibernate.hql.module.slot}" />
++        <module name="org.hibernate.ogm" slot="${module-slot.org.hibernate.ogm.short-id}" />
++        <module name="org.hibernate.hql" slot="${module-slot.org.hibernate.hql.full-id}" />
+ 
+         <module name="javax.persistence.api" />
+         <module name="javax.transaction.api" />
+diff --git a/modules/src/main/modules/ogm/ignite/module.xml b/modules/src/main/modules/ogm/ignite/module.xml
+index 5eaea8f0d..83447f7d5 100644
+--- a/modules/src/main/modules/ogm/ignite/module.xml
++++ b/modules/src/main/modules/ogm/ignite/module.xml
+@@ -10,8 +10,8 @@
+         <resource-root path="hibernate-ogm-ignite-${project.version}.jar" />
+     </resources>
+     <dependencies>
+-        <module name="org.hibernate.ogm" slot="${hibernate.ogm.module.slot}" />
+-        <module name="org.hibernate.hql" slot="${hibernate.hql.module.slot}" />
++        <module name="org.hibernate.ogm" slot="${module-slot.org.hibernate.ogm.short-id}" />
++        <module name="org.hibernate.hql" slot="${module-slot.org.hibernate.hql.full-id}" />
+ 
+         <module name="javax.persistence.api" />
+         <module name="javax.transaction.api" />
+
+From a8a3b94185218d86b70853b0f2310293bfaa5873 Mon Sep 17 00:00:00 2001
+From: Victor <vikad111@gmail.com>
+Date: Sat, 24 Nov 2018 18:50:57 +0300
+Subject: [PATCH 10/12] integrationtest
+
+---
+ integrationtest/pom.xml                                    | 1 +
+ integrationtest/server-provisioning.xml                    | 7 ++++++-
+ integrationtest/src/test/resources/arquillian.xml          | 1 +
+ .../src/test/resources/module-versions.properties          | 4 +---
+ pom.xml                                                    | 1 +
+ 5 files changed, 10 insertions(+), 4 deletions(-)
+
+diff --git a/integrationtest/pom.xml b/integrationtest/pom.xml
+index 7002e639d..a8ef4b4bb 100644
+--- a/integrationtest/pom.xml
++++ b/integrationtest/pom.xml
+@@ -20,6 +20,7 @@
+         <enforcer.dependencyconvergence.skip>true</enforcer.dependencyconvergence.skip>
+ 
+         <maven.javadoc.skip>true</maven.javadoc.skip>
++        <version.org.hibernate.search>5.10.5.Final</version.org.hibernate.search>
+     </properties>
+ 
+     <dependencyManagement>
+diff --git a/integrationtest/server-provisioning.xml b/integrationtest/server-provisioning.xml
+index e255d7271..c090af843 100644
+--- a/integrationtest/server-provisioning.xml
++++ b/integrationtest/server-provisioning.xml
+@@ -9,7 +9,12 @@
+ 		<feature-pack
+ 			groupId="org.hibernate"
+ 			artifactId="hibernate-search-jbossmodules-orm"
+-			version="${version.org.hibernate.search}" />
++ 			version="${version.org.hibernate.search}" />
+ 
++		<feature-pack 
++			groupId="org.hibernate.ogm" 
++			artifactId="hibernate-ogm-featurepack-core" 
++			version="${version.org.hibernate.ogm.core}" />
++			
+ 	</feature-packs>
+ </server-provisioning>
+diff --git a/integrationtest/src/test/resources/arquillian.xml b/integrationtest/src/test/resources/arquillian.xml
+index 97cc5b85e..2f0437b7a 100644
+--- a/integrationtest/src/test/resources/arquillian.xml
++++ b/integrationtest/src/test/resources/arquillian.xml
+@@ -23,6 +23,7 @@
+             	-XX:MaxPermSize=512m 
+             	-Djava.net.preferIPv4Stack=true 
+             	-XX:+IgnoreUnrecognizedVMOptions 
++            	-Dee8.preview.mode=true
+             </property>
+ <!-- 
+             	-Dremote.maven.repo=http://repository.jboss.org/nexus/content/groups/public/
+diff --git a/integrationtest/src/test/resources/module-versions.properties b/integrationtest/src/test/resources/module-versions.properties
+index a9926b366..28f1256ef 100644
+--- a/integrationtest/src/test/resources/module-versions.properties
++++ b/integrationtest/src/test/resources/module-versions.properties
+@@ -1,6 +1,4 @@
+ #This is to let Maven properties be injected in the file, making it easier to run tests in the IDE as well
+-#hibernate-ogm.module.slot = ${hibernate.ogm.module.slot} #This one requires specific handling, see org.hibernate.ogm.test.integration.testcase.util.ModulesHelper.getModuleSlotString()
+ hibernate-search.module.slot = ${version.org.hibernate.search}
+-#dependency.version.HibernateOgm = ${project.version}
+-dependency.version.HibernateOgm = 5.4.0.Final
++dependency.version.HibernateOgm = ${version.org.hibernate.ogm.core}
+ igniteVersion = ${igniteVersion}
+\ No newline at end of file
+diff --git a/pom.xml b/pom.xml
+index bc9444efa..18a231a53 100644
+--- a/pom.xml
++++ b/pom.xml
+@@ -22,6 +22,7 @@
+     <description>Hibernate OGM Contrib Aggregator POM</description>
+ 
+     <properties>
++		<version.org.hibernate.ogm.core>5.4.0.Final</version.org.hibernate.ogm.core>
+         <!-- Ignite -->
+         <igniteVersion>2.6.0</igniteVersion>
+         <h2Version>1.4.195</h2Version>
+
+From 9ccafccb3a6407288510af2835f9b7d068274317 Mon Sep 17 00:00:00 2001
+From: Victor <vikad111@gmail.com>
+Date: Sun, 25 Nov 2018 00:43:11 +0300
+Subject: [PATCH 11/12] itests
+
+---
+ integrationtest/pom.xml | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/integrationtest/pom.xml b/integrationtest/pom.xml
+index a8ef4b4bb..7002e639d 100644
+--- a/integrationtest/pom.xml
++++ b/integrationtest/pom.xml
+@@ -20,7 +20,6 @@
+         <enforcer.dependencyconvergence.skip>true</enforcer.dependencyconvergence.skip>
+ 
+         <maven.javadoc.skip>true</maven.javadoc.skip>
+-        <version.org.hibernate.search>5.10.5.Final</version.org.hibernate.search>
+     </properties>
+ 
+     <dependencyManagement>
+
+From cd0c617cc5d05fc4b83b9906777bbbf14d6c7d6e Mon Sep 17 00:00:00 2001
+From: Victor <vikad111@gmail.com>
+Date: Mon, 26 Nov 2018 00:25:26 +0300
+Subject: [PATCH 12/12] integrationtest
+
+---
+ integrationtest/pom.xml | 26 ++++++++++++++++++++++++++
+ modules/pom.xml         |  1 -
+ pom.xml                 |  1 +
+ 3 files changed, 27 insertions(+), 1 deletion(-)
+
+diff --git a/integrationtest/pom.xml b/integrationtest/pom.xml
+index 7002e639d..0f6e31127 100644
+--- a/integrationtest/pom.xml
++++ b/integrationtest/pom.xml
+@@ -112,6 +112,32 @@
+                     </execution>
+                 </executions>
+             </plugin>
++            <plugin>
++                <artifactId>maven-dependency-plugin</artifactId>
++                <executions>
++                    <execution>
++                        <id>unpack</id>
++                        <phase>pre-integration-test</phase>
++                        <goals>
++                            <goal>unpack</goal>
++                        </goals>
++                        <configuration>
++                            <artifactItems>
++                                <!-- modules for Apache Ignite dialect -->
++                                <artifactItem>
++                                    <groupId>${project.groupId}</groupId>
++                                    <artifactId>hibernate-ogm-ignite-modules</artifactId>
++                                    <classifier>${hibernateWildflyClassifier}</classifier>
++                                    <version>${project.version}</version>
++                                    <type>zip</type>
++                                    <overWrite>true</overWrite>
++                                    <outputDirectory>${jboss.home}/modules</outputDirectory>
++                                </artifactItem>
++                            </artifactItems>
++                        </configuration>
++                    </execution>
++                </executions>
++            </plugin>
+         </plugins>
+     </build>
+ 
+diff --git a/modules/pom.xml b/modules/pom.xml
+index b74d5e076..8fdace224 100644
+--- a/modules/pom.xml
++++ b/modules/pom.xml
+@@ -27,7 +27,6 @@
+         <javax.cache.module.slot>${cacheApiVersion}</javax.cache.module.slot>
+         <com.h2database.h2.module.slot>${h2Version}</com.h2database.h2.module.slot>
+         <maven.javadoc.skip>true</maven.javadoc.skip>
+-        <hibernateWildflyClassifier>wildfly-13-dist</hibernateWildflyClassifier>
+     </properties>
+ 
+     <dependencies>
+diff --git a/pom.xml b/pom.xml
+index 18a231a53..c07d96445 100644
+--- a/pom.xml
++++ b/pom.xml
+@@ -23,6 +23,7 @@
+ 
+     <properties>
+ 		<version.org.hibernate.ogm.core>5.4.0.Final</version.org.hibernate.ogm.core>
++		<hibernateWildflyClassifier>wildfly-13-dist</hibernateWildflyClassifier>
+         <!-- Ignite -->
+         <igniteVersion>2.6.0</igniteVersion>
+         <h2Version>1.4.195</h2Version>

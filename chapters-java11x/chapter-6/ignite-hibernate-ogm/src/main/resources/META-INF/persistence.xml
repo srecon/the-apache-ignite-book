@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+             version="2.0">
+
+    <persistence-unit name="ogm-jpa-tutorial" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.ogm.jpa.HibernateOgmPersistence</provider>
+        <properties>
+
+            <property name="com.arjuna.ats.jta.jtaTMImplementation" value="com.arjuna.ats.internal.jta.transaction.arjunacore.TransactionManagerImple"/>
+            <property name="com.arjuna.ats.jta.jtaUTImplementation" value="com.arjuna.ats.internal.jta.transaction.arjunacore.UserTransactionImple"/>
+
+            <property name="hibernate.ogm.datastore.provider" value="org.hibernate.ogm.datastore.ignite.impl.IgniteDatastoreProvider"/>
+            <!--<property name="hibernate.ogm.ignite.configuration_class_name" value="com.blu.imdg.exampleOgm.ConfigurationMaker"/>-->
+            <property name="hibernate.ogm.ignite.configuration_resource_name" value="ignite-config.xml"/>
+            <property name="hibernate.ogm.ignite.instance_name" value="ignite-ogm"/>
+
+        </properties>
+    </persistence-unit>
+</persistence>

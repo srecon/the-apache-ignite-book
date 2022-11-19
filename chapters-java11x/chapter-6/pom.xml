@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.blu.imdg</groupId>
+        <artifactId>chapters</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>chapter-6</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <name>chapter-6</name>
+    <packaging>pom</packaging>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <modules>
+        <module>persistence-store</module>
+        <module>sqlqueries</module>
+        <module>textquery</module>
+        <module>transactions</module>
+        <module>spring-data</module>
+        <!--<module>ignite-hibernate-ogm</module>-->
+        <module>jdbc-thin</module>
+        <module>jdbc-client-driver</module>
+    </modules>
+    <dependencies/>
+</project>

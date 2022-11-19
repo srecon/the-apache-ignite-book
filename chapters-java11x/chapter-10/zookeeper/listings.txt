@@ -1,0 +1,60 @@
+Listing 10.1:
+
+tar -xzf zookeeper-3.4.12.tar.gz
+
+Listing 10.2:
+
+# The number of milliseconds of each tick
+tickTime=2000
+# The number of ticks that the initial
+# synchronization phase can take
+initLimit=10
+# The number of ticks that can pass between
+# sending a request and getting an acknowledgement
+syncLimit=5
+# the directory where the snapshot is stored.
+# for example, /tmp directory
+dataDir=ABSULATE_PATH_TO_DATA_DIRECTORY/data
+# the port at which the clients will connect
+clientPort=2181
+
+Listing 10.3:
+
+$ZOOKEEPER_HOME/bin/zkServer.sh start
+
+Listing 10.4:
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans
+  xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+  <bean id="ignite.cfg" class="org.apache.ignite.configuration.IgniteConfiguration">
+    <property name="cacheConfiguration">
+      <list>
+        <bean class="org.apache.ignite.configuration.CacheConfiguration">
+          <property name="name" value="myCache"/>
+          <property name="atomicityMode" value="ATOMIC"/>
+          <property name="backups" value="1"/>
+        </bean>
+      </list>
+    </property>
+
+    <property name="discoverySpi">
+      <bean class="org.apache.ignite.spi.discovery.zk.ZookeeperDiscoverySpi">
+        <property name="zkConnectionString" value="127.0.0.1:2181"/>
+        <property name="sessionTimeout" value="30000"/>
+        <property name="zkRootPath" value="/zkPath"/>
+        <property name="joinTimeout" value="10000"/>
+      </bean>
+    </property>
+  </bean>
+</beans>
+
+Listing 10.5:
+
+$IGNITE_HOME/bin/ignite.sh PATH_TO_THE/ignite-zoo-config.xml
