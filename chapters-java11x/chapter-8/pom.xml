@@ -9,9 +9,9 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>chapter-6</artifactId>
+    <artifactId>chapter-8</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>chapter-6</name>
+    <name>chapter-8</name>
     <packaging>pom</packaging>
 
     <properties>
@@ -19,14 +19,10 @@
     </properties>
 
     <modules>
-        <module>persistence-store</module>
-        <module>sqlqueries</module>
-        <module>textquery</module>
-        <module>transactions</module>
-        <module>spring-data</module>
-        <!--<module>ignite-hibernate-ogm</module>-->
-        <module>jdbc-thin</module>
-        <module>jdbc-client-driver</module>
+        <module>camel</module>
+        <module>flume</module>
+        <module>kafka</module>
+        <module>storm</module>
     </modules>
     <dependencies/>
 </project>

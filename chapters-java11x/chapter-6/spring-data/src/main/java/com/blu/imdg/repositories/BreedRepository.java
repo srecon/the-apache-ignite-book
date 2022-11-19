@@ -1,10 +1,11 @@
 package com.blu.imdg.repositories;
 
 import com.blu.imdg.model.Breed;
-import org.apache.ignite.springdata.repository.IgniteRepository;
-import org.apache.ignite.springdata.repository.config.Query;
-import org.apache.ignite.springdata.repository.config.RepositoryConfig;
+import org.apache.ignite.springdata22.repository.IgniteRepository;
+import org.apache.ignite.springdata22.repository.config.Query;
+import org.apache.ignite.springdata22.repository.config.RepositoryConfig;
 import org.springframework.data.domain.Pageable;
+
 
 import java.util.List;
 

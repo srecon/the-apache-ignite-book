@@ -24,12 +24,9 @@
         <module>chapter-5</module>
         <module>chapter-6</module>
         <module>chapter-7</module>
-        <module>chapter-8/kafka</module>
-        <module>chapter-8/camel</module>
-        <module>chapter-8/flume</module>
-        <module>chapter-8/storm</module>
-        <module>chapter-9/IgniteSparkApp</module>
-        <!--<module>chapter-10/ignite-tool</module>-->
+        <module>chapter-8</module>
+        <module>chapter-9</module>
+        <module>chapter-10</module>
   </modules>
     <dependencyManagement>
         <dependencies>
