@@ -17,7 +17,7 @@
 
     <properties>
         <springframework.version>4.3.16.RELEASE</springframework.version>
-        <ignite.version>2.6.0</ignite.version>
+        <!--<ignite.version>2.6.0</ignite.version>-->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -51,10 +51,6 @@
             <groupId>org.apache.ignite</groupId>
             <artifactId>ignite-web</artifactId>
             <version>${ignite.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.ignite</groupId>
-            <artifactId>ignite-log4j</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.ignite</groupId>
