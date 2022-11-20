@@ -3,12 +3,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
          xmlns="http://maven.apache.org/POM/4.0.0">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>com.blu.imdg</groupId>
-        <artifactId>chapters</artifactId>
+        <artifactId>chapter-8</artifactId>
         <version>1.0-SNAPSHOT</version>
-        <relativePath>../../pom.xml</relativePath>
+        <relativePath>../pom.xml</relativePath>
     </parent>
+
     <groupId>com.blu.imdg</groupId>
     <artifactId>camel</artifactId>
     <version>1.0-SNAPSHOT</version>
