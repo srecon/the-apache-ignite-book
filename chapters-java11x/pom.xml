@@ -95,4 +95,10 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+    <repositories>
+        <repository>
+            <id>SAKAI</id>
+            <url>https://source.sakaiproject.org/maven2/</url>
+        </repository>
+    </repositories>
 </project>
