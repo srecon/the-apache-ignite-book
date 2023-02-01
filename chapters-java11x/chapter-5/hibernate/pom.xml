@@ -35,18 +35,18 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-orm</artifactId>
-      <version>4.3.18.RELEASE</version>
+      <version>5.2.2.RELEASE</version>
     </dependency>
-    <!-- Hibernate libs-->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-jdbc</artifactId>
+      <version>5.3.25</version>
+    </dependency>
+    <!-- available at sakai repository https://source.sakaiproject.org/maven2/-->
     <dependency>
       <groupId>org.apache.ignite</groupId>
-      <artifactId>ignite-hibernate-core</artifactId>
-      <version>2.13.0</version>
-    </dependency>
-    <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-entitymanager</artifactId>
-      <version>${hibernate.version}</version>
+      <artifactId>ignite-hibernate-ext</artifactId>
+      <version>5.3.0</version>
     </dependency>
     <!-- PostgresSQL-->
     <dependency>
@@ -65,25 +65,19 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <configuration>
-          <archive>
-            <manifest>
-              <mainClass>com.blu.imdg.RunWebService</mainClass>
-            </manifest>
-          </archive>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>com.jolira</groupId>
-        <artifactId>onejar-maven-plugin</artifactId>
-        <version>1.4.4</version>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
         <executions>
           <execution>
             <goals>
-              <goal>one-jar</goal>
+              <goal>repackage</goal>
             </goals>
+            <configuration>
+              <classifier>spring-boot</classifier>
+              <mainClass>
+                com.blu.imdg.RunWebService
+              </mainClass>
+            </configuration>
           </execution>
         </executions>
       </plugin>
@@ -96,4 +90,10 @@
       <url>http://onejar-maven-plugin.googlecode.com/svn/mavenrepo</url>
     </pluginRepository>
   </pluginRepositories>
+  <repositories>
+    <repository>
+      <id>SAKAI</id>
+      <url>https://source.sakaiproject.org/maven2/</url>
+    </repository>
+  </repositories>
 </project>
