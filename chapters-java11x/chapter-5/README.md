@@ -7,7 +7,7 @@
 
 Note that. Ignite extension project moved to another github repositories and the artifactics are available from the following URL https://source.sakaiproject.org/maven2/
 
-###To run Hibernate example:
+### To run Hibernate example:
 1) Install PostgreSQL version 14 or above.
 2) Use default configuration connection parameters or edit the /resources/jdbc.properties file corresponding to your configuration
 3) execute the DDL and DML scripts from the folder /scripts
