@@ -23,7 +23,7 @@
         <module>mybatis</module>
         <module>memoization</module>
         <module>web-session-clustering</module>
-        <module>springboot-hibernate</module>
+        <!--<module>springboot-hibernate</module>-->
     </modules>
     <dependencies/>
 </project>

@@ -4,7 +4,6 @@
 - memoization
 - MyBatis caching
 - Web session clustering
-- Spring boot (experimental)
 
 Note that. Ignite extension project moved to another github repositories and the artifactics are available from the following URL https://source.sakaiproject.org/maven2/
 
