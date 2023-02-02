@@ -89,6 +89,7 @@ public class SqlQueryEmployees {
             groupByQuery();
 
             log("Sql query example finished.");
+            log("enter crtl+C to exit");
         }
     }
 
@@ -113,20 +114,20 @@ public class SqlQueryEmployees {
         Department dept4 = new Department("Operations", "Boston");
 
         // Employees
-        Employee emp1 = new Employee("King", dept1, "President", null, localDateOf("17-11-1981"), 5000);
-        Employee emp2 = new Employee("Blake", dept3, "Manager", emp1.getEmpno(), localDateOf("01-05-1981"), 2850);
-        Employee emp3 = new Employee("Clark", dept1, "Manager", emp1.getEmpno(), localDateOf("09-06-1981"), 2450);
-        Employee emp4 = new Employee("Jones", dept2, "Manager", emp1.getEmpno(), localDateOf("02-04-1981"), 2975);
-        Employee emp5 = new Employee("Scott", dept2, "Analyst", emp4.getEmpno(), localDateOf("13-07-1987").minusDays(85), 3000);
-        Employee emp6 = new Employee("Ford", dept2, "Analyst", emp4.getEmpno(), localDateOf("03-12-1981"), 3000);
-        Employee emp7 = new Employee("Smith", dept2, "Clerk", emp6.getEmpno(), localDateOf("17-12-1980"), 800);
-        Employee emp8 = new Employee("Allen", dept3, "Salesman", emp2.getEmpno(), localDateOf("20-02-1981"), 1600);
-        Employee emp9 = new Employee("Ward", dept3, "Salesman", emp2.getEmpno(), localDateOf("22-02-1981"), 1250);
-        Employee emp10 = new Employee("Martin", dept3, "Salesman", emp2.getEmpno(), localDateOf("28-09-1981"), 1250);
-        Employee emp11 = new Employee("Turner", dept3, "Salesman", emp2.getEmpno(), localDateOf("08-09-1981"), 1500);
-        Employee emp12 = new Employee("Adams", dept2, "Clerk", emp5.getEmpno(), localDateOf("13-07-1987").minusDays(51), 1100);
-        Employee emp13 = new Employee("James", dept3, "Clerk", emp2.getEmpno(), localDateOf("03-12-1981"), 950);
-        Employee emp14 = new Employee("Miller", dept1, "Clerk", emp3.getEmpno(), localDateOf("23-01-1982"), 1300);
+        Employee emp1 = new Employee("King", dept1, "President", null, null, 5000);
+        Employee emp2 = new Employee("Blake", dept3, "Manager", emp1.getEmpno(), null, 2850);
+        Employee emp3 = new Employee("Clark", dept1, "Manager", emp1.getEmpno(), null, 2450);
+        Employee emp4 = new Employee("Jones", dept2, "Manager", emp1.getEmpno(), null, 2975);
+        Employee emp5 = new Employee("Scott", dept2, "Analyst", emp4.getEmpno(), null, 3000);
+        Employee emp6 = new Employee("Ford", dept2, "Analyst", emp4.getEmpno(), null, 3000);
+        Employee emp7 = new Employee("Smith", dept2, "Clerk", emp6.getEmpno(), null, 800);
+        Employee emp8 = new Employee("Allen", dept3, "Salesman", emp2.getEmpno(), null, 1600);
+        Employee emp9 = new Employee("Ward", dept3, "Salesman", emp2.getEmpno(), null, 1250);
+        Employee emp10 = new Employee("Martin", dept3, "Salesman", emp2.getEmpno(), null, 1250);
+        Employee emp11 = new Employee("Turner", dept3, "Salesman", emp2.getEmpno(), null, 1500);
+        Employee emp12 = new Employee("Adams", dept2, "Clerk", emp5.getEmpno(), null, 1100);
+        Employee emp13 = new Employee("James", dept3, "Clerk", emp2.getEmpno(), null, 950);
+        Employee emp14 = new Employee("Miller", dept1, "Clerk", emp3.getEmpno(), null, 1300);
 
         deptCache.put(dept1.getDeptno(), dept1);
         deptCache.put(dept2.getDeptno(), dept2);
@@ -258,7 +259,7 @@ public class SqlQueryEmployees {
         for (List<?> row : res) {
             // Skip results from nodes without data.
             if (row.get(0) != null) {
-                sum += ((BigDecimal)row.get(0)).doubleValue();
+                sum +=  ((Number)row.get(0)).doubleValue();
                 cnt += (Long)row.get(1);
             }
         }

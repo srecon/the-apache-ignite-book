@@ -11,13 +11,13 @@ values(40, 'OPERATIONS', 'BOSTON');
 insert into emp
 values(
   7839, 'KING', 'PRESIDENT', null,
-  parsedatetime('17-11-1981 00:00:00.00', 'dd-MM-yyyy hh:mm:ss.SS'),
+  null,
   5000, null, 10
 );
 insert into emp
 values(
   7698, 'BLAKE', 'MANAGER', 7839,
-  parsedatetime('1-5-1981 00:00:00.00', 'dd-MM-yyyy hh:mm:ss.SS'),
+  null,
   2850, null, 30
 );
 insert into emp
