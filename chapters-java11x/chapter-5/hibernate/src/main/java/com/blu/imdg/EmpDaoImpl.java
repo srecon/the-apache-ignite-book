@@ -7,6 +7,8 @@ import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 //import org.springframework.cache.annotation.CacheEvict;
 //import org.springframework.cache.annotation.Cacheable;
 
@@ -64,12 +66,20 @@ public class EmpDaoImpl implements EmpDao {
     }
 
     public List<Employee> getEmpByName(String ename) {
+//        Session session = sessionFactory.openSession();
+//        Query query = session.createQuery("from Employee e where e.ename=:ename");
+//        query.setParameter("ename", ename);
+//        // ENABLE QUERY CACHE
+//        //query.setCacheable(true);
+//        List<Employee> employees =  query.list();
+//        session.close();
+//        return employees;
         Session session = sessionFactory.openSession();
-        Query query = session.createQuery("from Employee e where e.ename=:ename");
-        query.setParameter("ename", ename);
+        Criteria criteria = session.createCriteria(com.blu.imdg.dto.Employee.class);
+        criteria.add(Restrictions.ilike("ename", ename));
         // ENABLE QUERY CACHE
-        //query.setCacheable(true);
-        List<Employee> employees =  query.list();
+        //criteria.setCacheable(true);
+        List<Employee> employees =  criteria.list();
         session.close();
         return employees;
     }
