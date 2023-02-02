@@ -68,7 +68,7 @@ public class EmpDaoImpl implements EmpDao {
         Query query = session.createQuery("from Employee e where e.ename=:ename");
         query.setParameter("ename", ename);
         // ENABLE QUERY CACHE
-        query.setCacheable(true);
+        //query.setCacheable(true);
         List<Employee> employees =  query.list();
         session.close();
         return employees;

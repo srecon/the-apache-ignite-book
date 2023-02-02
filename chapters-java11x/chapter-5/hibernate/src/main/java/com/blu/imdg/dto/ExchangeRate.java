@@ -12,7 +12,7 @@ import java.util.Date;
  * Time: 10:29
  */
 @Entity
-@Table( name = "emp" )
+@Table( name = "exchangerate" )
 public class ExchangeRate {
     @Id
     @Column(name = "region")

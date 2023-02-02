@@ -90,10 +90,10 @@
       <url>http://onejar-maven-plugin.googlecode.com/svn/mavenrepo</url>
     </pluginRepository>
   </pluginRepositories>
-  <repositories>
+  <!--<repositories>
     <repository>
       <id>SAKAI</id>
       <url>https://source.sakaiproject.org/maven2/</url>
     </repository>
-  </repositories>
+  </repositories>-->
 </project>
