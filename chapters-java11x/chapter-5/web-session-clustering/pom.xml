@@ -16,7 +16,7 @@
     <name>web-session-clustering</name>
 
     <properties>
-        <springframework.version>4.3.16.RELEASE</springframework.version>
+        <springframework.version>5.3.3</springframework.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 

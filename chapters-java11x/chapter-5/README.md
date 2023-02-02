@@ -3,9 +3,8 @@
 - Hibernate l2 cache
 - memoization
 - MyBatis caching
-- Web session clustering
 
-Note that. Ignite extension project moved to another github repositories and the artifactics are available from the following URL https://source.sakaiproject.org/maven2/
+Note that. Ignite extension project moved to the another github repositories and the artifactics are available from the following URL https://source.sakaiproject.org/maven2/
 
 ### To run Hibernate example:
 1) Install PostgreSQL version 14 or above.
