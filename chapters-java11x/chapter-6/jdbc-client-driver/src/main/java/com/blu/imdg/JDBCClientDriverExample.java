@@ -30,7 +30,8 @@ public class JDBCClientDriverExample {
         // Register JDBC driver.
         Class.forName("org.apache.ignite.IgniteJdbcDriver");
         // Default cache name does not work. Must be explicitly set the physical cache name
-        try(Connection conn = DriverManager.getConnection("jdbc:ignite:cfg://cache=SQL_PUBLIC_EMP@file:////Users/shamim/Development/workshop/github/the-apache-ignite-book/chapters/chapter-6/jdbc-client-driver/src/main/resources/ignite-jdbc.xml")){
+        //try(Connection conn = DriverManager.getConnection("jdbc:ignite:cfg://cache=SQL_PUBLIC_EMP@file:////Users/shamim/Development/workshop/github/the-apache-ignite-book/chapters/chapter-6/jdbc-client-driver/src/main/resources/ignite-jdbc.xml")){
+        try(Connection conn = DriverManager.getConnection("jdbc:ignite:cfg://cache=SQL_PUBLIC_EMP@file:////SETTHE_PHYSICAL_PATHOF_THE_FILE/ignite-jdbc.xml")){
 
             // Execute an query to list the employees whose salary is more than 3000 after giving 25%
             ResultSet rs = conn.createStatement().executeQuery(SQL_SALARY_MORE_THAN_3000);

@@ -7,8 +7,12 @@
 - sqlqueries
 - textquery
 - transactions
-- ignite-hibernate-ogm
+
+### To run Jdbc-thin example:
 
 
-
-The **/chapter-6/ignite-hibernate-ogm** project required an Ignite dialect for Hibernate OGM. The Maven module uses **hibernate-ogm-ignite** version 5.4.0 snapshot which is also not available in the central Maven repository. So, you need to clone the project from the GitHub and build it yourself. The entire process of building the project from source code described in chapter 6.
+### To run jdbc-client-driver example:
+1) Start an Ignite cluster with default configuration.
+2) Connect with SQLLINE Client and run the EMP/DEPT DDL and DML script as described in the book
+3) Change the PHYSICAL PATH of the ignite-jdbc.xml file uses in the JDBCClientDriverExample.Java
+4) Build and run the application as follows: java --add-opens=jdk.management/com.sun.management.internal=ALL-UNNAMED --add-opens=java.base/jdk.internal.misc=ALL-UNNAMED --add-opens=java.base/sun.nio.ch=ALL-UNNAMED --add-opens=java.management/com.sun.jmx.mbeanserver=ALL-UNNAMED --add-opens=jdk.internal.jvmstat/sun.jvmstat.monitor=ALL-UNNAMED --add-opens=java.base/sun.reflect.generics.reflectiveObjects=ALL-UNNAMED --add-opens=java.base/java.io=ALL-UNNAMED --add-opens=java.base/java.nio=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.lang=ALL-UNNAMED -jar ./target/jdbc-client-driver-runnable.jar
