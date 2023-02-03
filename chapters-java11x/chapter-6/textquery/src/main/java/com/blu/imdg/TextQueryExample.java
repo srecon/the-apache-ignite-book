@@ -2,6 +2,8 @@ package com.blu.imdg;
 
 import com.blu.imdg.model.Company;
 
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVRecord;
 import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteCache;
 import org.apache.ignite.Ignition;
@@ -14,16 +16,8 @@ import org.apache.ignite.configuration.CacheConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 import javax.cache.Cache;
-import javax.print.URIException;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Iterator;
-import java.util.List;
-import java.util.stream.Stream;
+import java.io.*;
 
 
 public class TextQueryExample {
@@ -87,26 +81,20 @@ public class TextQueryExample {
         // Clear caches before start.
         companyCache.clear();
 
-        // Companies
-        try (
-                //Stream<String> lines = Files.lines(Paths.get(TextQueryExample.class.getClassLoader().getResource("USA_NY_email_addresses.csv").toURI()));
+        // put Companies from CSV file
+        String[] CSV_Headers = {"ID","CAT","COMPANY_NAME","EMAIL","ADDRESS","CITY","STATE","ZIPCODE","PHONE_NUMBER","FAX_NUMBER","SIC_CODE","SIC_DESCRIPTION","WEB_ADDRESS"};
+        InputStream inputStream = TextQueryExample.class.getClassLoader().getResourceAsStream("USA_NY_email_addresses.csv");
 
+        Reader in = new InputStreamReader(inputStream);
 
-                //Stream<String> lines = Files.lines(Paths.get(TextQueryExample.class.getClassLoader().getResourceAsStream("USA_NY_email_addresses.csv").toAbsolutePath()));//  .getProtectionDomain().getClassLoader().getResource("USA_NY_email_addresses.csv").toURI()));
-                Stream<String> lines = Files.lines(Paths.get("/Users/shamim/Development/workshop/github/the-apache-ignite-book/chapters-java11x/chapter-6/textquery/src/main/resources/USA_NY_email_addresses.csv"));
-
-        ) {
-            lines
-                    .skip(1)
-                    .map(s1 -> s1.split("\",\""))
-                    .map(s2 -> new Company(Long.valueOf(s2[0].replaceAll("\"", "")), s2[1], s2[2], s2[3], s2[4], s2[5], s2[6], s2[7], s2[8], s2[9], s2[10], s2[11], s2[12].replaceAll("\"", "")))
-                    .forEach(r -> companyCache.put(r.getId(), r));
-
-        } catch (/*URISyntaxException |*/ IOException e) {
-            log(e.getMessage());
-
+        Iterable<CSVRecord> records = CSVFormat.DEFAULT
+                .withHeader(CSV_Headers)
+                .withFirstRecordAsHeader()
+                .parse(in);
+        for (CSVRecord record : records) {
+            Company company = new Company(Long.valueOf(record.get("ID")),record.get("CAT"), record.get("COMPANY_NAME"), record.get("EMAIL"),record.get("ADDRESS"),record.get("CITY"),record.get("STATE"),record.get("ZIPCODE"),record.get("PHONE_NUMBER"),record.get("FAX_NUMBER"),record.get("SIC_CODE"),record.get("SIC_DESCRIPTION"),record.get("WEB_ADDRESS"));
+            companyCache.put(Long.valueOf(record.get("ID")),company);
         }
-
         // Wait 1 second to be sure that all nodes processed put requests.
         Thread.sleep(1000);
     }
