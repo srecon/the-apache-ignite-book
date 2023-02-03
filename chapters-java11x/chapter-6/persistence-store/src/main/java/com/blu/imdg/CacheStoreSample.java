@@ -27,7 +27,7 @@ public class CacheStoreSample {
       Cache name to store posts.
       */
     private static final String POST_CACHE_NAME = CacheStoreSample.class.getSimpleName() + "-post";
-    private static Logger LOGGER = LoggerFactory.getLogger(CacheStoreSample.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CacheStoreSample.class);
     private static final String POSTGRESQL = "postgresql";
     private static final String MONGODB = "mongodb";
 
@@ -127,7 +127,7 @@ public class CacheStoreSample {
                 try (Transaction tx = ignite.transactions().txStart(PESSIMISTIC, REPEATABLE_READ)) {
 
                     for (int i = 1; i <= count; i++)
-                        igniteCache.put("_" + i, new MongoPost("_" + i, "title-" + i, "description-" + i, LocalDate.now().plus(i, ChronoUnit.DAYS), "author-" + i));
+                        igniteCache.put("_" + i, new MongoPost("_" + i, "title-" + i, "description-" + i, /*LocalDate.now().plus(i, ChronoUnit.DAYS),*/ "author-" + i));
 
                     tx.commit();
                 }

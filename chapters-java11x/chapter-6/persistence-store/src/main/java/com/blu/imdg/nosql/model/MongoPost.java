@@ -12,17 +12,17 @@ public class MongoPost {
     private String id;
     private String title;
     private String description;
-    private LocalDate creationDate;
+    //private LocalDate creationDate;
     private String author;
 
     public MongoPost() {
     }
 
-    public MongoPost(String id, String title, String description, LocalDate creationDate, String author) {
+    public MongoPost(String id, String title, String description, /*LocalDate creationDate,*/ String author) {
         this.id = id;
         this.title = title;
         this.description = description;
-        this.creationDate = creationDate;
+        //this.creationDate = creationDate;
         this.author = author;
     }
 
@@ -50,13 +50,13 @@ public class MongoPost {
         this.description = description;
     }
 
-    public LocalDate getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(LocalDate creationDate) {
-        this.creationDate = creationDate;
-    }
+//    public LocalDate getCreationDate() {
+//        return creationDate;
+//    }
+//
+//    public void setCreationDate(LocalDate creationDate) {
+//        this.creationDate = creationDate;
+//    }
 
     public String getAuthor() {
         return author;
@@ -75,12 +75,12 @@ public class MongoPost {
         return Objects.equals(id, post.id) &&
             Objects.equals(title, post.title) &&
             Objects.equals(description, post.description) &&
-            Objects.equals(creationDate, post.creationDate) &&
+            //Objects.equals(creationDate, post.creationDate) &&
             Objects.equals(author, post.author);
     }
 
     @Override public int hashCode() {
-        return Objects.hash(id, title, description, creationDate, author);
+        return Objects.hash(id, title, description, /*creationDate, */author);
     }
 
     @Override public String toString() {
@@ -88,7 +88,7 @@ public class MongoPost {
             "id='" + id + '\'' +
             ", title='" + title + '\'' +
             ", description='" + description + '\'' +
-            ", creationDate=" + creationDate +
+            /*", creationDate=" + creationDate +*/
             ", author='" + author + '\'' +
             '}';
     }
