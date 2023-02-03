@@ -24,7 +24,6 @@
         <module>textquery</module>
         <module>transactions</module>
         <module>spring-data</module>
-        <!--<module>ignite-hibernate-ogm</module>-->
         <module>jdbc-thin</module>
         <module>jdbc-client-driver</module>
     </modules>

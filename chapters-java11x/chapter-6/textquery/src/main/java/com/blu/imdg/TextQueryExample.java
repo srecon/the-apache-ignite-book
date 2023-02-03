@@ -11,14 +11,12 @@ import org.apache.ignite.cache.query.ScanQuery;
 import org.apache.ignite.cache.query.TextQuery;
 import org.apache.ignite.configuration.CacheConfiguration;
 
-import org.apache.ignite.internal.processors.cache.CacheEntryImpl;
-import org.apache.ignite.lang.IgniteBiPredicate;
-import org.apache.ignite.lang.IgniteClosure;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
 import javax.cache.Cache;
+import javax.print.URIException;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
@@ -91,7 +89,11 @@ public class TextQueryExample {
 
         // Companies
         try (
-                Stream<String> lines = Files.lines(Paths.get(TextQueryExample.class.getClassLoader().getResource("USA_NY_email_addresses.csv").toURI()));
+                //Stream<String> lines = Files.lines(Paths.get(TextQueryExample.class.getClassLoader().getResource("USA_NY_email_addresses.csv").toURI()));
+
+
+                //Stream<String> lines = Files.lines(Paths.get(TextQueryExample.class.getClassLoader().getResourceAsStream("USA_NY_email_addresses.csv").toAbsolutePath()));//  .getProtectionDomain().getClassLoader().getResource("USA_NY_email_addresses.csv").toURI()));
+                Stream<String> lines = Files.lines(Paths.get("/Users/shamim/Development/workshop/github/the-apache-ignite-book/chapters-java11x/chapter-6/textquery/src/main/resources/USA_NY_email_addresses.csv"));
 
         ) {
             lines
@@ -100,7 +102,7 @@ public class TextQueryExample {
                     .map(s2 -> new Company(Long.valueOf(s2[0].replaceAll("\"", "")), s2[1], s2[2], s2[3], s2[4], s2[5], s2[6], s2[7], s2[8], s2[9], s2[10], s2[11], s2[12].replaceAll("\"", "")))
                     .forEach(r -> companyCache.put(r.getId(), r));
 
-        } catch (URISyntaxException | IOException e) {
+        } catch (/*URISyntaxException |*/ IOException e) {
             log(e.getMessage());
 
         }
@@ -130,13 +132,9 @@ public class TextQueryExample {
         IgniteCache<Long, Company> companyCache = Ignition.ignite().cache(COMPANY_CACHE_NAME);
 
         //  Query for all companies which the city 'NEW YORK' - NewYork.
-        QueryCursor cursor = companyCache.query(new ScanQuery<Long, Company>((k, p) -> p.getCity().equalsIgnoreCase("NEW YORK") ));
+        QueryCursor<Cache.Entry<Long, Company>> cursor = companyCache.query(new ScanQuery<Long, Company>((k, p) -> p.getCity().equalsIgnoreCase("NEW YORK") ));
 
-        for (Iterator ite = cursor.iterator(); ite.hasNext(); ) {
-            CacheEntryImpl company = (CacheEntryImpl) ite.next();
-
-            log(((Company) company.getValue()).getCompanyName());
-        }
+        cursor.forEach(entry->log("Key = " + entry.getKey() + ", Value = " + entry.getValue()));
 
         cursor.close();
 
