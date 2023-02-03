@@ -5,6 +5,8 @@ import com.blu.imdg.model.Dog;
 import com.blu.imdg.repositories.BreedRepository;
 import com.blu.imdg.repositories.DogRepository;
 import com.blu.imdg.repositories.SpringAppConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.sql.Date;
@@ -17,9 +19,11 @@ public class App
     private static BreedRepository breedRepository;
     private static DogRepository dogRepository;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(App.class);
+
     public static void main( String[] args )
     {
-        System.out.println( "Spring Data Example!" );
+        LOGGER.info( "Spring Data Example!" );
         ctx = new AnnotationConfigApplicationContext();
         ctx.register(SpringAppConfig.class);
         ctx.refresh();
@@ -34,27 +38,26 @@ public class App
         //save Breed with name collie
         breedRepository.save(1L, collie);
 
-        System.out.println("Add one breed in the repository!");
+        LOGGER.info("Add one breed in the repository!");
         // Query the breed
         List<Breed> getAllBreeds = breedRepository.getAllBreedsByName("collie");
 
         for(Breed breed : getAllBreeds){
-            System.out.println("Breed:" + breed);
+            LOGGER.info("Breed:" + breed);
         }
         //Add some dogs
         Dog dina = new Dog();
         dina.setName("dina");
         dina.setId(1L);
         dina.setBreedid(1L);
-        dina.setBirthdate(new Date(System.currentTimeMillis()));
         //Save Dina
         dogRepository.save(2L,dina);
-        System.out.println("Dog dina save into the cache!");
+        LOGGER.info("Dog dina save into the cache!");
         //Query the Dog Dina
         List<Dog> dogs = dogRepository.getDogByName("dina");
         for(Dog dog : dogs){
-            System.out.println("Dog:"+ dog);
+            LOGGER.info("Dog:"+ dog);
         }
-
+        LOGGER.info("Enter ctrl+C to exit");
     }
 }
