@@ -11,12 +11,20 @@ import javax.script.ScriptEngineManager;
 public class JSEvaluate {
 
     public static boolean evaluateJs(String xml, String js) {
-        ScriptEngineManager factory = new ScriptEngineManager();
-        ScriptEngine engine = factory.getEngineByName("nashorn");
-        Bindings bindings = engine.createBindings();
+        System.out.println("Using graal JavaScript engine!!!");
+//        ScriptEngineManager factory = new ScriptEngineManager();
+//        ScriptEngine engine = factory.getEngineByName("nashorn");
+//        Bindings bindings = engine.createBindings();
+
+        ScriptEngine graalEngine = new ScriptEngineManager().getEngineByName("graal.js");
+        System.out.println("Engine Name:" + graalEngine.toString());
+
+        Bindings bindings = graalEngine.createBindings();
+
         try {
+            graalEngine.eval("print('Hello World!')");
             bindings.put("xpath", new XPathExecutor(xml));
-            return (boolean) engine.eval(js, bindings);
+            return (boolean) graalEngine.eval(js, bindings);
         } catch (final Exception err) {
             throw new RuntimeException(err);
         }
