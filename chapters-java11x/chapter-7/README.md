@@ -15,13 +15,16 @@ export MAVEN_OPTS
 
 ## Chapter 7 examples:
 
-- Distributed Closures (Example 1-2)
-- jdbc-client-driver
-- persistence-store
-- spring-data
-- sqlqueries
-- textquery
-- transactions
+- Distributed Closures
+- MapReduce and Fork-join
+- Compute task split adapter/Per-Node share state
+- Distributed task session
+- Fault tolerance and checkpointing
+- Collocation of computation and data
+- Service Grid
+- Node singleton
+- Service management and configuration
+- Microservices on Ignite (not recommended)
 
 ### To run the Distributed Closures (Example 1-2) example:
 
