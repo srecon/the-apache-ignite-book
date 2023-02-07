@@ -103,5 +103,5 @@ Make sure that, you are using the valid XML samples from the folder /resources/d
 1) Run http simulator: `mvn exec:java -Dexec.mainClass=com.blu.imdg.example9.ServiceHttpClient`
 2) Run an Ignite node (if not started any):  `mvn clean package exec:java -Dexec.mainClass=com.blu.imdg.StartCacheNode`
 3) Deploy the service: `mvn exec:java -Dexec.mainClass=com.blu.imdg.example9.DeployService`
-4) Run the service: `mvn exec:java -Dexec.mainClass=com.blu.imdg.example9.TestMicroServiceMain`
+4) Go to the URL: `http://localhost:9988/service/withdrawlimit?accountnum=0000*1111&amount=100`
 
