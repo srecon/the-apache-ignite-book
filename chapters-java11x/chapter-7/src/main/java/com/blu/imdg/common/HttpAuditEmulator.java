@@ -1,7 +1,7 @@
 package com.blu.imdg.common;
 
 import com.sun.net.httpserver.HttpServer;
-import org.glassfish.jersey.jdkhttp.JdkHttpServerFactory;
+//import org.glassfish.jersey.jdkhttp.JdkHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 
 import javax.ws.rs.GET;
@@ -10,6 +10,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriBuilder;
+import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.URI;
 
 /**
@@ -31,9 +33,12 @@ public class HttpAuditEmulator {
         return "1";
     }
 
-    public static void main(String[] args) {
-        URI baseUri = UriBuilder.fromUri("http://localhost/").port(9998).build();
-        ResourceConfig config = new ResourceConfig(HttpAuditEmulator.class);
-        HttpServer server = JdkHttpServerFactory.createHttpServer(baseUri, config);
+    public static void main(String[] args) throws IOException {
+        //URI baseUri = UriBuilder.fromUri("http://localhost/").port(9998).build();
+        //ResourceConfig config = new ResourceConfig(HttpAuditEmulator.class);
+        //HttpServer server = JdkHttpServerFactory.createHttpServer(baseUri, config);
+        HttpServer httpServer = HttpServer.create(new InetSocketAddress("localhost", 9998),0);
+        httpServer.start();
+        System.out.println("Http Server on localhost:9998");
     }
 }

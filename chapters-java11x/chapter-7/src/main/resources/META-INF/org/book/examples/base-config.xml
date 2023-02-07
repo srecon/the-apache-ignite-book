@@ -59,8 +59,8 @@
                     </property>
                 </bean>
             </list>
-        </property>
+        </property>-->
     </bean>
-    <bean id="xsdValidatingServiceImpl" class="com.blu.imdg.example7.XsdValidatingServiceImpl"/>-->
-    </bean>
+    <!--<bean id="xsdValidatingServiceImpl" class="com.blu.imdg.example7.XsdValidatingServiceImpl"/>-->
+
 </beans>

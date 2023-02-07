@@ -12,8 +12,8 @@ import java.io.IOException;
  *
  */
 public class RunXsdValidationService {
-//    private static final String VALIDATING_SERVICE = "validatingService";
-    private static final String VALIDATING_SERVICE = "validatingService-cluster-singleton";
+    private static final String VALIDATING_SERVICE = "validatingService";
+//    private static final String VALIDATING_SERVICE = "validatingService-cluster-singleton";
 
     public static void main(String[] args) throws IOException{
         try (Ignite ignite = Ignition.start(CommonConstants.CLIENT_CONFIG)) {

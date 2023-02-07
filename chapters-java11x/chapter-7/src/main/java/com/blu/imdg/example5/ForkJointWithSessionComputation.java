@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 import static com.blu.imdg.common.CommonConstants.CLIENT_CONFIG;
 
 /**
- *
+ * run mvn exec:java -Dexec.mainClass=com.blu.imdg.example5.ForkJointWithSessionComputation
  */
 @ComputeTaskSessionFullSupport
 public class ForkJointWithSessionComputation extends ComputeTaskSplitAdapter<ValidateMessage[], Boolean> {

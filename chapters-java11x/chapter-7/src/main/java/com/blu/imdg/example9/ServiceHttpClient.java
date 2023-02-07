@@ -9,7 +9,7 @@ import com.sun.net.httpserver.HttpServer;
 import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteServices;
 import org.apache.ignite.Ignition;
-import org.glassfish.jersey.jdkhttp.JdkHttpServerFactory;
+//import org.glassfish.jersey.jdkhttp.JdkHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 
 import javax.ws.rs.GET;
@@ -18,7 +18,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriBuilder;
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.net.InetSocketAddress;
 import java.net.URI;
 /**
  * http://localhost:9988/service/withdrawlimit?accountnum=0000*1111&amount=100
@@ -41,15 +43,18 @@ public class ServiceHttpClient {
         return bankService.validateOperation(accnum, new BigDecimal(amount));
     }
 
-    public static void main(String[] args) {
-        URI baseUri = UriBuilder.fromUri("http://localhost/").port(9988).build();
+    public static void main(String[] args) throws IOException {
+        //URI baseUri = UriBuilder.fromUri("http://localhost/").port(9988).build();
         // start the Ignite client
         Ignite ignite = Ignition.start(CommonConstants.CLIENT_CONFIG);
         IgniteServices services = ignite.services().withAsync();
 
         bankService = services.serviceProxy(BankService.NAME, BankService.class, /*not-sticky*/false);
 
-        ResourceConfig config = new ResourceConfig(ServiceHttpClient.class);
-        HttpServer server = JdkHttpServerFactory.createHttpServer(baseUri, config);
+        //ResourceConfig config = new ResourceConfig(ServiceHttpClient.class);
+        //HttpServer server = JdkHttpServerFactory.createHttpServer(baseUri, config);
+        HttpServer httpServer = HttpServer.create(new InetSocketAddress("localhost", 9988),0);
+        httpServer.start();
+        System.out.println("Http Server on localhost:9988");
     }
 }

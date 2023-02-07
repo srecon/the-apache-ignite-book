@@ -62,21 +62,15 @@
       <artifactId>jersey-guava</artifactId>
       <version>2.6</version>
     </dependency>
-<!--    <dependency>-->
-<!--      <groupId>com.h2database</groupId>-->
-<!--      <artifactId>h2</artifactId>-->
-<!--      <version>1.4.195</version>-->
-<!--    </dependency>-->
     <dependency>
       <groupId>org.glassfish.jersey.inject</groupId>
       <artifactId>jersey-hk2</artifactId>
       <version>2.26</version>
     </dependency>
     <dependency>
-        <groupId>javax</groupId>
-        <artifactId>javaee-web-api</artifactId>
-        <version>8.0</version>
-        <!--<scope>provided</scope>-->
+      <groupId>javax.ws.rs</groupId>
+      <artifactId>javax.ws.rs-api</artifactId>
+      <version>2.1.1</version>
     </dependency>
     <dependency>
       <groupId>org.graalvm.js</groupId>

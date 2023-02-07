@@ -12,9 +12,6 @@ public class JSEvaluate {
 
     public static boolean evaluateJs(String xml, String js) {
         System.out.println("Using graal JavaScript engine!!!");
-//        ScriptEngineManager factory = new ScriptEngineManager();
-//        ScriptEngine engine = factory.getEngineByName("nashorn");
-//        Bindings bindings = engine.createBindings();
 
         ScriptEngine graalEngine = new ScriptEngineManager().getEngineByName("graal.js");
         System.out.println("Engine Name:" + graalEngine.toString());
@@ -22,7 +19,7 @@ public class JSEvaluate {
         Bindings bindings = graalEngine.createBindings();
 
         try {
-            graalEngine.eval("print('Hello World!')");
+            bindings.put("polyglot.js.allowHostAccess", true); // essential for evulate on JVM 17
             bindings.put("xpath", new XPathExecutor(xml));
             return (boolean) graalEngine.eval(js, bindings);
         } catch (final Exception err) {
