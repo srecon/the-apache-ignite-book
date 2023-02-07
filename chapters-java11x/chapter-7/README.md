@@ -11,8 +11,6 @@ MAVEN_OPTS=" --add-opens=java.base/jdk.internal.misc=ALL-UNNAMED --add-opens=jav
 export MAVEN_OPTS
 ``` 
 
-
-
 ## Chapter 7 examples:
 
 - Distributed Closures
