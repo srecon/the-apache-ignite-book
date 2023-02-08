@@ -35,9 +35,10 @@ _If you are not sure if this book is for you, I suggest you read the sample chap
 ## build and install
 
 Note that, updated examples with Apache Ignite version 2.14.x are located on **chapters-java11x** folder. 
+
 Folder **chapters** supports older Ignite version like 2.6.0.
 
-Run the following command from the **chapters-java11x** directory
+Run the following command from the **chapters-java11x** or **chapters** directory
 
 ```
 mvn clean install
