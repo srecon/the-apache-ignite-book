@@ -20,7 +20,7 @@ This book covers the following exciting features:
 * Apache Ignite proven use cases as a memory-centric distributed database, caching and computing platforms.
 * Getting started with Apache Ignite by using different tools and technics.
 * Caching strategies by examples and how to use Apache Ignite for improving application performance including Hibernate L2 cache, MyBatis, memoization and web session cluster.
-* Using Spring Data and JPA (Hibernate OGM) with Apache Ignite for developing high-performance web applications.
+* Using Spring Data with Apache Ignite for developing high-performance web applications.
 * Ignite query (SQL, API, Text and Scan queries) capabilities in depth.
 * Using Spark RDD and Data frames for improving performance on processing fast data.
 * Developing and executing distributed computations in a parallel fashion to gain high performance, low latency, and linear scalability. 
