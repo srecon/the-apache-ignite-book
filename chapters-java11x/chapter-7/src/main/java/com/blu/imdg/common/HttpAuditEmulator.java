@@ -34,9 +34,6 @@ public class HttpAuditEmulator {
     }
 
     public static void main(String[] args) throws IOException {
-        //URI baseUri = UriBuilder.fromUri("http://localhost/").port(9998).build();
-        //ResourceConfig config = new ResourceConfig(HttpAuditEmulator.class);
-        //HttpServer server = JdkHttpServerFactory.createHttpServer(baseUri, config);
         HttpServer httpServer = HttpServer.create(new InetSocketAddress("localhost", 9998),0);
         httpServer.start();
         System.out.println("Http Server on localhost:9998");

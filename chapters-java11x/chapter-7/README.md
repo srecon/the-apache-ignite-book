@@ -43,12 +43,12 @@ Use this command `mvn exec:java -Dexec.mainClass=com.blu.imdg.StartCacheNode` to
 ### To run the Compute task split adapter/Per-Node share state (Example 4) example:
 
 1) Run http simulator: `mvn exec:java -Dexec.mainClass=com.blu.imdg.common.HttpAuditEmulator`
-2) Run an Ignite node (if not started any):  `mvn clean package exec:java -Dexec.mainClass=com.blu.imdg.StartCacheNode`
+2) Run an Ignite node (if not started yet):  `mvn clean package exec:java -Dexec.mainClass=com.blu.imdg.StartCacheNode`
 3) Run the application: `mvn exec:java -Dexec.mainClass=com.blu.imdg.example4.ForkJoinComputationExt`
 
 ### To run the Distributed task session (Example 5) example: 
 1) Run http simulator: `mvn exec:java -Dexec.mainClass=com.blu.imdg.common.HttpAuditEmulator`
-2) Run an Ignite node (if not started any):  `mvn clean package exec:java -Dexec.mainClass=com.blu.imdg.StartCacheNode`
+2) Run an Ignite node (if not started yet):  `mvn clean package exec:java -Dexec.mainClass=com.blu.imdg.StartCacheNode`
 3) Run the application: `mvn exec:java -Dexec.mainClass=com.blu.imdg.example5.ForkJointWithSessionComputation`
 
 ### To run the Fault tolerance and checkpointing (Example 6) example:
@@ -60,13 +60,13 @@ Make sure that, you are using the valid XML samples from the folder /resources/d
 
 ### To run the Collocation of computation and data (Example 8) example:
 
-1) Run an Ignite node (if not started any):  `mvn clean package exec:java -Dexec.mainClass=com.blu.imdg.StartCacheNode`
+1) Run an Ignite node (if not started yet):  `mvn clean package exec:java -Dexec.mainClass=com.blu.imdg.StartCacheNode`
 2) Run the application: `mvn exec:java -Dexec.mainClass=com.blu.imdg.example8.TestAccountSavingsMain`
 
 ### To run the Service Grid (Example 7) example:
 
 1) Run http simulator: `mvn exec:java -Dexec.mainClass=com.blu.imdg.common.HttpAuditEmulator`
-2) Run an Ignite node (if not started any):  `mvn clean package exec:java -Dexec.mainClass=com.blu.imdg.StartCacheNode`
+2) Run an Ignite node (if not started yet):  `mvn clean package exec:java -Dexec.mainClass=com.blu.imdg.StartCacheNode`
 3) Run the application: `mvn exec:java -Dexec.mainClass=com.blu.imdg.example7.TestXsdValidatingService`
 
 ### To run the Node singleton (Example 7) example:
@@ -92,14 +92,14 @@ Make sure that, you are using the valid XML samples from the folder /resources/d
 ### To run Microservice (Example 9) examples: 
 
 1) Run http simulator: `mvn exec:java -Dexec.mainClass=com.blu.imdg.common.HttpAuditEmulator`
-2) Run an Ignite node (if not started any):  `mvn clean package exec:java -Dexec.mainClass=com.blu.imdg.StartCacheNode`
+2) Run an Ignite node (if not started yet):  `mvn clean package exec:java -Dexec.mainClass=com.blu.imdg.StartCacheNode`
 3) Deploy the service: `mvn exec:java -Dexec.mainClass=com.blu.imdg.example9.DeployService`
 4) Run the service: `mvn exec:java -Dexec.mainClass=com.blu.imdg.example9.TestMicroServiceMain`
 
 ### To run Microservice (Example 9) REST client example:
 
-1) Run http simulator: `mvn exec:java -Dexec.mainClass=com.blu.imdg.example9.ServiceHttpClient`
-2) Run an Ignite node (if not started any):  `mvn clean package exec:java -Dexec.mainClass=com.blu.imdg.StartCacheNode`
-3) Deploy the service: `mvn exec:java -Dexec.mainClass=com.blu.imdg.example9.DeployService`
-4) Go to the URL: `http://localhost:9988/service/withdrawlimit?accountnum=0000*1111&amount=100`
-
+1) Run an Ignite node (if not started yet):  `mvn clean package exec:java -Dexec.mainClass=com.blu.imdg.StartCacheNode`
+2) Deploy the Bank service: `mvn exec:java -Dexec.mainClass=com.blu.imdg.example9.DeployService`
+3) Run http simulator: `mvn exec:java -Dexec.mainClass=com.blu.imdg.common.HttpAuditEmulator`
+4) Run the REST client: `mvn exec:java -Dexec.mainClass=com.blu.imdg.example9.ServiceHttpClient`
+5) Go to the URL: `http://localhost:9988/service/withdrawlimit?accountnum=0000*1111&amount=100`

@@ -25,9 +25,12 @@ public class DeployService {
 
             services.deployNodeSingleton(LogService.NAME, new LogServiceImpl());
             services.future().get();
+            System.out.println("Log Service deployed!");
 
             services.deployNodeSingleton(BankService.NAME, new BankServiceImpl());
             services.future().get();
+            System.out.println("Bank Service deployed!");
+
         }
     }
 }
