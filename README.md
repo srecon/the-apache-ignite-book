@@ -4,6 +4,10 @@
 
 This is the code repository (code samples, scripts and more in-depth examples) for [The Apache Ignite Book](https://leanpub.com/ignitebook).
 
+> [!IMPORTANT] 
+> Note that, updated examples with Apache Ignite version 2.14.x are located on **chapters-java11x** folder.
+> Folder **chapters** supports older Ignite version like 2.6.0.
+
 ## Naming conventions
 
 Each chapter in the book has a corresponding folder within the repository. Each folder contains a set of files or folders related to each section of the chapter. For an example, the listing of the _memoization_ section is placed in the folder _chapters/chapter-5/memoization_.
@@ -30,26 +34,30 @@ This book covers the following exciting features:
 
 If you feel this book is for you, get your [copy](https://leanpub.com/ignitebook) today!
 
-_If you are not sure if this book is for you, I suggest you read the sample chapter of the book. The sample chapter is available in different formats including [HTML](https://leanpub.com/ignitebook/read_sample). Anyway, I encourage you to try it out, and if you don't like the book, you can always ask a 100% refund within 45 days._
+> [!TIP]
+> If you are not sure if this book is for you, I suggest you read the sample chapter of the book. The sample chapter is available in different formats including [HTML](https://leanpub.com/ignitebook/read_sample). Anyway, I encourage you to try it out, and if you don't like the book, you can always ask a 100% refund within 45 days.
 
 ## build and install
 
+<<<<<<< HEAD
+Run the following command from the **chapters-java11x** directory
+=======
 Note that, updated examples with Apache Ignite version 2.14.x are located on **chapters-java11x** folder. 
 
 Folder **chapters** supports older Ignite version like 2.6.0.
 
 Run the following command from the **chapters-java11x** or **chapters** directory
+>>>>>>> 91773b00f5c7bbc7bd2681e595973a2ac828e1d5
 
 ```
 mvn clean install
 ```
 
-
 We recommend a workstation with the following configurations for working with the repository:
 
 | № | Name         | Value                                                        |
 |---|--------------|--------------------------------------------------------------|
-| 1 | JDK          | Oracle JDK 11.x and above.              |
+| 1 | JDK          | Oracle/Open JDK 11.x and above.              |
 | 2 | OS           | Linux, MacOS (10.8.3 and above), Windows Vista SP2 and above |
 | 3 | Network      | No restriction                                               |
 | 4 | RAM          | Minimum 4GB of RAM                                           |
@@ -76,6 +84,7 @@ Any command-line input or output is written as follows:
 [2018-12-30 15:39:04,480] INFO [KafkaServer id=0] started (kafka.server.KafkaServer)
 ```
 ## This Github repository contains the following examples:
+
 - Ignite example in Java
 - Ignite example in Spring
 - Ignite thinclient example
