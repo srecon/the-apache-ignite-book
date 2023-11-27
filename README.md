@@ -7,6 +7,9 @@ This is the code repository (code samples, scripts and more in-depth examples) f
 > [!IMPORTANT] 
 > Note that, updated examples with Apache Ignite version 2.14.x are located on **chapters-java11x** folder.
 > Folder **chapters** supports older Ignite version like 2.6.0.
+> Use the following JVM options to run on JVM 17 or later, for example
+> java --add-opens=jdk.management/com.sun.management.internal=ALL-UNNAMED --add-opens=java.base/jdk.internal.misc=ALL-UNNAMED --add-opens=java.base/sun.nio.ch=ALL-UNNAMED --add-opens=java.management/com.sun.jmx.mbeanserver=ALL-UNNAMED --add-opens=jdk.internal.jvmstat/sun.jvmstat.monitor=ALL-UNNAMED --add-opens=java.base/sun.reflect.generics.reflectiveObjects=ALL-UNNAMED --add-opens=java.base/java.io=ALL-UNNAMED --add-opens=java.base/java.nio=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.lang=ALL-UNNAMED -jar ./target/HelloIgnite-runnable.jar
+
 
 ## Naming conventions
 
