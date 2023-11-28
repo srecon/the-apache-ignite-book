@@ -21,7 +21,7 @@ We recommend a workstation with the following configurations for working with th
 | 5 | IDE          | Eclipse, IntelliJ Idea, NetBeans or JDeveloper       |
 | 6 | Apache Maven | Version 3.6.3 or above                               |
 
-> Note that, you have to use the following Java options to run examples on JVM 17 or later. Each chapter also contained `README.md` file with shot instructions.
+> Note that, you have to use the following Java options to run examples on JVM 17 or later. Each chapter also contained `README.md` file with short instructions.
 
 ```
 --add-opens=jdk.management/com.sun.management.internal=ALL-UNNAMED --add-opens=java.base/jdk.internal.misc=ALL-UNNAMED --add-opens=java.base/sun.nio.ch=ALL-UNNAMED --add-opens=java.management/com.sun.jmx.mbeanserver=ALL-UNNAMED --add-opens=jdk.internal.jvmstat/sun.jvmstat.monitor=ALL-UNNAMED --add-opens=java.base/sun.reflect.generics.reflectiveObjects=ALL-UNNAMED --add-opens=java.base/java.io=ALL-UNNAMED --add-opens=java.base/java.nio=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.lang=ALL-UNNAMED
@@ -60,10 +60,10 @@ Any command-line input or output is written as follows:
 - Ignite Spring data example
 - Ignite compute grid examples
 - Microservices with Ignite examples
-- Ignite camel itegration example
+- Ignite camel integration example
 - Ignite flume integration example
 - Ignite kafka integration example
-- Ignite Storm itegration example
+- Ignite Storm integration example
 - Ignite Spark RDD example
 - Ignite Spark Data frame example
 - Ignite Zookeeper discovery example
