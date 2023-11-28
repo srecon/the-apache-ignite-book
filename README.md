@@ -43,15 +43,7 @@ If you feel this book is for you, get your [copy](https://leanpub.com/ignitebook
 
 ## build and install
 
-<<<<<<< HEAD
 Run the following command from the **chapters-java11x** directory
-=======
-Note that, updated examples with Apache Ignite version 2.14.x are located on **chapters-java11x** folder. 
-
-Folder **chapters** supports older Ignite version like 2.6.0.
-
-Run the following command from the **chapters-java11x** or **chapters** directory
->>>>>>> 91773b00f5c7bbc7bd2681e595973a2ac828e1d5
 
 ```
 mvn clean install
@@ -89,7 +81,7 @@ Any command-line input or output is written as follows:
 ```
 ## This Github repository contains the following examples:
 
-- Ignite example in Java
+- Ignite example in pure Java
 - Ignite example in Spring
 - Ignite thinclient example
 - Ignite isolated cluster example
@@ -104,13 +96,13 @@ Any command-line input or output is written as follows:
 - Ignite Spring data example
 - Ignite compute grid examples
 - Microservices with Ignite examples
-- Ignite camel itegration example
+- Ignite camel integration example
 - Ignite flume integration example
 - Ignite kafka integration example
-- Ignite Storm itegration example
+- Ignite Storm integration example
 - Ignite Spark RDD example
 - Ignite Spark Data frame example
 - Ignite Zookeeper discovery example
 - Ignite Baseline by examples
 - Ignite monitoring by VisualVM/Grafana example
-- and much more
+- and much more ...
