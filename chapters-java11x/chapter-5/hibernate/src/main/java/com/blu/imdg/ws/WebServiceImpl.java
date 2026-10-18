@@ -30,7 +30,7 @@ import java.util.List;
  */
 @WebService(name = "BusinessRulesServices", serviceName = "BusinessRulesServices",
         targetNamespace = "http://com.blu.rules/services")
-public class WebService {
+public class WebServiceImpl {
     private EmpDao empDao;
 
     @WebMethod(exclude = true)

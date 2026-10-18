@@ -3,17 +3,17 @@ package com.blu.imdg;
 import com.blu.imdg.dao.EmpDao;
 import com.blu.imdg.dto.Employee;
 import com.blu.imdg.dto.ExchangeRate;
-import org.hibernate.Query;
-import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Restrictions;
-//import org.springframework.cache.annotation.CacheEvict;
-//import org.springframework.cache.annotation.Cacheable;
+import org.hibernate.query.Query;
+import org.hibernate.query.NativeQuery;
+import org.hibernate.query.criteria.HibernateCriteriaBuilder;
 
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 
@@ -29,7 +29,7 @@ public class EmpDaoImpl implements EmpDao {
 
     public List<Employee> getAllEmployees() {
         Session session = sessionFactory.openSession();
-        Query query = session.createQuery("from Employee e");
+        Query<Employee> query = session.createQuery("from Employee e", Employee.class);
         List<Employee> employees =  query.list();
         session.close();
         if(employees != null && !employees.isEmpty()){
@@ -47,7 +47,7 @@ public class EmpDaoImpl implements EmpDao {
         return emp;
     }
 
-    public void create(Integer empno, String ename, String job, Integer mgr) {
+    public void create(int empno, String ename, String job, Integer mgr) {
         Session session = sessionFactory.openSession();
 
         session.beginTransaction();
@@ -58,7 +58,7 @@ public class EmpDaoImpl implements EmpDao {
         emp.setMgr(mgr);
         emp.setSal(1111);
         emp.setDeptno(10);
-        emp.setDate(new Date(System.currentTimeMillis()));
+        emp.setHireDate(LocalDate.now());
         emp.setComm(111);
         session.save(emp);
         session.getTransaction().commit();
@@ -66,20 +66,12 @@ public class EmpDaoImpl implements EmpDao {
     }
 
     public List<Employee> getEmpByName(String ename) {
-//        Session session = sessionFactory.openSession();
-//        Query query = session.createQuery("from Employee e where e.ename=:ename");
-//        query.setParameter("ename", ename);
-//        // ENABLE QUERY CACHE
-//        //query.setCacheable(true);
-//        List<Employee> employees =  query.list();
-//        session.close();
-//        return employees;
         Session session = sessionFactory.openSession();
-        Criteria criteria = session.createCriteria(com.blu.imdg.dto.Employee.class);
-        criteria.add(Restrictions.ilike("ename", ename));
-        // ENABLE QUERY CACHE
-        //criteria.setCacheable(true);
-        List<Employee> employees =  criteria.list();
+        HibernateCriteriaBuilder cb = session.getCriteriaBuilder();
+        CriteriaQuery<Employee> criteriaQuery = cb.createQuery(Employee.class);
+        var root = criteriaQuery.from(Employee.class);
+        criteriaQuery.where(cb.like(root.get("ename"), ename.replace('*', '%'), '\\'));
+        List<Employee> employees = session.createQuery(criteriaQuery).list();
         session.close();
         return employees;
     }
@@ -89,9 +81,8 @@ public class EmpDaoImpl implements EmpDao {
     public String getExchangeRateByRegion(String region) {
         Session session = sessionFactory.openSession();
         // in real life, it should be current date time
-        SQLQuery query = session.createSQLQuery("select * from exchangerate e where e.ratedate = TO_DATE('2015-05-02','YYYY-MM-DD') and e.region=:region");
+        NativeQuery<ExchangeRate> query = session.createNativeQuery("select * from exchangerate e where e.ratedate = TO_DATE('2015-05-02','YYYY-MM-DD') and e.region=:region", ExchangeRate.class);
         query.setParameter("region", region);
-        query.addEntity(ExchangeRate.class);
         ExchangeRate res =  (ExchangeRate)query.uniqueResult();
         session.close();
         return String.valueOf(res.getUsdollar());
@@ -102,13 +93,12 @@ public class EmpDaoImpl implements EmpDao {
     public void updateExchange(ExchangeRate e) {
         Session session = sessionFactory.openSession();
         session.getTransaction().begin();
-        SQLQuery query =  session.createSQLQuery("update exchangerate \n" +
+        NativeQuery<ExchangeRate> query =  session.createNativeQuery("update exchangerate \n" +
                 " set usdollar = :usdollar" +
                 " where region = :region and ratedate = TO_DATE('2015-05-02','YYYY-MM-DD')") ;
 
         query.setParameter("region", e.getRegion());
         query.setParameter("usdollar", e.getUsdollar());
-        query.addEntity(ExchangeRate.class);
         query.executeUpdate();
         session.getTransaction().commit();
         session.close();

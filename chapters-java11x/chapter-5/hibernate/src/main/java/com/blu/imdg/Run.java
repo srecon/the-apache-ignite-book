@@ -6,7 +6,7 @@ import com.blu.imdg.dto.ExchangeRate;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -21,7 +21,7 @@ public class Run {
         //String res = empDao.getExchangeRateByRegion("Moscow");
         ExchangeRate e = new ExchangeRate();
         e.setRegion("Moscow");
-        e.setRateDate(new Date(System.currentTimeMillis()));
+        e.setRateDate(LocalDate.now());
         e.setUsdollar(71.17);
         empDao.updateExchange(e);
         System.out.println("return size:");
