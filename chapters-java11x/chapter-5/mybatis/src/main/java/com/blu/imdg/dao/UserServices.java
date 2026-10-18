@@ -17,6 +17,7 @@
 package com.blu.imdg.dao;
 
 import com.blu.imdg.dto.Employee;
+import com.blu.imdg.mapper.UserMapper;
 
 /**
  * User services layer wrapping MyBatis mappers.
