@@ -2,19 +2,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>com.blu.imdg</groupId>
         <artifactId>chapter-6</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>2.0-SNAPSHOT</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
-    <artifactId>textquery</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <packaging>jar</packaging>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
+    <artifactId>textquery</artifactId>
+    <name>Ignite Text Query Example</name>
 
     <dependencies>
         <dependency>
@@ -23,16 +20,14 @@
         </dependency>
         <dependency>
             <groupId>org.apache.ignite</groupId>
-            <artifactId>ignite-indexing</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.ignite</groupId>
             <artifactId>ignite-spring</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.ignite</groupId>
-            <artifactId>ignite-slf4j</artifactId>
+            <artifactId>ignite-indexing</artifactId>
         </dependency>
+
+        <!-- Logging -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -41,14 +36,12 @@
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
         </dependency>
+
+        <!-- Test -->
         <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-csv</artifactId>
-            <version>1.9.0</version>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -57,28 +50,19 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.3</version>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
             </plugin>
+            <!-- Replaced deprecated onejar-maven-plugin with maven-shade-plugin -->
             <plugin>
-                <groupId>com.jolira</groupId>
-                <artifactId>onejar-maven-plugin</artifactId>
-                <version>1.4.4</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.5.1</version>
                 <executions>
-                    <execution>
-                        <id>build-query</id>
+                    <execution><phase>package</phase><goals><goal>shade</goal></goals>
                         <configuration>
-                            <mainClass>com.blu.imdg.TextQueryExample</mainClass>
-                            <attachToBuild>true</attachToBuild>
-                            <classifier>onejar</classifier>
-                            <filename>textquery-runnable.jar</filename>
+                            <transformers><transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                <mainClass>com.blu.imdg.TextQueryExample</mainClass>
+                            </transformer></transformers>
                         </configuration>
-                        <goals>
-                            <goal>one-jar</goal>
-                        </goals>
                     </execution>
                 </executions>
             </plugin>

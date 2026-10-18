@@ -2,41 +2,44 @@ package com.blu.imdg.dataframe;
 
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
-
 import org.apache.spark.sql.ignite.IgniteSparkSession;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 
 public class IgniteDataFrame {
 
     private static final String IGNITE_CONFIG_XML = "ignite.config.xml";
+    private static final Logger log = LogManager.getLogger(IgniteDataFrame.class);
 
     public static void main(String[] args) throws Exception {
         if (args.length < 1) {
-            System.err.println("Usage: ignite.spark.query-1.0.jar PATH_TO/IgniteSparkApp");
+            log.error("Usage: ignite.spark.query-1.0.jar PATH_TO/IgniteSparkApp");
             System.exit(1);
         }
 
-        String config_path = args[0];
+        var configPath = args[0];
 
-        IgniteSparkSession igniteSession = IgniteSparkSession.builder()
+        var igniteSession = IgniteSparkSession.builder()
                 .appName("Spark Ignite dataframe example")
                 .master("local")
                 .config("spark.executor.instances", "2")
-                //.config("spark.master","spark://shamim.local:7077")
-                //Only additional option to refer to Ignite cluster.
-                .igniteConfig(config_path+"/"+IGNITE_CONFIG_XML)
+                .igniteConfig(configPath + "/" + IGNITE_CONFIG_XML)
                 .getOrCreate();
 
-//      This will print out info about all SQL tables existed in Ignite.
+        log.info("Listing all SQL tables in Ignite:");
         igniteSession.catalog().listTables().show();
 
-        Dataset<Row> res = igniteSession.sql("" +
-                "select f.ORIGIN_AIRPORT_ID, a.DESCRIPTION, count(f.ID) from FLIGHTS f " +
-                " join  AIRPORTS a on a.Code=f.ORIGIN_AIRPORT_ID" +
-                " group by f.ORIGIN_AIRPORT_ID, a.DESCRIPTION order by count(f.ID)"
-                );
+        var sqlQuery = """
+            select f.ORIGIN_AIRPORT_ID, a.DESCRIPTION, count(f.ID) from FLIGHTS f
+             join  AIRPORTS a on a.Code=f.ORIGIN_AIRPORT_ID
+             group by f.ORIGIN_AIRPORT_ID, a.DESCRIPTION order by count(f.ID)
+            """;
+        log.info("Executing query: {}", sqlQuery);
+
+        Dataset<Row> res = igniteSession.sql(sqlQuery);
         res.foreach(v -> {
-            System.out.println("Row="+v);
+            log.info("Row={}", v);
         });
 
         //igniteSession.stop();

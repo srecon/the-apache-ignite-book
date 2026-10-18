@@ -1,28 +1,30 @@
 package com.blu.imdg.common.bankData.model;
 
-import org.apache.ignite.cache.affinity.AffinityKeyMapped;
 import org.apache.ignite.cache.query.annotations.QuerySqlField;
 
-import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
- *
+ * Transaction key for Ignite SQL queries with affinity mapping.
  */
-public class TransactionKey implements AccountCacheKey, Serializable {
+public class TransactionKey implements AccountCacheKey {
 
     @QuerySqlField(index = true)
     @AffinityKeyMapped
-    private String account;
+    private final String account;
 
-    private Date transactionDate;
+    @QuerySqlField
+    private final LocalDate transactionDate;
 
-    private String transactionId;
+    private final String transactionId;
 
     public TransactionKey() {
+        this.account = null;
+        this.transactionDate = null;
+        this.transactionId = null;
     }
 
-    public TransactionKey(String account, Date transactionDate, String transactionId) {
+    public TransactionKey(String account, LocalDate transactionDate, String transactionId) {
         this.account = account;
         this.transactionDate = transactionDate;
         this.transactionId = transactionId;
@@ -33,14 +35,15 @@ public class TransactionKey implements AccountCacheKey, Serializable {
     }
 
     public void setAccount(String account) {
+        // Note: modifying a key after insertion is not recommended in Ignite.
         this.account = account;
     }
 
-    public Date getTransactionDate() {
+    public LocalDate getTransactionDate() {
         return transactionDate;
     }
 
-    public void setTransactionDate(Date transactionDate) {
+    public void setTransactionDate(LocalDate transactionDate) {
         this.transactionDate = transactionDate;
     }
 

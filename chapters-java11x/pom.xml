@@ -1,22 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.blu.imdg</groupId>
     <artifactId>chapters-java11x</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>2.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>chapters-java11x</name>
-    <url>http://maven.apache.org</url>
+    <name>The Apache Ignite Book - Modernized Examples (Java 21)</name>
+    <url>https://github.com/apache/ignite-book</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <ignite.version>2.14.0</ignite.version>
-        <slf4jVersion>1.6.1</slf4jVersion>
-        <logback.version>1.0.1</logback.version>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <java.version>21</java.version>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.release>21</maven.compiler.release>
+        <ignite.version>2.16.0</ignite.version>
+        <spring-boot.version>3.2.4</spring-boot.version>
+        <slf4j-api.version>2.0.12</slf4j-api.version>
+        <logback.version>1.5.3</logback.version>
+        <junit-jupiter.version>5.10.2</junit-jupiter.version>
+        <postgresql.version>42.7.2</postgresql.version>
+        <jakarta.ws.rs-api.version>3.1.0</jakarta.ws.rs-api.version>
+        <graalvm-js.version>23.1.2</graalvm-js.version>
+        <jackson.version>2.16.1</jackson.version>
+        <camel.version>4.3.0</camel.version>
+        <spring-data-commons.version>3.2.4</spring-data-commons.version>
     </properties>
 
     <modules>
@@ -27,9 +39,20 @@
         <module>chapter-8</module>
         <module>chapter-9</module>
         <module>chapter-10</module>
-  </modules>
+    </modules>
+
     <dependencyManagement>
         <dependencies>
+            <!-- Spring Boot BOM -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- Ignite -->
             <dependency>
                 <groupId>org.apache.ignite</groupId>
                 <artifactId>ignite-core</artifactId>
@@ -50,38 +73,27 @@
                 <artifactId>ignite-slf4j</artifactId>
                 <version>${ignite.version}</version>
             </dependency>
-            <!--<dependency>
-                <groupId>com.h2database</groupId>
-                <artifactId>h2</artifactId>
-                <version>1.3.175</version>
-            </dependency>-->
             <dependency>
                 <groupId>org.apache.ignite</groupId>
                 <artifactId>ignite-camel</artifactId>
                 <version>${ignite.version}</version>
             </dependency>
-            <!-- Ignite Flume-->
             <dependency>
                 <groupId>org.apache.ignite</groupId>
                 <artifactId>ignite-flume</artifactId>
                 <version>${ignite.version}</version>
             </dependency>
-            <!-- Ignite Storm-->
             <dependency>
                 <groupId>org.apache.ignite</groupId>
                 <artifactId>ignite-storm</artifactId>
                 <version>${ignite.version}</version>
             </dependency>
-            <!-- Logging wih SLF4J -->
-            <dependency>
-                <groupId>org.apache.ignite</groupId>
-                <artifactId>ignite-log4j</artifactId>
-                <version>${ignite.version}</version>
-            </dependency>
+
+            <!-- Logging -->
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
-                <version>${slf4jVersion}</version>
+                <version>${slf4j-api.version}</version>
             </dependency>
             <dependency>
                 <groupId>ch.qos.logback</groupId>
@@ -93,12 +105,88 @@
                 <artifactId>logback-core</artifactId>
                 <version>${logback.version}</version>
             </dependency>
+
+            <!-- Database -->
+            <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>${postgresql.version}</version>
+            </dependency>
+
+            <!-- JAX-RS (jakarta) -->
+            <dependency>
+                <groupId>jakarta.ws.rs</groupId>
+                <artifactId>jakarta.ws.rs-api</artifactId>
+                <version>${jakarta.ws.rs-api.version}</version>
+            </dependency>
+
+            <!-- GraalVM JS -->
+            <dependency>
+                <groupId>org.graalvm.js</groupId>
+                <artifactId>js</artifactId>
+                <version>${graalvm-js.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.graalvm.js</groupId>
+                <artifactId>js-scriptengine</artifactId>
+                <version>${graalvm-js.version}</version>
+            </dependency>
+
+            <!-- Jackson -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+
+            <!-- Spring Data -->
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-commons</artifactId>
+                <version>${spring-data-commons.version}</version>
+            </dependency>
+
+            <!-- Test -->
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter</artifactId>
+                <version>${junit-jupiter.version}</version>
+                <scope>test</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
-    <repositories>
-        <repository>
-            <id>SAKAI</id>
-            <url>https://source.sakaiproject.org/maven2/</url>
-        </repository>
-    </repositories>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.12.1</version>
+                    <configuration>
+                        <release>${java.version}</release>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <version>3.4.1</version>
+                    <executions>
+                        <execution>
+                            <id>enforce-java</id>
+                            <goals><goal>enforce</goal></goals>
+                            <configuration>
+                                <rules>
+                                    <requireJavaVersion>
+                                        <version>[21,)</version>
+                                    </requireJavaVersion>
+                                </rules>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
 </project>

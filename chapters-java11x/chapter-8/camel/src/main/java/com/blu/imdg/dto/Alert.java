@@ -1,32 +1,32 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.blu.imdg.dto;
 
 import org.apache.ignite.cache.query.annotations.QuerySqlField;
 
 
-public class Alert {
-    @QuerySqlField(index = true)
-    private String serviceName;
-    @QuerySqlField(index = true)
-    private Level alertLevel;
-
-    public Alert(String serviceName, Level alertLevel) {
-        this.serviceName = serviceName;
-        this.alertLevel = alertLevel;
-    }
-
-    public Level getAlertLevel() {
-        return alertLevel;
-    }
-
-    public void setAlertLevel(Level alertLevel) {
-        this.alertLevel = alertLevel;
-    }
-
+/** Immutable alert DTO with SQL query support. */
+public record Alert(
+    @QuerySqlField(index = true) String serviceName,
+    @QuerySqlField(index = true) Level alertLevel
+) {
     @Override
     public String toString() {
-        return "Alert{" +
-                "serviceName='" + serviceName + '\'' +
-                ", alertLevel='" + alertLevel + '\'' +
-                '}';
+        return "Alert{serviceName='%s', alertLevel='%s'}".formatted(serviceName, alertLevel);
     }
 }

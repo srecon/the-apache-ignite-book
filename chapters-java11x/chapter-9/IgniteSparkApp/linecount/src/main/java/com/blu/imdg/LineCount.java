@@ -1,24 +1,30 @@
 package com.blu.imdg;
 
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.SparkSession;
 
 public final class LineCount {
 
+    private static final Logger log = LogManager.getLogger(LineCount.class);
+
     public static void main(String[] args) throws Exception {
         if (args.length < 1) {
-            System.err.println("Usage: LineCount <file>");
+            log.error("Usage: LineCount <file>");
             System.exit(1);
         }
 
-        String logFile = args[0];
-        SparkSession spark = SparkSession.builder().appName("Line count Application").getOrCreate();
-        Dataset<String> logData = spark.read().textFile(logFile).cache();
+        var logFile = args[0];
+        var appName = """
+            Line count Application""";
+        var spark = SparkSession.builder().appName(appName).getOrCreate();
+        var logData = spark.read().textFile(logFile).cache();
 
-        long numAs = logData.filter(s -> s.contains("a")).count();
-        long numBs = logData.filter(s -> s.contains("b")).count();
+        var numAs = logData.filter(s -> s.contains("a")).count();
+        var numBs = logData.filter(s -> s.contains("b")).count();
 
-        System.out.println("Lines with a: " + numAs + ", lines with b: " + numBs);
+        log.info("Lines with a: {}, lines with b: {}", numAs, numBs);
 
         spark.stop();
     }

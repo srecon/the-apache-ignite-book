@@ -2,22 +2,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>com.blu.imdg</groupId>
         <artifactId>chapter-6</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>2.0-SNAPSHOT</version>
     </parent>
 
-    <modelVersion>4.0.0</modelVersion>
     <artifactId>persistence-store</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <packaging>jar</packaging>
-    <url>http://maven.apache.org</url>
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring.version>4.3.2.RELEASE</spring.version>
-    </properties>
+    <name>Ignite Cache Store Integration (PostgreSQL + MongoDB)</name>
 
     <dependencies>
         <dependency>
@@ -28,10 +22,27 @@
             <groupId>org.apache.ignite</groupId>
             <artifactId>ignite-spring</artifactId>
         </dependency>
+
+        <!-- Spring (Jakarta) -->
         <dependency>
-            <groupId>org.apache.ignite</groupId>
-            <artifactId>ignite-slf4j</artifactId>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
         </dependency>
+
+        <!-- PostgreSQL -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+        </dependency>
+
+        <!-- MongoDB (Jakarta) -->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-mongodb</artifactId>
+            <version>4.2.4</version>
+        </dependency>
+
+        <!-- Logging -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -40,109 +51,44 @@
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
         </dependency>
+
+        <!-- Test -->
         <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>9.4.1209</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-aop</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-beans</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-mongodb</artifactId>
-            <version>1.10.17.RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-jpa</artifactId>
-            <version>1.10.11.RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-tx</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-expression</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-framework-bom</artifactId>
-            <version>${spring.version}</version>
-            <type>pom</type>
-            <scope>import</scope>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
+
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.3</version>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
             </plugin>
+            <!-- Replaced deprecated onejar-maven-plugin with maven-shade-plugin -->
             <plugin>
-                <groupId>com.jolira</groupId>
-                <artifactId>onejar-maven-plugin</artifactId>
-                <version>1.4.4</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.5.1</version>
                 <executions>
                     <execution>
-                        <id>build-query</id>
+                        <id>default_1</id>
+                        <phase>package</phase><goals><goal>shade</goal></goals>
                         <configuration>
-                            <mainClass>com.blu.imdg.CacheStoreSample</mainClass>
-                            <attachToBuild>true</attachToBuild>
-                            <classifier>onejar</classifier>
-                            <filename>cache-store-runnable.jar</filename>
+                            <transformers><transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                <mainClass>com.blu.imdg.CacheStoreSample</mainClass>
+                            </transformer></transformers>
                         </configuration>
-                        <goals>
-                            <goal>one-jar</goal>
-                        </goals>
                     </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>com.jolira</groupId>
-                <artifactId>onejar-maven-plugin</artifactId>
-                <version>1.4.4</version>
-                <executions>
                     <execution>
-                        <id>select-query</id>
+                        <id>default_2</id>
+                        <phase>package</phase><goals><goal>shade</goal></goals>
                         <configuration>
-                            <mainClass>com.blu.imdg.ReadCacheEntries</mainClass>
-                            <attachToBuild>true</attachToBuild>
-                            <classifier>onejar</classifier>
-                            <filename>read-cache-runnable.jar</filename>
+                            <transformers><transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                <mainClass>com.blu.imdg.ReadCacheEntries</mainClass>
+                            </transformer></transformers>
                         </configuration>
-                        <goals>
-                            <goal>one-jar</goal>
-                        </goals>
                     </execution>
                 </executions>
             </plugin>

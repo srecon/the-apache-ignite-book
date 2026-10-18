@@ -1,28 +1,35 @@
 package com.blu.imdg.model;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.apache.ignite.cache.query.annotations.QuerySqlField;
 import org.apache.ignite.cache.query.annotations.QueryTextField;
 
-
-public class Employee implements Serializable {
+/**
+ * Employee entity mapped to Ignite SQL queries.
+ */
+public class Employee {
 
     private static final AtomicInteger GENERATED_ID = new AtomicInteger();
 
     @QuerySqlField(index = true)
     private Integer empno;
+
     @QuerySqlField
     private String ename;
+
     @QueryTextField
     private String job;
+
     @QuerySqlField
     private Integer mgr;
+
     @QuerySqlField
     private LocalDate hiredate;
+
     @QuerySqlField
     private Integer sal;
+
     @QuerySqlField(index = true)
     private Integer deptno;
 
@@ -94,7 +101,6 @@ public class Employee implements Serializable {
         this.deptno = deptno;
     }
 
-    //Affinity employee key
     public EmployeeKey getKey() {
         if (key == null) {
             key = new EmployeeKey(empno, deptno);
@@ -102,9 +108,10 @@ public class Employee implements Serializable {
         return key;
     }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return "Employee[" +
-            "    ename='" + ename + '\'' +
+            "ename='" + ename + '\'' +
             ", job='" + job + '\'' +
             ", mgr=" + mgr +
             ", hiredate=" + hiredate +

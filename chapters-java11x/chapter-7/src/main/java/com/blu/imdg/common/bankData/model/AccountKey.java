@@ -2,14 +2,12 @@ package com.blu.imdg.common.bankData.model;
 
 import org.apache.ignite.cache.affinity.AffinityKeyMapped;
 
-import java.io.Serializable;
-
 /**
- *
+ * Account key for Ignite cache operations with affinity mapping.
  */
-public class AccountKey implements AccountCacheKey,Serializable {
+public class AccountKey implements AccountCacheKey {
     @AffinityKeyMapped
-    private String account;
+    private final String account;
 
     public AccountKey(String account) {
         this.account = account;
@@ -27,7 +25,6 @@ public class AccountKey implements AccountCacheKey,Serializable {
         AccountKey that = (AccountKey) o;
 
         return account != null ? account.equals(that.account) : that.account == null;
-
     }
 
     @Override

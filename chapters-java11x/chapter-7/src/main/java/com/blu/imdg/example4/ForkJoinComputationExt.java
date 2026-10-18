@@ -9,6 +9,8 @@ import org.apache.ignite.compute.ComputeJobResult;
 import org.apache.ignite.compute.ComputeTaskSplitAdapter;
 import com.blu.imdg.common.TestDataGenerator;
 import com.blu.imdg.example3.ValidateMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
@@ -20,15 +22,14 @@ import java.util.stream.Collectors;
 import static com.blu.imdg.common.CommonConstants.CLIENT_CONFIG;
 
 /**
- *
+ * ForkJoin computation with external service integration.
+ * <p>
  * Run http simulator: mvn exec:java -Dexec.mainClass=com.blu.imdg.common.HttpAuditEmulator
- * Run Ignite node:  mvn clean package exec:java -Dexec.mainClass=com.blu.imdg.StartCacheNode
- * Run the applicaion: mvn exec:java -Dexec.mainClass=com.blu.imdg.example4.ForkJoinComputationExt
- *
+ * Run Ignite node:   mvn clean package exec:java -Dexec.mainClass=com.blu.imdg.StartCacheNode
+ * Run the application: mvn exec:java -Dexec.mainClass=com.blu.imdg.example4.ForkJoinComputationExt
  */
 public class ForkJoinComputationExt extends ComputeTaskSplitAdapter<ValidateMessage[], Boolean> {
-
-
+    private static final Logger log = LoggerFactory.getLogger(ForkJoinComputationExt.class);
 
     @Override
     protected Collection<? extends ComputeJob> split(int i, ValidateMessage[] messages) throws IgniteException {
@@ -37,18 +38,18 @@ public class ForkJoinComputationExt extends ComputeTaskSplitAdapter<ValidateMess
 
     @Nullable
     @Override
-    public Boolean reduce(List<ComputeJobResult> list) throws IgniteException {
-        return list.stream().reduce(true, (acc, value) -> acc && (Boolean) value.getData(), (a, b) -> a && b);
+    public Boolean reduce(List<ComputeJobResult> results) throws IgniteException {
+        return results.stream().reduce(true, (acc, value) -> acc && (Boolean) value.getData(), (a, b) -> a && b);
     }
 
     public static void main(String[] args) throws IOException {
 
-        try (Ignite ignite = Ignition.start(CLIENT_CONFIG)) {
-            IgniteCompute compute = ignite.compute();
+        try (var ignite = Ignition.start(CLIENT_CONFIG)) {
+            var compute = ignite.compute();
 
-            ValidateMessage[] validateMessages = TestDataGenerator.getValidateMessages();
-            Boolean result = compute.execute(new ForkJoinComputationExt(), validateMessages);
-            System.out.println("result=" + result);
+            var validateMessages = TestDataGenerator.getValidateMessages();
+            var result = compute.execute(new ForkJoinComputationExt(), validateMessages);
+            log.info("result={}", result);
         }
     }
 }

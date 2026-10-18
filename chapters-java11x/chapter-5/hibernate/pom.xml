@@ -1,99 +1,95 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>com.blu.imdg</groupId>
-    <artifactId>chapter-5</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <relativePath>../pom.xml</relativePath>
-  </parent>
+    <parent>
+        <groupId>com.blu.imdg</groupId>
+        <artifactId>chapter-5</artifactId>
+        <version>2.0-SNAPSHOT</version>
+    </parent>
 
-  <groupId>com.blu.imdg</groupId>
-  <artifactId>hibernate</artifactId>
-  <version>1.0-SNAPSHOT</version>
-  <packaging>jar</packaging>
+    <artifactId>hibernate</artifactId>
+    <name>Hibernate Cache Integration</name>
 
-  <name>hibernate</name>
-  <url>http://maven.apache.org</url>
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.ignite</groupId>
+            <artifactId>ignite-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.ignite</groupId>
+            <artifactId>ignite-spring</artifactId>
+        </dependency>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <hibernate.version>5.1.5.Final</hibernate.version>
-  </properties>
+        <!-- Spring (Jakarta) -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+        </dependency>
 
-  <dependencies>
-    <dependency>
-      <groupId>org.apache.ignite</groupId>
-      <artifactId>ignite-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.ignite</groupId>
-      <artifactId>ignite-spring</artifactId>
-    </dependency>
-    <!-- Spring orm-->
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-orm</artifactId>
-      <version>5.2.2.RELEASE</version>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-jdbc</artifactId>
-      <version>5.3.25</version>
-    </dependency>
-    <!-- available at sakai repository https://source.sakaiproject.org/maven2/-->
-    <dependency>
-      <groupId>org.apache.ignite</groupId>
-      <artifactId>ignite-hibernate-ext</artifactId>
-      <version>5.3.0</version>
-    </dependency>
-    <!-- PostgresSQL-->
-    <dependency>
-      <groupId>org.postgresql</groupId>
-      <artifactId>postgresql</artifactId>
-      <version>42.2.4</version>
-    </dependency>
-    <dependency>
-      <groupId>com.sun.xml.ws</groupId>
-      <artifactId>jaxws-ri</artifactId>
-      <version>2.3.3</version>
-      <type>pom</type>
-    </dependency>
+        <!-- PostgreSQL -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+        </dependency>
 
-  </dependencies>
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>repackage</goal>
-            </goals>
-            <configuration>
-              <classifier>spring-boot</classifier>
-              <mainClass>
-                com.blu.imdg.RunWebService
-              </mainClass>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
-  <!-- One-Jar is in the googlecode repository -->
-  <pluginRepositories>
-    <pluginRepository>
-      <id>onejar-maven-plugin.googlecode.com</id>
-      <url>http://onejar-maven-plugin.googlecode.com/svn/mavenrepo</url>
-    </pluginRepository>
-  </pluginRepositories>
-  <!--<repositories>
-    <repository>
-      <id>SAKAI</id>
-      <url>https://source.sakaiproject.org/maven2/</url>
-    </repository>
-  </repositories>-->
+        <!-- JAX-WS for WebServices (jakarta) -->
+        <dependency>
+            <groupId>com.sun.xml.ws</groupId>
+            <artifactId>jaxws-ri</artifactId>
+            <version>4.0.2</version>
+            <type>pom</type>
+        </dependency>
+
+        <!-- Logging -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+        </dependency>
+
+        <!-- Test -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+            <!-- Use maven-shade-plugin instead of deprecated onejar-maven-plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.5.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals><goal>shade</goal></goals>
+                        <configuration>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>com.blu.imdg.RunWebService</mainClass>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

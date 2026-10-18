@@ -1,28 +1,40 @@
 package com.blu.imdg.common;
 
 
-import javax.script.Bindings;
+import org.graalvm.polyglot.Context;
+import org.graalvm.polyglot.Value;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 
 /**
- *
+ * Evaluates JavaScript using GraalVM polyglot. Modern Java 21 compatible.
  */
 public class JSEvaluate {
+    private static final Logger log = LoggerFactory.getLogger(JSEvaluate.class);
 
     public static boolean evaluateJs(String xml, String js) {
-        System.out.println("Using graal JavaScript engine!!!");
+        log.info("Using GraalJS engine for evaluation");
 
-        ScriptEngine graalEngine = new ScriptEngineManager().getEngineByName("graal.js");
-        System.out.println("Engine Name:" + graalEngine.toString());
+        var graalEngine = new ScriptEngineManager().getEngineByName("graal.js");
+        log.info("Engine: {}", graalEngine.toString());
 
-        Bindings bindings = graalEngine.createBindings();
+        try (var context = Context.newBuilder("js")
+                .allowHostAccess(org.graalvm.polyglot.HostAccess.EXPLICIT)
+                .allowAllAccess(true)
+                .build()) {
 
-        try {
-            bindings.put("polyglot.js.allowHostAccess", true); // essential for evulate on JVM 17
-            bindings.put("xpath", new XPathExecutor(xml));
-            return (boolean) graalEngine.eval(js, bindings);
-        } catch (final Exception err) {
+            // Create XPath helper via GraalVM polyglot
+            var xpathExecutor = new XPathExecutor(xml);
+            context.getBindings("js").putMember("xpath", context.getHostSpaceManager().createProxy(xpathExecutor, Object.class));
+
+            var result = context.eval("js", js);
+            log.debug("JavaScript evaluation result: {}", result);
+            return result.asBoolean();
+        } catch (Exception err) {
+            log.error("JavaScript evaluation failed", err);
             throw new RuntimeException(err);
         }
     }

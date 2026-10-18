@@ -1,3 +1,19 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.blu.imdg;
 
 import org.apache.ignite.Ignite;
@@ -8,40 +24,39 @@ import org.apache.ignite.binary.BinaryObject;
 import org.apache.ignite.configuration.IgniteConfiguration;
 import org.apache.ignite.spi.discovery.tcp.TcpDiscoverySpi;
 import org.apache.ignite.spi.discovery.tcp.ipfinder.multicast.TcpDiscoveryMulticastIpFinder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import java.util.List;
 
-import java.util.Arrays;
-
+/**
+ * Binary object benchmark using Java 21 features.
+ */
 public class Benchmark {
+    private static final Logger log = LoggerFactory.getLogger(Benchmark.class);
+
     public static void main(String[] args) {
-        System.out.println("Hello Ignite");
-        // create a new instance of TCP Discovery SPI
-        TcpDiscoverySpi spi = new TcpDiscoverySpi();
-        // create a new instance of tcp discovery multicast ip finder
-        TcpDiscoveryMulticastIpFinder tcMp = new TcpDiscoveryMulticastIpFinder();
-        tcMp.setAddresses(Arrays.asList("127.0.0.1")); // change your IP address here
-        // set the multi cast ip finder for spi
-        spi.setIpFinder(tcMp);
-        // create new ignite configuration
-        IgniteConfiguration cfg = new IgniteConfiguration();
-        //cfg.setIgniteInstanceName("Benchmark Node");
+        log.info("Hello Ignite");
+
+        var spi = new TcpDiscoverySpi();
+        var ipFinder = new TcpDiscoveryMulticastIpFinder();
+        ipFinder.setAddresses(List.of("127.0.0.1"));
+        spi.setIpFinder(ipFinder);
+
+        var cfg = new IgniteConfiguration();
+        cfg.setIgniteInstanceName("Benchmark Node");
         cfg.setClientMode(true);
         cfg.setPeerClassLoadingEnabled(true);
-
-        // set the discovery§ spi to ignite configuration
         cfg.setDiscoverySpi(spi);
-        // Start ignite
-        Ignite ignite = Ignition.start(cfg);
-        // get or create cache
-        IgniteCache<Long, BinaryObject> cache = ignite.cache("SQL_PUBLIC_EMP").withKeepBinary();
-        BinaryObject binaryObject = cache.get(900l);
 
-        BinaryField enameField=  binaryObject.type().field("ename");
-        String ename =  enameField.value(binaryObject);
-        System.out.println("Ename:"+ ename);
+        try (var ignite = Ignition.start(cfg)) {
+            var cache = ignite.cache("SQL_PUBLIC_EMP").withKeepBinary();
 
-        //System.out.println("class name:" + binaryObject.getClass().getName());
-
-        ignite.close();
-
+            BinaryObject binaryObject = (BinaryObject)cache.get(900L);
+            if (binaryObject != null) {
+                var enameField = binaryObject.type().field("ename");
+                String ename = enameField.value(binaryObject);
+                log.info("Ename: {}", ename);
+            }
+        }
     }
 }

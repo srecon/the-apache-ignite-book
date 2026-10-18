@@ -10,44 +10,43 @@ import org.apache.ignite.cluster.ClusterNode;
 import org.apache.ignite.configuration.IgniteConfiguration;
 import org.apache.ignite.spi.discovery.tcp.TcpDiscoverySpi;
 import org.apache.ignite.spi.discovery.tcp.ipfinder.multicast.TcpDiscoveryMulticastIpFinder;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import java.util.Arrays;
 
-public class FIndKeyMapToNode {
-    public static void main(String[] args) {
-        System.out.println("Hello Ignite");
-        // create a new instance of TCP Discovery SPI
-        TcpDiscoverySpi spi = new TcpDiscoverySpi();
-        // create a new instance of tcp discovery multicast ip finder
-        TcpDiscoveryMulticastIpFinder tcMp = new TcpDiscoveryMulticastIpFinder();
-        tcMp.setAddresses(Arrays.asList("localhost")); // change your IP address here
-        // set the multi cast ip finder for spi
-        spi.setIpFinder(tcMp);
-        // create new ignite configuration
-        IgniteConfiguration cfg = new IgniteConfiguration();
+public class FindKeyMapToNode {
+    private static final Logger log = LogManager.getLogger(FindKeyMapToNode.class);
 
-        //cfg.setIgniteInstanceName("DataNode");
+    public static void main(String[] args) {
+        log.info("Hello Ignite");
+
+        var spi = new TcpDiscoverySpi();
+        var tcMp = new TcpDiscoveryMulticastIpFinder();
+        tcMp.setAddresses(Arrays.asList("localhost"));
+        spi.setIpFinder(tcMp);
+
+        var cfg = new IgniteConfiguration();
         cfg.setClientMode(true);
-        // set the discovery§ spi to ignite configuration
         cfg.setDiscoverySpi(spi);
-        // Start ignite
-        Ignite ignite = Ignition.start(cfg);
+
+        var ignite = Ignition.start(cfg);
         final Long key = 2000L;
 
-        IgniteCache<Long, BinaryObject> cache = ignite.cache("EMPcache").withKeepBinary();
-        BinaryObject binaryObject = cache.get(key);
+        try (var cache = ignite.cache("EMPcache").withKeepBinary()) {
+            var binaryObject = cache.get(key);
 
-        BinaryField enameField=  binaryObject.type().field("ename");
-        String ename =  enameField.value(binaryObject);
-        System.out.println("Ename:"+ ename);
+            var enameField = binaryObject.type().field("ename");
+            var ename = enameField.value(binaryObject);
+            log.info("Ename: {}", ename);
 
-        Affinity affinity = ignite.affinity("EMPcache");
-        ClusterNode primary = affinity.mapKeyToNode(key);
-        System.out.println("node:" + primary.id().toString());
+            var affinity = ignite.affinity("EMPcache");
+            var primary = affinity.mapKeyToNode(key);
+            log.info("node: {}", primary.id());
 
-        System.out.println("Partition ID:" + affinity.partition(key));
-
-        ignite.close();
-
+            log.info("Partition ID: {}", affinity.partition(key));
+        } finally {
+            ignite.close();
+        }
     }
 }

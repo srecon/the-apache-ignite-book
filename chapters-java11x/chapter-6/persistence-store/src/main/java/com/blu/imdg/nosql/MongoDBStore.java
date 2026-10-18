@@ -1,9 +1,6 @@
 package com.blu.imdg.nosql;
 
 import com.blu.imdg.nosql.model.MongoPost;
-import javax.cache.Cache;
-import javax.cache.integration.CacheLoaderException;
-import javax.cache.integration.CacheWriterException;
 import org.apache.ignite.IgniteException;
 import org.apache.ignite.cache.store.CacheStoreAdapter;
 import org.apache.ignite.lifecycle.LifecycleAware;
@@ -14,45 +11,48 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.data.mongodb.core.MongoOperations;
 
-
 public class MongoDBStore extends CacheStoreAdapter<String, MongoPost> implements LifecycleAware {
+
+    private static final Logger log = LoggerFactory.getLogger(MongoDBStore.class);
 
     @Autowired
     private PostRepository postRepository;
+
     @Autowired
     private MongoOperations mongoOperations;
 
-    private static Logger logger = LoggerFactory.getLogger(MongoDBStore.class);
-
-    @Override public MongoPost load(String key) throws CacheLoaderException {
-
-        logger.info(String.valueOf(postRepository));
-        return postRepository.findOne(key);
+    @Override
+    public MongoPost load(String key) throws CacheLoaderException {
+        log.info("Loading post with key: {}", key);
+        return postRepository.findById(key).orElse(null);
     }
 
-    @Override public void write(Cache.Entry<? extends String, ? extends MongoPost> entry) throws CacheWriterException {
-        MongoPost post = entry.getValue();
-        logger.info(String.valueOf(postRepository));
+    @Override
+    public void write(Cache.Entry<? extends String, ? extends MongoPost> entry) throws CacheWriterException {
+        var post = entry.getValue();
+        log.info("Writing post: {}", post);
         postRepository.save(post);
     }
 
-    @Override public void delete(Object key) throws CacheWriterException {
-        logger.info(String.valueOf(postRepository));
-        postRepository.delete((String)key);
+    @Override
+    public void delete(Object key) throws CacheWriterException {
+        log.info("Deleting post with key: {}", key);
+        postRepository.deleteById((String) key);
     }
 
-    @Override public void start() throws IgniteException {
-        ConfigurableApplicationContext context = new ClassPathXmlApplicationContext("mongo-context.xml");
+    @Override
+    public void start() throws IgniteException {
+        var context = new ClassPathXmlApplicationContext("mongo-context.xml");
         postRepository = context.getBean(PostRepository.class);
-        logger.info(String.valueOf(postRepository));
+        log.info("PostRepository initialized: {}", postRepository);
         mongoOperations = context.getBean(MongoOperations.class);
-        if (!mongoOperations.collectionExists(MongoPost.class))
+        if (!mongoOperations.collectionExists(MongoPost.class)) {
             mongoOperations.createCollection(MongoPost.class);
-
+        }
     }
 
-    @Override public void stop() throws IgniteException {
-//        if (mongoOperations.collectionExists(MongoPost.class))
-//            mongoOperations.dropCollection(MongoPost.class);
+    @Override
+    public void stop() throws IgniteException {
+        // No-op
     }
 }

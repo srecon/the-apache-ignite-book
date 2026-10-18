@@ -5,7 +5,7 @@ import org.apache.ignite.cache.query.annotations.QuerySqlField;
 import java.math.BigDecimal;
 
 /**
- *
+ * Transaction data with mutability for runtime updates.
  */
 public class TransactionData implements AccountCacheData {
 

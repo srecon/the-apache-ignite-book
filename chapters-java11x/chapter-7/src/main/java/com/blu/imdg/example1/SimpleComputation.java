@@ -6,36 +6,39 @@ import org.apache.ignite.Ignition;
 import com.blu.imdg.common.JSEvaluate;
 import com.blu.imdg.common.TestDataGenerator;
 import com.blu.imdg.common.XsdValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
 import static com.blu.imdg.common.CommonConstants.CLIENT_CONFIG;
 
 /**
- *
+ * Simple computation: validates XML against XSD and evaluates JavaScript.
+ * <p>
+ * mvn exec:java -Dexec.mainClass=com.blu.imdg.example1.SimpleComputation
  */
-//mvn exec:java -Dexec.mainClass=com.blu.imdg.example1.SimpleComputation
 public class SimpleComputation {
+    private static final Logger log = LoggerFactory.getLogger(SimpleComputation.class);
 
     public static void main(String[] args) throws IOException {
-        String sample1 = TestDataGenerator.getSample1();
-        byte[] vaidateSchema = TestDataGenerator.getValidateSchema();
-        String validateScript = TestDataGenerator.getValidateScript();
+        var sample1 = TestDataGenerator.getSample1();
+        var validateSchema = TestDataGenerator.getValidateSchema();
+        var validateScript = TestDataGenerator.getValidateScript();
 
-        try (Ignite ignite = Ignition.start(CLIENT_CONFIG)) {
-            IgniteCompute compute = ignite.compute();
+        try (var ignite = Ignition.start(CLIENT_CONFIG)) {
+            var compute = ignite.compute();
 
-            Boolean result = compute.call(() -> {
-                boolean validateXsdResult = XsdValidator.validate(sample1, vaidateSchema);
-                boolean validateByJs = JSEvaluate.evaluateJs(sample1, validateScript);
+            var result = compute.call(() -> {
+                var validateXsdResult = XsdValidator.validate(sample1, validateSchema);
+                var validateByJs = JSEvaluate.evaluateJs(sample1, validateScript);
 
-                System.out.println("validateXsdResult=" + validateXsdResult);
-                System.out.println("validateByJs=" + validateByJs);
+                log.info("validateXsdResult={}, validateByJs={}", validateXsdResult, validateByJs);
 
                 return validateXsdResult && validateByJs;
             });
 
-            System.out.println("result=" + result);
+            log.info("result={}", result);
         }
     }
 }

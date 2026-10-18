@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/chapter-10/ignite-tool/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chapter-10/ignite-tool/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chapter-10/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chapter-10/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chapter-2/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chapter-2/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chapter-5/hibernate/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chapter-5/hibernate/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chapter-5/memoization/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chapter-5/memoization/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chapter-5/mybatis/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chapter-5/mybatis/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chapter-5/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chapter-5/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chapter-5/web-session-clustering/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chapter-5/web-session-clustering/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chapter-6/jdbc-client-driver/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chapter-6/jdbc-client-driver/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chapter-6/jdbc-thin/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chapter-6/jdbc-thin/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chapter-6/persistence-store/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chapter-6/persistence-store/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chapter-6/spring-data/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chapter-6/spring-data/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chapter-6/sqlqueries/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chapter-6/sqlqueries/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chapter-6/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chapter-6/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chapter-6/textquery/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chapter-6/textquery/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chapter-6/transactions/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chapter-6/transactions/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chapter-7/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chapter-7/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chapter-8/camel/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chapter-8/camel/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chapter-8/flume/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chapter-8/flume/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chapter-8/kafka/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chapter-8/kafka/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chapter-8/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chapter-8/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chapter-8/storm/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chapter-8/storm/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chapter-9/IgniteSparkApp/linecount/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chapter-9/IgniteSparkApp/linecount/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chapter-9/IgniteSparkApp/load-data-module/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chapter-9/IgniteSparkApp/load-data-module/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chapter-9/IgniteSparkApp/query-module/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chapter-9/IgniteSparkApp/query-module/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chapter-9/IgniteSparkApp/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chapter-9/IgniteSparkApp/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chapter-9/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/chapter-9/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
+  </component>
+</project>

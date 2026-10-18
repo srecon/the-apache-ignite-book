@@ -1,12 +1,14 @@
 package com.blu.imdg.model;
 
-import java.io.Serializable;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.apache.ignite.cache.query.annotations.QuerySqlField;
 
+/**
+ * Department entity mapped to Ignite SQL queries.
+ */
+public class Department {
 
-public class Department implements Serializable {
     private static final AtomicInteger GENERATED_ID = new AtomicInteger();
 
     @QuerySqlField(index = true)
@@ -48,22 +50,23 @@ public class Department implements Serializable {
         this.loc = loc;
     }
 
-    @Override public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
-        Department that = (Department)o;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Department that = (Department) o;
         return Objects.equals(deptno, that.deptno) &&
             Objects.equals(dname, that.dname) &&
             Objects.equals(loc, that.loc);
     }
 
-    @Override public int hashCode() {
+    @Override
+    public int hashCode() {
         return Objects.hash(deptno, dname, loc);
     }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return "Department[" +
             "deptno=" + deptno +
             ", dname='" + dname + '\'' +

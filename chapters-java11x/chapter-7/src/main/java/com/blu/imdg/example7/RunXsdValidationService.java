@@ -5,30 +5,33 @@ import com.blu.imdg.common.TestDataGenerator;
 import com.blu.imdg.example3.ValidateMessage;
 import org.apache.ignite.Ignite;
 import org.apache.ignite.Ignition;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
 /**
- *
+ * Runs the XSD validation service against Ignite cluster nodes.
  */
 public class RunXsdValidationService {
+    private static final Logger log = LoggerFactory.getLogger(RunXsdValidationService.class);
     private static final String VALIDATING_SERVICE = "validatingService";
 //    private static final String VALIDATING_SERVICE = "validatingService-cluster-singleton";
 
     public static void main(String[] args) throws IOException{
-        try (Ignite ignite = Ignition.start(CommonConstants.CLIENT_CONFIG)) {
+        try (var ignite = Ignition.start(CommonConstants.CLIENT_CONFIG)) {
 
-            String sample1 = TestDataGenerator.getSample1();
-            String sample2 = TestDataGenerator.getSample2();
-            byte[] vaidateSchema = TestDataGenerator.getValidateSchema();
-            String validateScript = TestDataGenerator.getValidateScript();
+            var sample1 = TestDataGenerator.getSample1();
+            var sample2 = TestDataGenerator.getSample2();
+            var validateSchema = TestDataGenerator.getValidateSchema();
+            var validateScript = TestDataGenerator.getValidateScript();
 
-            System.out.println("Invoke remote service!!");
+            log.info("Invoking remote validation service");
 
-            XsdValidatingService xsdValidatingService = ignite.services().serviceProxy(VALIDATING_SERVICE, XsdValidatingService.class, /*not-sticky*/false);
+            var xsdValidatingService = ignite.services().serviceProxy(VALIDATING_SERVICE, XsdValidatingService.class, /*not-sticky*/false);
 
-            System.out.println("result=" + xsdValidatingService.isOk(new ValidateMessage("1", sample1, vaidateSchema, validateScript)));
-            System.out.println("result2=" + xsdValidatingService.isOk(new ValidateMessage("2", sample2, vaidateSchema, validateScript)));
+            log.info("result={}", xsdValidatingService.isOk(new ValidateMessage("1", sample1, validateSchema, validateScript)));
+            log.info("result2={}", xsdValidatingService.isOk(new ValidateMessage("2", sample2, validateSchema, validateScript)));
 
         }
 

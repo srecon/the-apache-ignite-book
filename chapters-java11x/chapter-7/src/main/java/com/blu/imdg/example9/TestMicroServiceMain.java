@@ -10,21 +10,23 @@ import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteCache;
 import org.apache.ignite.IgniteServices;
 import org.apache.ignite.Ignition;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 
 /**
- *
- * теперь нельзя убедиться что future отработало
+ * Tests the bank and log microservices deployment on Ignite.
  */
 public class TestMicroServiceMain {
+    private static final Logger log = LoggerFactory.getLogger(TestMicroServiceMain.class);
 
     public static void main(String[] args) throws AccountNotFoundException, LogServiceException {
-        try (Ignite ignite = Ignition.start(CommonConstants.CLIENT_CONFIG)) {
+        try (var ignite = Ignition.start(CommonConstants.CLIENT_CONFIG)) {
 
-            IgniteCache<AccountCacheKey, AccountCacheData> cache = BankDataGenerator.createBankCache(ignite);
+            var cache = BankDataGenerator.createBankCache(ignite);
 
-            IgniteServices services = ignite.services().withAsync();
+            var services = ignite.services().withAsync();
 
             services.deployNodeSingleton(LogService.NAME, new LogServiceImpl());
 //            services.future().get();
@@ -32,11 +34,11 @@ public class TestMicroServiceMain {
             services.deployNodeSingleton(BankService.NAME, new BankServiceImpl());
 //            services.future().get();
 
-            BankService bankService = services.serviceProxy(BankService.NAME, BankService.class, /*not-sticky*/false);
+            var bankService = services.serviceProxy(BankService.NAME, BankService.class, /*not-sticky*/false);
 
-            System.out.println("result=" + bankService.validateOperation(BankDataGenerator.TEST_ACCOUNT, new BigDecimal(50)));
-            System.out.println("result1=" + bankService.validateOperation(BankDataGenerator.TEST_ACCOUNT, new BigDecimal(40)));
-            System.out.println("result2=" + bankService.validateOperation(BankDataGenerator.TEST_ACCOUNT, new BigDecimal(180)));
+            log.info("result={}", bankService.validateOperation(BankDataGenerator.TEST_ACCOUNT, new BigDecimal(50)));
+            log.info("result1={}", bankService.validateOperation(BankDataGenerator.TEST_ACCOUNT, new BigDecimal(40)));
+            log.info("result2={}", bankService.validateOperation(BankDataGenerator.TEST_ACCOUNT, new BigDecimal(180)));
 
             services.cancel(BankService.NAME);
         }

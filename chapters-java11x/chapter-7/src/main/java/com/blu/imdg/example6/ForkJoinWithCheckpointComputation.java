@@ -14,6 +14,8 @@ import com.blu.imdg.example3.ValidateMessage;
 import org.apache.ignite.configuration.IgniteConfiguration;
 import org.apache.ignite.spi.checkpoint.cache.CacheCheckpointSpi;
 import org.apache.ignite.spi.failover.always.AlwaysFailoverSpi;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
@@ -25,12 +27,13 @@ import java.util.stream.Collectors;
 import static com.blu.imdg.common.CommonConstants.CLIENT_CONFIG;
 
 /**
- *
+ * ForkJoin computation with checkpoint support for fault-tolerant distributed execution.
+ * <p>
+ * mvn exec:java -Dexec.mainClass=com.blu.imdg.example6.ForkJoinWithCheckpointComputation
  */
-//mvn exec:java -Dexec.mainClass=com.blu.imdg.example6.ForkJoinWithCheckpointComputation
 @ComputeTaskSessionFullSupport
 public class ForkJoinWithCheckpointComputation extends ComputeTaskSplitAdapter<ValidateMessage[], Boolean> {
-
+    private static final Logger log = LoggerFactory.getLogger(ForkJoinWithCheckpointComputation.class);
 
     @Override
     protected Collection<? extends ComputeJob> split(int i, ValidateMessage[] messages) throws IgniteException {
@@ -40,17 +43,17 @@ public class ForkJoinWithCheckpointComputation extends ComputeTaskSplitAdapter<V
 
     @Nullable
     @Override
-    public Boolean reduce(List<ComputeJobResult> list) throws IgniteException {
-        return list.stream().reduce(true, (acc, value) -> acc && (Boolean) value.getData(), (a, b) -> a && b);
+    public Boolean reduce(List<ComputeJobResult> results) throws IgniteException {
+        return results.stream().reduce(true, (acc, value) -> acc && (Boolean) value.getData(), (a, b) -> a && b);
     }
 
     public static void main(String[] args) throws IOException {
 
-        try (Ignite ignite = Ignition.start(CLIENT_CONFIG)) {
-            IgniteCompute compute = ignite.compute();
-            CacheConfiguration cacheConfiguration = new CacheConfiguration("checkpoints");
+        try (var ignite = Ignition.start(CLIENT_CONFIG)) {
+            var compute = ignite.compute();
+            var cacheConfiguration = new CacheConfiguration("checkpoints");
             // explicitly uses of checkpoint
-            CacheCheckpointSpi cacheCheckpointSpi = new CacheCheckpointSpi();
+            var cacheCheckpointSpi = new CacheCheckpointSpi();
             cacheCheckpointSpi.setCacheName("checkpointCache");
             //cacheConfiguration.setC
             ignite.configuration().setCheckpointSpi(cacheCheckpointSpi)
@@ -58,10 +61,10 @@ public class ForkJoinWithCheckpointComputation extends ComputeTaskSplitAdapter<V
             // create or get cache
             ignite.getOrCreateCache(cacheConfiguration);
 
-            ValidateMessage[] validateMessages = TestDataGenerator.getValidateMessages();
+            var validateMessages = TestDataGenerator.getValidateMessages();
 
-            Boolean result = compute.execute(new ForkJoinWithCheckpointComputation(), validateMessages);
-            System.out.println("final result=" + result);
+            var result = compute.execute(new ForkJoinWithCheckpointComputation(), validateMessages);
+            log.info("final result={}", result);
         }
     }
 }

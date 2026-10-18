@@ -1,88 +1,86 @@
-<?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>com.blu.imdg</groupId>
-    <artifactId>chapter-6</artifactId>
-    <version>1.0-SNAPSHOT</version>
-  </parent>
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.blu.imdg</groupId>
-  <artifactId>jdbc-thin</artifactId>
-  <version>1.0-SNAPSHOT</version>
-  <name>jdbc-thin</name>
-  <url>http://maven.apache.org</url>
+    <parent>
+        <groupId>com.blu.imdg</groupId>
+        <artifactId>chapter-6</artifactId>
+        <version>2.0-SNAPSHOT</version>
+    </parent>
 
-  <dependencies>
+    <artifactId>jdbc-thin</artifactId>
+    <name>JDBC Thin Client with Connection Pools</name>
 
-    <dependency>
-      <groupId>org.apache.ignite</groupId>
-      <artifactId>ignite-core</artifactId>
-      <version>${ignite.version}</version>
-    </dependency>
-     <dependency>
-      <groupId>com.mchange</groupId>
-      <artifactId>c3p0</artifactId>
-      <version>0.9.5.1</version>
-    </dependency>
-    <dependency>
-      <groupId>com.zaxxer</groupId>
-      <artifactId>HikariCP</artifactId>
-      <version>2.7.8</version>
-    </dependency>
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.ignite</groupId>
+            <artifactId>ignite-core</artifactId>
+        </dependency>
+        <!-- Connection pools -->
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>5.1.0</version>
+        </dependency>
 
-  </dependencies>
+        <!-- Logging -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+        </dependency>
+
+        <!-- Test -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
             </plugin>
+            <!-- Replaced deprecated onejar-maven-plugin with maven-shade-plugin -->
             <plugin>
-                <groupId>com.jolira</groupId>
-                <artifactId>onejar-maven-plugin</artifactId>
-                <version>1.4.4</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.5.1</version>
                 <executions>
                     <execution>
-                        <id>build-JDBC-thin</id>
+                        <id>default_1</id>
+                        <phase>package</phase><goals><goal>shade</goal></goals>
                         <configuration>
-                            <mainClass>com.blu.imdg.JDBCThinClientExample</mainClass>
-                            <attachToBuild>true</attachToBuild>
-                            <classifier>onejar</classifier>
-                            <filename>jdbc-thin-runnable.jar</filename>
+                            <transformers><transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                <mainClass>com.blu.imdg.JDBCThinClientExample</mainClass>
+                            </transformer></transformers>
                         </configuration>
-                        <goals>
-                            <goal>one-jar</goal>
-                        </goals>
                     </execution>
                     <execution>
-                        <id>build-streamer</id>
+                        <id>default_2</id>
+                        <phase>package</phase><goals><goal>shade</goal></goals>
                         <configuration>
-                            <mainClass>com.blu.imdg.C3P0DataSourceExample</mainClass>
-                            <attachToBuild>true</attachToBuild>
-                            <classifier>onejar</classifier>
-                            <filename>c3p0-runnable.jar</filename>
+                            <transformers><transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                <mainClass>com.blu.imdg.C3P0DataSourceExample</mainClass>
+                            </transformer></transformers>
                         </configuration>
-                        <goals>
-                            <goal>one-jar</goal>
-                        </goals>
                     </execution>
                     <execution>
-                        <id>build-ignite-startup</id>
+                        <id>default_3</id>
+                        <phase>package</phase><goals><goal>shade</goal></goals>
                         <configuration>
-                            <mainClass>com.blu.imdg.HikariCPDataSourceExample</mainClass>
-                            <attachToBuild>true</attachToBuild>
-                            <classifier>onejar</classifier>
-                            <filename>hikari-runnable.jar</filename>
+                            <transformers><transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                <mainClass>com.blu.imdg.HikariCPDataSourceExample</mainClass>
+                            </transformer></transformers>
                         </configuration>
-                        <goals>
-                            <goal>one-jar</goal>
-                        </goals>
                     </execution>
                 </executions>
             </plugin>

@@ -14,6 +14,8 @@ import org.apache.ignite.resources.IgniteInstanceResource;
 import org.apache.ignite.resources.JobContextResource;
 import org.apache.ignite.resources.TaskSessionResource;
 import com.blu.imdg.example3.ValidateMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.jetbrains.annotations.NotNull;
 
 
@@ -22,9 +24,11 @@ import java.net.URISyntaxException;
 import java.util.concurrent.ConcurrentMap;
 
 /**
- *
+ * Job adapter with session support for distributed validation.
  */
 public class ForkJoinWithSessionJobAdapter extends ComputeJobAdapter {
+    private static final Logger log = LoggerFactory.getLogger(ForkJoinWithSessionJobAdapter.class);
+
     @TaskSessionResource
     private ComputeTaskSession session;
 
@@ -34,7 +38,7 @@ public class ForkJoinWithSessionJobAdapter extends ComputeJobAdapter {
     @IgniteInstanceResource
     private Ignite ignite;
 
-    private ValidateMessage msg;
+    private final ValidateMessage msg;
 
     public ForkJoinWithSessionJobAdapter(ValidateMessage msg) {
         this.msg = msg;
@@ -43,27 +47,28 @@ public class ForkJoinWithSessionJobAdapter extends ComputeJobAdapter {
     @Override
     public Boolean execute() throws IgniteException {
         try {
-            boolean validateXsdResult = XsdValidator.validate(msg.getMsg(), msg.getXsd());
+            var validateXsdResult = XsdValidator.validate(msg.msg(), msg.xsd());
             session.setAttribute(jobCtx.getJobId(), validateXsdResult);
-            System.out.println("Job id:" + jobCtx.getJobId());
+            log.info("Job id={} validated", jobCtx.getJobId());
 
             if (!validateXsdResult) {
-                System.out.println("force return result false!");
+                log.warn("XSD validation failed for message {}, returning false", msg.id());
                 return sendResultAndReturn(false);
             }
 
             for (ComputeJobSibling sibling : session.getJobSiblings()) {
-                Boolean siblingStep1Result = session.waitForAttribute(sibling.getJobId(), 0);
-                if(!siblingStep1Result) {
-                    System.out.println("one sibling return false!");
+                var siblingStep1Result = session.waitForAttribute(sibling.getJobId(), 0);
+                if (!siblingStep1Result) {
+                    log.info("One sibling returned false for message {}", msg.id());
                     return sendResultAndReturn(false);
                 }
             }
 
-            boolean validateByJs = JSEvaluate.evaluateJs(msg.getMsg(), msg.getJs());
+            var validateByJs = JSEvaluate.evaluateJs(msg.msg(), msg.js());
             return sendResultAndReturn(validateByJs);
 
         } catch (Exception err) {
+            log.error("Job execution error for message {}", msg.id(), err);
             throw new IgniteException(err);
         }
     }
@@ -71,7 +76,8 @@ public class ForkJoinWithSessionJobAdapter extends ComputeJobAdapter {
     @NotNull
     private Boolean sendResultAndReturn(Boolean result) throws URISyntaxException, IOException {
         ConcurrentMap<Object, Object> nodeLocalMap = ignite.cluster().nodeLocalMap();
-        HttpClient client = HttpAuditClient.createHttpClient(nodeLocalMap);
-        return HttpAuditClient.sendResult(client, result, msg.getId());
+        try (var client = HttpAuditClient.createHttpClient(nodeLocalMap)) {
+            return HttpAuditClient.sendResult(client, result, msg.id());
+        }
     }
 }

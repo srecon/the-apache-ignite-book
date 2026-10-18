@@ -1,6 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.blu.imdg;
 
-import com.blu.dto.Person;
 import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteCache;
 import org.apache.ignite.Ignition;
@@ -8,65 +23,44 @@ import org.apache.ignite.configuration.IgniteConfiguration;
 import org.apache.ignite.spi.communication.tcp.TcpCommunicationSpi;
 import org.apache.ignite.spi.discovery.tcp.TcpDiscoverySpi;
 import org.apache.ignite.spi.discovery.tcp.ipfinder.vm.TcpDiscoveryVmIpFinder;
-
-import java.util.Arrays;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import java.util.List;
 
 /**
- * Use the following JVM options to run on JVM 17 or later
- * java --add-opens=jdk.management/com.sun.management.internal=ALL-UNNAMED --add-opens=java.base/jdk.internal.misc=ALL-UNNAMED --add-opens=java.base/sun.nio.ch=ALL-UNNAMED --add-opens=java.management/com.sun.jmx.mbeanserver=ALL-UNNAMED --add-opens=jdk.internal.jvmstat/sun.jvmstat.monitor=ALL-UNNAMED --add-opens=java.base/sun.reflect.generics.reflectiveObjects=ALL-UNNAMED --add-opens=java.base/java.io=ALL-UNNAMED --add-opens=java.base/java.nio=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.lang=ALL-UNNAMED -jar ./target/IsolatedCLient-runnable.jar
- * */
+ * Isolated cluster example using Java 21 features.
+ */
 public class IsolatedCluster {
+    private static final Logger log = LoggerFactory.getLogger(IsolatedCluster.class);
+
     public static void main(String[] args) {
-        IgniteConfiguration cfg = new IgniteConfiguration();
+        var cfg = new IgniteConfiguration();
 
-// Explicitly configure TCP discovery SPI to provide list of initial nodes
-// from the first cluster.
-        TcpDiscoverySpi discoverySpi = new TcpDiscoverySpi();
-
-// Initial local port to listen to.
+        // Configure TCP discovery SPI with addresses from the first cluster.
+        var discoverySpi = new TcpDiscoverySpi();
         discoverySpi.setLocalPort(48500);
-
-// Changing local port range. This is an optional action.
         discoverySpi.setLocalPortRange(20);
 
-        TcpDiscoveryVmIpFinder ipFinder = new TcpDiscoveryVmIpFinder();
-
-// Addresses and port range of the nodes from the first cluster.
-// 127.0.0.1 can be replaced with actual IP addresses or host names.
-// The port range is optional.
-        ipFinder.setAddresses(Arrays.asList("127.0.0.1:48500..48520"));
-
-// Overriding IP finder.
+        var ipFinder = new TcpDiscoveryVmIpFinder();
+        ipFinder.setAddresses(List.of("127.0.0.1:48500..48520"));
         discoverySpi.setIpFinder(ipFinder);
 
-// Explicitly configure TCP communication SPI by changing local port number for
-// the nodes from the first cluster.
-        TcpCommunicationSpi commSpi = new TcpCommunicationSpi();
-
+        // Configure TCP communication SPI with different local port range.
+        var commSpi = new TcpCommunicationSpi();
         commSpi.setLocalPort(48100);
 
-// Overriding discovery SPI.
         cfg.setDiscoverySpi(discoverySpi);
-
-// Overriding communication SPI.
         cfg.setCommunicationSpi(commSpi);
         cfg.setClientMode(true);
         cfg.setPeerClassLoadingEnabled(true);
 
-// Starting a node.
-        Ignite ignite = Ignition.start(cfg);
+        try (var ignite = Ignition.start(cfg)) {
+            var cache = ignite.getOrCreateCache("myCacheSource");
 
-        // get or create cache
-        IgniteCache<String, String> cache = ignite.getOrCreateCache("myCacheSource");
-        // put some cache elements
-        for(int i = 100; i <= 150; i++){
-            cache.put("Key:"+i, "Hello World!!: "+Integer.toString(i));
+            // Put some cache elements
+            for (int i = 100; i <= 150; i++) {
+                cache.put("Key:%d".formatted(i), "Hello World!!: %d".formatted(i));
+            }
         }
-        // get them from the cache and write to the console
-//        for(int i =1; i<= 100; i++){
-//            System.out.println("Cache get:"+ cache.get(i));
-//        }
-        ignite.close();
-
     }
 }

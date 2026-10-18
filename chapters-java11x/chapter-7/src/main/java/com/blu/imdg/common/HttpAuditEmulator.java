@@ -1,25 +1,29 @@
 package com.blu.imdg.common;
 
 import com.sun.net.httpserver.HttpServer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 //import org.glassfish.jersey.jdkhttp.JdkHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.UriBuilder;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.UriBuilder;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.URI;
 
 /**
- *
+ * HTTP endpoint for receiving audit log messages from Ignite services.
+ * <p>
  * mvn exec:java -Dexec.mainClass=com.blu.imdg.common.HttpAuditEmulator
  */
 @Path("/audit")
 public class HttpAuditEmulator {
+    private static final Logger log = LoggerFactory.getLogger(HttpAuditEmulator.class);
 
 
     @GET
@@ -29,13 +33,13 @@ public class HttpAuditEmulator {
             @QueryParam("msgId") String msgId,
             @QueryParam("validationResult") boolean result
     ) {
-        System.out.println("log message validation result msgId=" + msgId + " result=" + result);
+        log.info("log message validation result msgId={} result={}", msgId, result);
         return "1";
     }
 
     public static void main(String[] args) throws IOException {
-        HttpServer httpServer = HttpServer.create(new InetSocketAddress("localhost", 9998),0);
+        var httpServer = HttpServer.create(new InetSocketAddress("localhost", 9998), 0);
         httpServer.start();
-        System.out.println("Http Server on localhost:9998");
+        log.info("Http Server on localhost:9998");
     }
 }

@@ -6,7 +6,7 @@ import com.blu.imdg.example9.exception.LogServiceException;
 import java.math.BigDecimal;
 
 /**
- *
+ * Service interface for bank operations.
  */
 public interface BankService {
     String NAME = "BANK_SERVICE";

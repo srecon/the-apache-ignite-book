@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="memoization" />
+        <module name="jdbc-client-driver" />
+        <module name="ignite-tool" />
+        <module name="ignite.spark.query" />
+        <module name="storm" />
+        <module name="jdbc-thin" />
+        <module name="sqlqueries" />
+        <module name="spring-data" />
+        <module name="mybatis" />
+        <module name="web-session-clustering" />
+        <module name="chapter-7" />
+        <module name="chapter-2" />
+        <module name="hibernate" />
+        <module name="transactions" />
+        <module name="persistence-store" />
+        <module name="linecount" />
+        <module name="camel" />
+        <module name="flume" />
+        <module name="kafka" />
+        <module name="ignite.spark.load.module" />
+        <module name="textquery" />
+      </profile>
+    </annotationProcessing>
+  </component>
+</project>

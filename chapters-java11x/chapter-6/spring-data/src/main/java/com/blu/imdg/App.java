@@ -9,55 +9,46 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
+public class App {
 
-public class App 
-{
-    private static AnnotationConfigApplicationContext ctx;
-    private static BreedRepository breedRepository;
-    private static DogRepository dogRepository;
+    private static final Logger log = LoggerFactory.getLogger(App.class);
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(App.class);
+    public static void main(String[] args) {
+        log.info("Spring Data Example!");
 
-    public static void main( String[] args )
-    {
-        LOGGER.info( "Spring Data Example!" );
-        ctx = new AnnotationConfigApplicationContext();
-        ctx.register(SpringAppConfig.class);
+        var ctx = new AnnotationConfigApplicationContext(SpringAppConfig.class);
         ctx.refresh();
 
-        breedRepository = ctx.getBean(BreedRepository.class);
-        dogRepository = ctx.getBean(DogRepository.class);
+        var breedRepository = ctx.getBean(BreedRepository.class);
+        var dogRepository = ctx.getBean(DogRepository.class);
 
-        //fill the repository with data and Save
-        Breed collie = new Breed();
-        collie.setId(1L);
-        collie.setName("collie");
-        //save Breed with name collie
+        // Fill the repository with data and save
+        var collie = new Breed(1L, "collie");
         breedRepository.save(1L, collie);
 
-        LOGGER.info("Add one breed in the repository!");
-        // Query the breed
-        List<Breed> getAllBreeds = breedRepository.getAllBreedsByName("collie");
+        log.info("Add one breed in the repository!");
 
-        for(Breed breed : getAllBreeds){
-            LOGGER.info("Breed:" + breed);
+        // Query the breed
+        var getAllBreeds = breedRepository.getAllBreedsByName("collie");
+
+        for (var breed : getAllBreeds) {
+            log.info("Breed: {}", breed);
         }
-        //Add some dogs
-        Dog dina = new Dog();
-        dina.setName("dina");
-        dina.setId(1L);
-        dina.setBreedid(1L);
-        //Save Dina
-        dogRepository.save(2L,dina);
-        LOGGER.info("Dog dina save into the cache!");
-        //Query the Dog Dina
-        List<Dog> dogs = dogRepository.getDogByName("dina");
-        for(Dog dog : dogs){
-            LOGGER.info("Dog:"+ dog);
+
+        // Add some dogs
+        var dina = new Dog(1L, "dina", 1L, LocalDate.now());
+        dogRepository.save(2L, dina);
+        log.info("Dog dina save into the cache!");
+
+        // Query the Dog Dina
+        var dogs = dogRepository.getDogByName("dina");
+        for (var dog : dogs) {
+            log.info("Dog: {}", dog);
         }
-        LOGGER.info("Enter ctrl+C to exit");
+
+        log.info("Enter ctrl+C to exit");
     }
 }

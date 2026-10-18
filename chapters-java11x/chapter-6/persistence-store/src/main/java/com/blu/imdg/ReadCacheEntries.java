@@ -11,47 +11,27 @@ import org.apache.ignite.configuration.IgniteConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
-import javax.cache.configuration.FactoryBuilder;
-
-
 public class ReadCacheEntries {
-    private static Logger LOGGER = LoggerFactory.getLogger(CacheStoreSample.class);
+
+    private static final Logger log = LoggerFactory.getLogger(ReadCacheEntries.class);
 
     public static void main(String[] args) throws Exception {
+        var cfg = new IgniteConfiguration();
 
-        IgniteConfiguration cfg = new IgniteConfiguration();
-
-        CacheConfiguration configuration = new CacheConfiguration();
-        configuration.setName("mongoDynamicCache");
-
+        var configuration = new CacheConfiguration<String, MongoPost>("mongoDynamicCache");
         configuration.setAtomicityMode(CacheAtomicityMode.TRANSACTIONAL);
-
-        configuration.setCacheStoreFactory(FactoryBuilder.factoryOf(MongoDBStore.class));
+        configuration.setCacheStoreFactory(org.jcache.configuration.FactoryBuilder.factoryOf(MongoDBStore.class));
         configuration.setReadThrough(true);
         configuration.setWriteThrough(true);
-
         configuration.setWriteBehindEnabled(true);
 
         cfg.setCacheConfiguration(configuration);
 
-        try (Ignite ignite = Ignition.start(cfg)) {
-
-            try (IgniteCache<String, MongoPost> igniteCache = ignite.getOrCreateCache(configuration)) {
-                final String key = "_9";
-                log(igniteCache.get(key).toString());
+        try (var ignite = Ignition.start(cfg)) {
+            try (var igniteCache = ignite.getOrCreateCache(configuration)) {
+                var key = "_9";
+                log.info("{}", igniteCache.get(key));
             }
-
-            Thread.sleep(Integer.MAX_VALUE);
         }
-    }
-
-    /**
-     * Prints message to logger.
-     *
-     * @param msg String.
-     */
-    private static void log(String msg) {
-        LOGGER.info("\t" + msg);
     }
 }

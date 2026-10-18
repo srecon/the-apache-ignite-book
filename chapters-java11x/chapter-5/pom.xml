@@ -1,27 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>com.blu.imdg</groupId>
         <artifactId>chapters-java11x</artifactId>
-        <version>1.0-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
+        <version>2.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>chapter-5</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <name>chapter-5</name>
+    <name>Chapter 5 - Advanced Ignite Features</name>
     <packaging>pom</packaging>
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
 
     <modules>
         <module>hibernate</module>
-        <module>mybatis</module>
         <module>memoization</module>
+        <module>mybatis</module>
+        <module>web-session-clustering</module>
     </modules>
-    <dependencies/>
 </project>

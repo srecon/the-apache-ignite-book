@@ -2,28 +2,27 @@ package com.blu.imdg.common.bankData.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Date;
 
 /**
- *
+ * Account data with mutable fields for runtime updates.
  */
 public class AccountData implements AccountCacheData {
     private String account;
     private String personId;
     private String accountType;
-    private Date openedAt;
+    private LocalDate openedAt;
 
     private BigDecimal dailyLimit;
     private BigDecimal todayOperationSum;
     private LocalDate today;
 
-    public AccountData(String account, String personId, String accountType, Date openedAt, BigDecimal dailyLimit) {
+    public AccountData(String account, String personId, String accountType, LocalDate openedAt, BigDecimal dailyLimit) {
         this.account = account;
         this.personId = personId;
         this.accountType = accountType;
         this.openedAt = openedAt;
         this.dailyLimit = dailyLimit;
-        this.todayOperationSum = new BigDecimal(0);
+        this.todayOperationSum = BigDecimal.ZERO;
         this.today = LocalDate.now();
     }
 
@@ -51,11 +50,11 @@ public class AccountData implements AccountCacheData {
         this.accountType = accountType;
     }
 
-    public Date getOpenedAt() {
+    public LocalDate getOpenedAt() {
         return openedAt;
     }
 
-    public void setOpenedAt(Date openedAt) {
+    public void setOpenedAt(LocalDate openedAt) {
         this.openedAt = openedAt;
     }
 

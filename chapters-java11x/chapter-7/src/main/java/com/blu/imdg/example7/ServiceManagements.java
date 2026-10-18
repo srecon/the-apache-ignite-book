@@ -4,22 +4,26 @@ import com.blu.imdg.common.CommonConstants;
 import org.apache.ignite.Ignite;
 import org.apache.ignite.Ignition;
 import org.apache.ignite.services.ServiceDescriptor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
 /**
- *
+ * Lists all deployed Ignite services for monitoring purposes.
  */
 public class ServiceManagements {
-    public static void main(String[] args) throws IOException{
-        try (Ignite ignite = Ignition.start(CommonConstants.CLIENT_CONFIG)) {
+    private static final Logger log = LoggerFactory.getLogger(ServiceManagements.class);
 
-            for(ServiceDescriptor serviceDescriptor : ignite.services().serviceDescriptors()){
-                System.out.println("Service Name: " + serviceDescriptor.name());
-                System.out.println("MaxPerNode count: " + serviceDescriptor.maxPerNodeCount());
-                System.out.println("Total count: " + serviceDescriptor.totalCount());
-                System.out.println("Service class Name: " + serviceDescriptor.serviceClass());
-                System.out.println("Origin Node ID: " + serviceDescriptor.originNodeId());
+    public static void main(String[] args) throws IOException{
+        try (var ignite = Ignition.start(CommonConstants.CLIENT_CONFIG)) {
+
+            for (var serviceDescriptor : ignite.services().serviceDescriptors()) {
+                log.info("Service Name: {}", serviceDescriptor.name());
+                log.info("MaxPerNode count: {}", serviceDescriptor.maxPerNodeCount());
+                log.info("Total count: {}", serviceDescriptor.totalCount());
+                log.info("Service class Name: {}", serviceDescriptor.serviceClass());
+                log.info("Origin Node ID: {}", serviceDescriptor.originNodeId());
 
             }
 

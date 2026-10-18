@@ -4,13 +4,16 @@ import org.apache.ignite.IgniteException;
 import org.apache.ignite.compute.ComputeJobAdapter;
 import com.blu.imdg.common.JSEvaluate;
 import com.blu.imdg.common.XsdValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- *
+ * Job that validates a message against XSD and evaluates a JS script.
  */
 public class ForkJoinJobAdapter extends ComputeJobAdapter {
+    private static final Logger log = LoggerFactory.getLogger(ForkJoinJobAdapter.class);
 
-    private ValidateMessage msg;
+    private final ValidateMessage msg;
 
     public ForkJoinJobAdapter(ValidateMessage msg) {
         this.msg = msg;
@@ -18,12 +21,10 @@ public class ForkJoinJobAdapter extends ComputeJobAdapter {
 
     @Override
     public Boolean execute() throws IgniteException {
-        boolean validateXsdResult = XsdValidator.validate(msg.getMsg(), msg.getXsd());
-        boolean validateByJs = JSEvaluate.evaluateJs(msg.getMsg(), msg.getJs());
+        var validateXsdResult = XsdValidator.validate(msg.msg(), msg.xsd());
+        var validateByJs = JSEvaluate.evaluateJs(msg.msg(), msg.js());
 
-        System.out.println("msg=" + msg.getId());
-        System.out.println("validateXsdResult=" + validateXsdResult);
-        System.out.println("validateByJs=" + validateByJs);
+        log.info("msg={} validateXsdResult={} validateByJs={}", msg.id(), validateXsdResult, validateByJs);
 
         return validateXsdResult && validateByJs;
     }

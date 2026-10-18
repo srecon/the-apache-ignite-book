@@ -1,40 +1,53 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.blu.imdg.ws;
 
 import com.blu.imdg.dao.ExchangeRateDao;
 import com.blu.imdg.dto.ExchangeRate;
-
-import javax.jws.WebMethod;
-import javax.jws.WebParam;
-import java.util.Date;
+import jakarta.jws.WebMethod;
+import jakarta.jws.WebParam;
+import jakarta.jws.WebService;
+import java.time.LocalDate;
 
 /**
- * Created by shamim
+ * JAX-WS web service with Jakarta annotations.
  */
-@javax.jws.WebService(name = "BusinessRulesServices",
-        serviceName = "BusinessRulesServices",
+@WebService(name = "BusinessRulesServices", serviceName = "BusinessRulesServices",
         targetNamespace = "http://com.blu.rules/services")
 public class WebService {
     private ExchangeRateDao exchangeRateDao;
 
     @WebMethod(exclude = true)
-    public void setEmpDao(ExchangeRateDao empDao) {
-        this.exchangeRateDao = empDao;
+    public void setEmpDao(ExchangeRateDao dao) {
+        this.exchangeRateDao = dao;
     }
 
     @WebMethod(operationName = "getExchangeRateByRegion")
-    public String getExchangeRateByRegion(@WebParam(name = "RegionName") String str) {
-        return exchangeRateDao.getUSDollarExchangeRateByRegion(str);
+    public String getExchangeRateByRegion(@WebParam(name = "RegionName") String region) {
+        return exchangeRateDao.getUSDollarExchangeRateByRegion(region);
     }
 
     @WebMethod(operationName = "updateExchangeRate")
-    public void updateExchangeRate(@WebParam(name = "RegionName") String region, @WebParam(name = "Date")Date rateDate, @WebParam(name = "USdollarRate") double usdollar, @WebParam(name = "EuroRate") double euro, @WebParam(name = "BritishPoundRate") double gbp) {
-        ExchangeRate e = new ExchangeRate();
-        e.setRegion(region);
-        e.setUsdollar(usdollar);
-        e.setEuro(euro);
-        e.setGbp(gbp);
-        e.setRateDate(rateDate);
-
+    public void updateExchangeRate(@WebParam(name = "RegionName") String region,
+                                   @WebParam(name = "Date") LocalDate rateDate,
+                                   @WebParam(name = "USdollarRate") double usdollar,
+                                   @WebParam(name = "EuroRate") double euro,
+                                   @WebParam(name = "BritishPoundRate") double gbp) {
+        var e = new ExchangeRate(region, rateDate, usdollar, euro, gbp);
         exchangeRateDao.updateExchange(e);
     }
 }
