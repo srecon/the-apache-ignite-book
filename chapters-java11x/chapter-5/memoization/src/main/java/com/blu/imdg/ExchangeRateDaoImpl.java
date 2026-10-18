@@ -18,9 +18,9 @@ package com.blu.imdg;
 
 import com.blu.imdg.dao.ExchangeRateDao;
 import com.blu.imdg.dto.ExchangeRate;
-import jakarta.persistence.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.NativeQuery;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.slf4j.Logger;
@@ -42,14 +42,14 @@ public class ExchangeRateDaoImpl implements ExchangeRateDao {
     public String getUSDollarExchangeRateByRegion(String region) {
         var session = sessionFactory.openSession();
         try {
-            var query = session.createSQLQuery(
+            NativeQuery<ExchangeRate> query = session.createNativeQuery(
                 "SELECT e.usdollar FROM exchangerate e " +
-                "WHERE e.ratedate = DATE '2015-05-02' AND e.region = :region"
+                "WHERE e.ratedate = DATE '2015-05-02' AND e.region = :region",
+                ExchangeRate.class
             );
             query.setParameter("region", region);
-            query.addEntity(ExchangeRate.class);
             var res = query.uniqueResult();
-            return res != null ? String.valueOf(((ExchangeRate)res).getUsdollar()) : "N/A";
+            return res != null ? String.valueOf(res.getUsdollar()) : "N/A";
         }
         finally {
             session.close();
@@ -62,7 +62,7 @@ public class ExchangeRateDaoImpl implements ExchangeRateDao {
         var session = sessionFactory.openSession();
         try {
             session.getTransaction().begin();
-            Query query = session.createSQLQuery("""
+            NativeQuery<Object> query = session.createNativeQuery("""
                 UPDATE exchangerate
                 SET usdollar = :usdollar
                 WHERE region = :region AND ratedate = DATE '2015-05-02'

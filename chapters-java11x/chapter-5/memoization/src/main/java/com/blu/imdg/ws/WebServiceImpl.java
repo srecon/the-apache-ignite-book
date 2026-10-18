@@ -28,7 +28,7 @@ import java.time.LocalDate;
  */
 @WebService(name = "BusinessRulesServices", serviceName = "BusinessRulesServices",
         targetNamespace = "http://com.blu.rules/services")
-public class WebService {
+public class WebServiceImpl {
     private ExchangeRateDao exchangeRateDao;
 
     @WebMethod(exclude = true)

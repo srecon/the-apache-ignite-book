@@ -33,6 +33,12 @@
             <artifactId>spring-jdbc</artifactId>
         </dependency>
 
+        <!-- Hibernate dependencies -->
+        <dependency>
+            <groupId>org.hibernate.orm</groupId>
+            <artifactId>hibernate-core</artifactId>
+        </dependency>
+
         <!-- PostgreSQL -->
         <dependency>
             <groupId>org.postgresql</groupId>

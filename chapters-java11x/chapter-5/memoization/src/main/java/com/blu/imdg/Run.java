@@ -16,6 +16,7 @@
  */
 package com.blu.imdg;
 
+import com.blu.imdg.dao.ExchangeRateDao;
 import com.blu.imdg.dto.ExchangeRate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,13 +34,13 @@ public class Run {
     public static void main(String[] args) {
         log.info("Hello Hibernate after a long time!!");
         var ctx = new ClassPathXmlApplicationContext("spring-core.xml");
-        var empDao = ctx.getBean(EmpDao.class);
+        var exchangeRateDao = ctx.getBean(ExchangeRateDao.class);
 
         // Update exchange rate example
         var e = new ExchangeRate(
             "Moscow", LocalDate.now(), 71.17, 68.50, 65.30
         );
-        empDao.updateExchange(e);
-        log.info("Return size: {}", empDao.getUSDollarExchangeRateByRegion("Moscow"));
+        exchangeRateDao.updateExchange(e);
+        log.info("Return size: {}", exchangeRateDao.getUSDollarExchangeRateByRegion("Moscow"));
     }
 }

@@ -16,7 +16,7 @@
  */
 package com.blu.imdg;
 
-import com.blu.imdg.ws.WebService;
+import com.blu.imdg.ws.WebServiceImpl;
 import org.apache.ignite.Ignite;
 import org.apache.ignite.Ignition;
 import org.slf4j.Logger;
@@ -36,7 +36,7 @@ public class RunWebService {
         try (var ignite = Ignition.start("ignite-l2-config.xml")) {
             var ctx = new ClassPathXmlApplicationContext("spring-core.xml");
 
-            var service = ctx.getBean(WebService.class);
+            var service = ctx.getBean(WebServiceImpl.class);
 
             Endpoint.publish("http://localhost:7001/invokeRules", service);
             log.info("Server started on port 7001");
